@@ -12,13 +12,17 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
 
+if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+  console.warn('[GOOGLE OAUTH WARNING] GOOGLE_CLIENT_ID hoặc GOOGLE_CLIENT_SECRET chưa được cài đặt trong Environment Variables!');
+}
+
 /**
  * Cấu hình chiến lược đăng nhập Google OAuth 2.0
  */
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/auth/google/callback',
+    clientID: process.env.GOOGLE_CLIENT_ID || 'MISSING_CLIENT_ID',
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'MISSING_CLIENT_SECRET',
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || '/auth/google/callback',
     proxy: true
   },
   async (accessToken, refreshToken, profile, done) => {

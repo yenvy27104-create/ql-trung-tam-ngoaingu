@@ -740,7 +740,7 @@ class AdminController {
       revenueByCourseQuery += " GROUP BY kh.MaKhoaHoc, kh.TenKhoaHoc";
       const [revenueByCourse] = await pool.query(revenueByCourseQuery, revenueCourseParams);
 
-      monthlyRevenueQuery += " GROUP BY Month ORDER BY Month ASC LIMIT 12";
+      monthlyRevenueQuery += " GROUP BY DATE_FORMAT(COALESCE(g.NgayGiaoDich, d.NgayDangKy), '%Y-%m') ORDER BY Month ASC LIMIT 12";
       const [monthlyRevenue] = await pool.query(monthlyRevenueQuery, monthlyRevenueParams);
 
       const filteredStudentProfiles = studentProfiles.filter(student => {
@@ -791,8 +791,8 @@ class AdminController {
         }
       });
     } catch (err) {
-      console.error(err);
-      res.status(500).send('Lỗi máy chủ khi tải trang quản trị.');
+      console.error('Lỗi khi tải Dashboard Admin:', err);
+      res.status(500).send(`Lỗi máy chủ khi tải trang quản trị: ${err.message || err}`);
     }
   }
 
