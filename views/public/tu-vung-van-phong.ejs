@@ -1,0 +1,581 @@
+<%- include('../layouts/header') %>
+
+<style>
+  .vocab-container {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid #eef2f5;
+  }
+
+  .nav-tabs-custom {
+    border-bottom: 2px solid #eef2f5;
+  }
+
+  .nav-tabs-custom .nav-link {
+    border: none;
+    color: #5c6a79;
+    font-weight: 600;
+    padding: 14px 20px;
+    position: relative;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+  }
+
+  .nav-tabs-custom .nav-link.active {
+    color: var(--accent-color);
+    background: none;
+  }
+
+  .nav-tabs-custom .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent-gradient);
+    border-radius: 3px;
+  }
+
+  .vocab-table th {
+    background-color: #f8fafc;
+    color: #334155;
+    font-weight: 700;
+    border-bottom: 2px solid #eaedf0;
+    padding: 14px 16px;
+  }
+
+  .vocab-table td {
+    padding: 14px 16px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .pronounce-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(52, 152, 219, 0.08);
+    color: var(--accent-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .pronounce-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    transform: scale(1.08);
+  }
+
+  .word-highlight {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  .ipa-highlight {
+    font-family: 'Open Sans', sans-serif;
+    color: #64748b;
+    font-size: 0.9rem;
+  }
+
+  .search-wrapper {
+    position: relative;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+  }
+
+  .search-input {
+    padding-left: 45px;
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    transition: all 0.3s;
+  }
+
+  .search-input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+  }
+
+  .sidebar-card {
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+    border: 1px solid #eef2f5;
+  }
+
+  .category-section-title {
+    background: #f1f5f9;
+    padding: 8px 16px;
+    font-weight: 700;
+    color: #475569;
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+</style>
+
+<%
+  const positions = vocabData.positions || [];
+  const departments = vocabData.departments || [];
+  const welfare = vocabData.welfare || [];
+  const stationery = vocabData.stationery || [];
+  const workplace = vocabData.workplace || [];
+  const personalities = vocabData.personalities || [];
+  const skills = vocabData.skills || [];
+  const otherBusiness = vocabData.otherBusiness || [];
+  const phrases = vocabData.phrases || [];
+%>
+
+<div class="container py-2">
+  <!-- Breadcrumbs -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted"><i class="bi bi-house-door-fill me-1"></i>Trang chủ</a></li>
+      <li class="breadcrumb-item"><a href="/#TinTuc" class="text-decoration-none text-muted">Tin tức</a></li>
+      <li class="breadcrumb-item active text-primary fw-medium" aria-current="page">Từ vựng Tin học văn phòng</li>
+    </ol>
+  </nav>
+
+  <!-- Title Section -->
+  <div class="my-4">
+    <span class="badge bg-primary mb-2 px-3 py-2 text-uppercase fw-semibold" style="letter-spacing: 0.5px; font-size: 0.75rem;">Từ vựng chuyên đề</span>
+    <h1 class="fw-bold text-dark mb-2" style="font-size: 2.2rem; line-height: 1.25;">
+      <%= article ? article.TieuDe : 'Kho từ vựng Tiếng Anh chủ đề Văn phòng & Công việc (Office & Corporate)' %>
+    </h1>
+    <p class="text-muted mb-0" style="font-size: 1.05rem;">
+      <%= article ? article.TomTat : 'Tổng hợp đầy đủ chức vụ, phòng ban, phúc lợi, văn phòng phẩm, mô tả công sở và các mẫu câu giao tiếp văn phòng hay gặp trong đề thi TOEIC.' %>
+    </p>
+  </div>
+
+  <!-- Search and Stats -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-8">
+      <div class="search-wrapper">
+        <i class="bi bi-search search-icon fs-5"></i>
+        <input type="text" id="vocabSearch" class="form-control form-control-lg search-input" placeholder="Tìm kiếm từ vựng, phiên âm, nghĩa tiếng Việt hoặc câu giao tiếp...">
+      </div>
+    </div>
+    <div class="col-md-4 d-flex align-items-center justify-content-md-end">
+      <span class="text-muted fw-medium"><i class="bi bi-info-circle me-1.5 text-primary"></i>Tìm thấy <strong id="vocabCount" class="text-dark">0</strong> mục hiển thị</span>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12">
+      <div class="vocab-container p-3 p-md-4">
+        
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-tabs nav-tabs-custom mb-3" id="vocabTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab1-btn" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab">
+              <i class="bi bi-people-fill me-1.5 text-primary"></i>Chức vụ &amp; Phòng ban
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab2-btn" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab">
+              <i class="bi bi-gift-fill me-1.5 text-success"></i>Phúc lợi &amp; Đồ dùng
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab3-btn" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab">
+              <i class="bi bi-award-fill me-1.5 text-warning"></i>Môi trường &amp; Kỹ năng
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab4-btn" data-bs-toggle="tab" data-bs-target="#tab4" type="button" role="tab">
+              <i class="bi bi-briefcase-fill me-1.5 text-info"></i>Từ vựng doanh nghiệp khác
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab5-btn" data-bs-toggle="tab" data-bs-target="#tab5" type="button" role="tab">
+              <i class="bi bi-chat-left-text-fill me-1.5 text-danger"></i>Mẫu câu giao tiếp
+            </button>
+          </li>
+        </ul>
+
+        <!-- Tab Contents -->
+        <div class="tab-content" id="vocabTabContent">
+          
+          <!-- TAB 1: Chức vụ & Phòng ban -->
+          <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+            <div class="category-section-title"><i class="bi bi-person-badge me-2"></i>I. Các chức vụ trong công ty</div>
+            <div class="table-responsive">
+              <table class="table vocab-table align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 5%;">Loa</th>
+                    <th style="width: 30%;">Chức vụ (English)</th>
+                    <th style="width: 25%;">Phiên âm (IPA)</th>
+                    <th style="width: 40%;">Ý nghĩa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% positions.forEach(item => { %>
+                    <tr class="vocab-row">
+                      <td><button class="pronounce-btn" onclick="speakText('<%= item.w %>')"><i class="bi bi-volume-up-fill"></i></button></td>
+                      <td><span class="word-highlight text-primary"><%= item.w %></span></td>
+                      <td><span class="ipa-highlight"><%= item.p %></span></td>
+                      <td><span class="badge bg-light text-dark font-size-base text-wrap text-start fw-normal"><%= item.m %></span></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="category-section-title"><i class="bi bi-building me-2"></i>II. Các phòng ban trong công ty</div>
+            <div class="table-responsive">
+              <table class="table vocab-table align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 5%;">Loa</th>
+                    <th style="width: 30%;">Phòng ban (English)</th>
+                    <th style="width: 25%;">Phiên âm (IPA)</th>
+                    <th style="width: 40%;">Ý nghĩa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% departments.forEach(item => { %>
+                    <tr class="vocab-row">
+                      <td><button class="pronounce-btn" onclick="speakText('<%= item.w %>')"><i class="bi bi-volume-up-fill"></i></button></td>
+                      <td><span class="word-highlight text-primary"><%= item.w %></span></td>
+                      <td><span class="ipa-highlight"><%= item.p %></span></td>
+                      <td><span class="badge bg-light text-dark font-size-base text-wrap text-start fw-normal"><%= item.m %></span></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 2: Phúc lợi & Đồ dùng -->
+          <div class="tab-pane fade" id="tab2" role="tabpanel">
+            <div class="category-section-title"><i class="bi bi-wallet2 me-2"></i>III. Từ vựng về phúc lợi, đãi ngộ tại công ty</div>
+            <div class="table-responsive">
+              <table class="table vocab-table align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 5%;">Loa</th>
+                    <th style="width: 30%;">Thuật ngữ (English)</th>
+                    <th style="width: 25%;">Phiên âm (IPA)</th>
+                    <th style="width: 40%;">Ý nghĩa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% welfare.forEach(item => { %>
+                    <tr class="vocab-row">
+                      <td><button class="pronounce-btn" onclick="speakText('<%= item.w %>')"><i class="bi bi-volume-up-fill"></i></button></td>
+                      <td><span class="word-highlight text-success"><%= item.w %></span></td>
+                      <td><span class="ipa-highlight"><%= item.p %></span></td>
+                      <td><span class="badge bg-light text-dark font-size-base text-wrap text-start fw-normal"><%= item.m %></span></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="category-section-title"><i class="bi bi-printer me-2"></i>IV. Từ vựng về văn phòng phẩm &amp; Thiết bị</div>
+            <div class="table-responsive">
+              <table class="table vocab-table align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 5%;">Loa</th>
+                    <th style="width: 30%;">Văn phòng phẩm (English)</th>
+                    <th style="width: 25%;">Phiên âm (IPA)</th>
+                    <th style="width: 40%;">Ý nghĩa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% stationery.forEach(item => { %>
+                    <tr class="vocab-row">
+                      <td><button class="pronounce-btn" onclick="speakText('<%= item.w %>')"><i class="bi bi-volume-up-fill"></i></button></td>
+                      <td><span class="word-highlight text-success"><%= item.w %></span></td>
+                      <td><span class="ipa-highlight"><%= item.p %></span></td>
+                      <td><span class="badge bg-light text-dark font-size-base text-wrap text-start fw-normal"><%= item.m %></span></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 3: Môi trường & Kỹ năng -->
+          <div class="tab-pane fade" id="tab3" role="tabpanel">
+            <div class="category-section-title"><i class="bi bi-badge-ad me-2"></i>V.1. Mô tả nơi làm việc (Workplace Environment)</div>
+            <div class="table-responsive">
+              <table class="table vocab-table align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 5%;">Loa</th>
+                    <th style="width: 30%;">Từ vựng (English)</th>
+                    <th style="width: 25%;">Phiên âm (IPA)</th>
+                    <th style="width: 40%;">Ý nghĩa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% workplace.forEach(item => { %>
+                    <tr class="vocab-row">
+                      <td><button class="pronounce-btn" onclick="speakText('<%= item.w %>')"><i class="bi bi-volume-up-fill"></i></button></td>
+                      <td><span class="word-highlight text-warning-emphasis"><%= item.w %></span></td>
+                      <td><span class="ipa-highlight"><%= item.p %></span></td>
+                      <td><span class="badge bg-light text-dark font-size-base text-wrap text-start fw-normal"><%= item.m %></span></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="category-section-title"><i class="bi bi-emoji-smile me-2"></i>V.2. Tính cách đồng nghiệp (Colleagues' Personalities)</div>
+            <div class="table-responsive">
+              <table class="table vocab-table align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 5%;">Loa</th>
+                    <th style="width: 30%;">Tính cách (English)</th>
+                    <th style="width: 25%;">Phiên âm (IPA)</th>
+                    <th style="width: 40%;">Ý nghĩa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% personalities.forEach(item => { %>
+                    <tr class="vocab-row">
+                      <td><button class="pronounce-btn" onclick="speakText('<%= item.w %>')"><i class="bi bi-volume-up-fill"></i></button></td>
+                      <td><span class="word-highlight text-warning-emphasis"><%= item.w %></span></td>
+                      <td><span class="ipa-highlight"><%= item.p %></span></td>
+                      <td><span class="badge bg-light text-dark font-size-base text-wrap text-start fw-normal"><%= item.m %></span></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="category-section-title"><i class="bi bi-lightning me-2"></i>V.3. Kỹ năng làm việc (Workplace Skills)</div>
+            <div class="table-responsive">
+              <table class="table vocab-table align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 5%;">Loa</th>
+                    <th style="width: 30%;">Kỹ năng (English)</th>
+                    <th style="width: 25%;">Phiên âm (IPA)</th>
+                    <th style="width: 40%;">Ý nghĩa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% skills.forEach(item => { %>
+                    <tr class="vocab-row">
+                      <td><button class="pronounce-btn" onclick="speakText('<%= item.w %>')"><i class="bi bi-volume-up-fill"></i></button></td>
+                      <td><span class="word-highlight text-warning-emphasis"><%= item.w %></span></td>
+                      <td><span class="ipa-highlight"><%= item.p %></span></td>
+                      <td><span class="badge bg-light text-dark font-size-base text-wrap text-start fw-normal"><%= item.m %></span></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 4: Từ vựng doanh nghiệp khác -->
+          <div class="tab-pane fade" id="tab4" role="tabpanel">
+            <div class="category-section-title"><i class="bi bi-award me-2"></i>VI. Từ vựng doanh nghiệp khác</div>
+            <div class="table-responsive">
+              <table class="table vocab-table align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 5%;">Loa</th>
+                    <th style="width: 30%;">Từ vựng (English)</th>
+                    <th style="width: 25%;">Phiên âm (IPA)</th>
+                    <th style="width: 40%;">Ý nghĩa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% otherBusiness.forEach(item => { %>
+                    <tr class="vocab-row">
+                      <td><button class="pronounce-btn" onclick="speakText('<%= item.w %>')"><i class="bi bi-volume-up-fill"></i></button></td>
+                      <td><span class="word-highlight text-info-emphasis"><%= item.w %></span></td>
+                      <td><span class="ipa-highlight"><%= item.p %></span></td>
+                      <td><span class="badge bg-light text-dark font-size-base text-wrap text-start fw-normal"><%= item.m %></span></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 5: Mẫu câu giao tiếp -->
+          <div class="tab-pane fade" id="tab5" role="tabpanel">
+            <div class="category-section-title"><i class="bi bi-chat-dots me-2"></i>VII. Các mẫu câu tiếng Anh giao tiếp văn phòng thông dụng</div>
+            <div class="table-responsive">
+              <table class="table vocab-table align-middle">
+                <thead>
+                  <tr>
+                    <th style="width: 5%;">Loa</th>
+                    <th style="width: 45%;">Mẫu câu giao tiếp (English)</th>
+                    <th style="width: 50%;">Nghĩa tiếng Việt</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% phrases.forEach(item => { %>
+                    <tr class="vocab-row">
+                      <td><button class="pronounce-btn" onclick="speakText('<%= item.e %>')"><i class="bi bi-volume-up-fill"></i></button></td>
+                      <td><strong class="text-danger-emphasis"><%= item.e %></strong></td>
+                      <td><span class="text-secondary small fw-medium"><%= item.v %></span></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Action Cards Section -->
+  <div class="row g-4 mt-4">
+    <!-- Card 1: Placement Test -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 text-center border-0 h-100 d-flex flex-column justify-content-between" style="background: linear-gradient(135deg, #1a252f, #2c3e50); color: white;">
+        <div>
+          <h5 class="fw-bold mb-3"><i class="bi bi-pencil-square me-2 text-warning"></i>Đánh giá năng lực</h5>
+          <p class="small text-white-50 mb-4">Làm bài kiểm tra đầu vào TOEIC (100 câu) hoàn toàn miễn phí để biết chính xác trình độ hiện tại của bạn.</p>
+        </div>
+        <a href="/exams/placement" 
+           onclick="checkPlacementTest(event, <%= user ? 'true' : 'false' %>)" 
+           class="btn btn-warning fw-bold w-100 py-2.5 rounded-3 shadow">
+          Thi thử đầu vào
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 2: Practice Exams -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 text-center h-100 d-flex flex-column justify-content-between">
+        <div>
+          <h5 class="fw-bold text-dark mb-3"><i class="bi bi-journal-check me-2 text-primary"></i>Luyện đề thi thử</h5>
+          <p class="small text-secondary mb-4">Kho đề thi thử TOEIC chuẩn cấu trúc IIG kèm giải thích chi tiết đáp án giúp bạn rèn luyện phản xạ.</p>
+        </div>
+        <a href="/exams/free" class="btn btn-primary fw-bold w-100 py-2.5 rounded-3 shadow-sm">
+          Luyện đề miễn phí
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 3: Related News -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 h-100">
+        <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">Tin tức liên quan</h5>
+        <div class="d-flex flex-column gap-3 text-start">
+          
+          <a href="/format-toeic" class="text-decoration-none text-dark d-flex gap-2">
+            <div class="rounded overflow-hidden" style="width: 70px; height: 50px; flex-shrink: 0;">
+              <img src="/images/Cap_Nhat_Fomat.png" class="w-100 h-100 object-fit-cover" alt="Format" />
+            </div>
+            <div>
+              <h6 class="small fw-bold mb-1 line-clamp-2" style="font-size: 0.85rem; line-height: 1.3;">Cấu trúc đề thi TOEIC mới nhất năm 2026</h6>
+              <span class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Mới nhất</span>
+            </div>
+          </a>
+
+          <a href="/meo-toeic-listening" class="text-decoration-none text-dark d-flex gap-2">
+            <div class="rounded overflow-hidden" style="width: 70px; height: 50px; flex-shrink: 0;">
+              <img src="/images/Meo copy.png" class="w-100 h-100 object-fit-cover" alt="Mẹo nghe" />
+            </div>
+            <div>
+              <h6 class="small fw-bold mb-1 line-clamp-2" style="font-size: 0.85rem; line-height: 1.3;">Mẹo làm bài Toeic Listening bứt phá điểm số</h6>
+              <span class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Hot</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Web Speech synthesis for word pronunciation
+  function speakText(text) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      // Clean up punctuation text for clean voiceover
+      const cleanText = text.replace(/\+/g, ' plus ').replace(/\//g, ' or ').split('(')[0].trim();
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.85; 
+      window.speechSynthesis.speak(utterance);
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Không hỗ trợ âm thanh',
+        text: 'Trình duyệt của bạn không hỗ trợ phát âm thanh trực tiếp.',
+        confirmButtonText: 'Đồng ý',
+        confirmButtonColor: '#3498db'
+      });
+    }
+  }
+
+  // Live filter search for vocabulary rows
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('vocabSearch');
+    const tableRows = document.querySelectorAll('.vocab-row');
+    const countDisplay = document.getElementById('vocabCount');
+
+    function filterVocab() {
+      const query = searchInput.value.toLowerCase().trim();
+      let visibleCount = 0;
+      
+      tableRows.forEach(row => {
+        const textContent = row.textContent.toLowerCase();
+        if (textContent.includes(query)) {
+          row.style.setProperty('display', '', 'important');
+          visibleCount++;
+        } else {
+          row.style.setProperty('display', 'none', 'important');
+        }
+      });
+
+      countDisplay.textContent = visibleCount;
+    }
+
+    searchInput.addEventListener('input', filterVocab);
+
+    // Refresh count on tab change
+    const tabButtons = document.querySelectorAll('#vocabTabs button');
+    tabButtons.forEach(btn => {
+      btn.addEventListener('shown.bs.tab', function(e) {
+        // Recalculate visible rows in the newly active tab pane
+        const activePaneId = e.target.getAttribute('data-bs-target');
+        const activePane = document.querySelector(activePaneId);
+        const activeRows = activePane.querySelectorAll('.vocab-row');
+        
+        let visibleCount = 0;
+        activeRows.forEach(row => {
+          if (row.style.display !== 'none') {
+            visibleCount++;
+          }
+        });
+        countDisplay.textContent = visibleCount;
+      });
+    });
+
+    // Initial count for active tab
+    const initialRows = document.querySelectorAll('#tab1 .vocab-row');
+    countDisplay.textContent = initialRows.length;
+  });
+</script>
+
+<%- include('../layouts/footer') %>

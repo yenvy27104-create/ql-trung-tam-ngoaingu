@@ -1,0 +1,1155 @@
+<%- include('../layouts/header') %>
+
+<style>
+  :root {
+    --toeic-primary: #1a252f;
+    --toeic-accent: #3498db;
+    --toeic-success: #2ecc71;
+    --toeic-danger: #e74c3c;
+    --toeic-bg-light: #f8f9fa;
+    --toeic-border-color: #eef2f5;
+  }
+
+  body {
+    background-color: #f4f6f8;
+  }
+
+  .exam-container {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    border: 1px solid var(--toeic-border-color);
+  }
+
+  .nav-pills-custom {
+    background: #eef2f5;
+    padding: 6px;
+    border-radius: 12px;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 4px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .nav-pills-custom::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .nav-pills-custom .nav-link {
+    color: #4a5568;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 8px 16px;
+    transition: all 0.2s ease;
+    border: none;
+    background: transparent;
+  }
+
+  .nav-pills-custom .nav-link.active {
+    background: var(--toeic-accent);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.25);
+  }
+
+  /* Question & Options */
+  .group-card {
+    background: #ffffff;
+    border: 1px solid var(--toeic-border-color);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+  }
+
+  .group-header-badge {
+    display: none !important;
+  }
+
+  .question-item-card {
+    border-top: 1px solid #f1f3f5;
+    padding-top: 20px;
+    margin-top: 20px;
+  }
+
+  .question-item-card:first-of-type {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  .option-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-item {
+    position: relative;
+  }
+
+  .option-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+
+  .option-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    color: #495057;
+    user-select: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  .option-label:hover {
+    background: #f8f9fa;
+    border-color: #cbd5e0;
+    transform: translateX(3px);
+  }
+
+  .option-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #dee2e6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    color: #718096;
+    background: #ffffff;
+  }
+
+  .option-input:checked + .option-label {
+    background: rgba(52, 152, 219, 0.08);
+    border-color: var(--toeic-accent);
+    color: var(--toeic-accent);
+  }
+
+  .option-input:checked + .option-label .option-circle {
+    border-color: var(--toeic-accent);
+    background: var(--toeic-accent);
+    color: #ffffff;
+  }
+
+  /* Overwrite header's container width on this page */
+  main > .container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  /* Split Layout */
+  .split-passage-container {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 24px;
+    align-items: center;
+  }
+
+  @media (max-width: 991px) {
+    .split-passage-container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .passage-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #2d3748;
+    overflow-y: auto;
+    max-height: 480px;
+    border-left: 4px solid var(--toeic-accent);
+  }
+
+  .passage-card table,
+  .passage-card th,
+  .passage-card td {
+    white-space: normal !important;
+  }
+
+  .image-passage-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .image-passage-card img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Sidebar Grid */
+  .sticky-sidebar {
+    position: sticky;
+    top: 90px;
+    z-index: 100;
+  }
+
+  .part-nav-section {
+    border-bottom: 1px solid #f1f3f5;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+  }
+
+  .part-nav-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .part-nav-title {
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #718096;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .part-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .question-nav-btn {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #4a5568;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .question-nav-btn:hover {
+    border-color: var(--toeic-accent);
+    color: var(--toeic-accent);
+  }
+
+  .question-nav-btn.answered {
+    background: var(--toeic-success);
+    color: #ffffff;
+    border-color: var(--toeic-success);
+  }
+
+  .question-nav-btn.answered:hover {
+    background: #27ae60;
+  }
+
+  #timer-box {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--toeic-danger);
+    font-family: monospace;
+  }
+
+  /* Audio player styling */
+  .audio-player-container {
+    background: #ffffff;
+    border: 1px solid var(--toeic-border-color);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+  }
+
+  /* Compact layout for Part 6 & 7 split view */
+  .questions-list-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .questions-list-column .question-item-card {
+    border: none !important;
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    margin: 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    border-left: 4px solid var(--toeic-accent) !important;
+  }
+
+  .questions-list-column .option-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .questions-list-column .option-label {
+    background: transparent !important;
+    border: none !important;
+    padding: 4px 8px !important;
+    border-radius: 0 !important;
+    font-weight: 500 !important;
+    gap: 8px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .questions-list-column .option-label:hover {
+    background: rgba(52, 152, 219, 0.05) !important;
+    transform: none !important;
+  }
+
+  .questions-list-column .option-circle {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.75rem !important;
+    border: 1.5px solid #cbd5e0 !important;
+    color: #4a5568 !important;
+  }
+
+  .q-circle-badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--toeic-accent);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+  }
+</style>
+
+<div class="row g-4 my-3">
+  <!-- Exam Paper (Left Column) -->
+  <div class="col-lg-9">
+    <div class="exam-container p-4 p-md-5">
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-4 mb-4 flex-wrap gap-3">
+        <div>
+          <span class="badge bg-primary px-3 py-1.5 fw-semibold mb-2"><%= exam.LoaiDe %></span>
+          <h2 class="fw-bold mb-0 text-dark"><%= exam.TenDeThi %></h2>
+        </div>
+      </div>
+
+      <!-- Global Audio Player (Pinned for Listening Section) -->
+      <% if (locals.testAudio && testAudio) { %>
+        <div class="audio-player-container mb-4 d-flex align-items-center gap-3" id="global-audio-block">
+          <div class="bg-primary-subtle text-primary rounded-circle p-2.5 d-flex align-items-center justify-content-center">
+            <i class="bi bi-volume-up-fill fs-4"></i>
+          </div>
+          <div class="flex-grow-1">
+            <span class="text-secondary small d-block fw-semibold mb-1" id="audio-part-info">File nghe bài thi (Parts 1-4):</span>
+            <audio class="w-100" id="global-audio" controls preload="auto">
+              <source src="<%= testAudio %>" type="audio/mpeg">
+              Trình duyệt của bạn không hỗ trợ phát âm thanh.
+            </audio>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- Dynamic Parts Tabs -->
+      <ul class="nav nav-pills nav-pills-custom mb-4" id="toeic-parts-tabs" role="tablist">
+        <!-- Built dynamically by JS -->
+      </ul>
+
+      <!-- Submit form containing hidden fields representing the final answers -->
+      <form id="placementExamForm" method="POST" action="/exams/submit-placement">
+        <input type="hidden" name="MaDeThi" value="<%= exam.MaDeThi %>" />
+        <div id="hidden-answers-container"></div>
+        
+        <!-- Active part container -->
+        <div class="tab-content" id="toeic-parts-content">
+          <!-- Built dynamically by JS -->
+        </div>
+
+        <div class="mt-5 pt-4 border-top d-flex justify-content-between align-items-center">
+          <button type="button" class="btn btn-outline-secondary px-4 py-2.5 fw-semibold" id="prev-part-btn" onclick="switchPart(-1)" style="display: none;">
+            <i class="bi bi-chevron-left me-2"></i>Phần trước
+          </button>
+          <button type="button" class="btn btn-primary px-4 py-2.5 fw-semibold ms-auto" id="next-part-btn" onclick="switchPart(1)">
+            Phần tiếp theo<i class="bi bi-chevron-right ms-2"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Sidebar (Right Column) -->
+  <div class="col-lg-3">
+    <div class="card border-0 rounded-3 shadow-sm p-4 sticky-sidebar" style="background: #ffffff; border: 1px solid var(--toeic-border-color) !important;">
+      <h5 class="fw-bold text-center mb-3">Thời gian làm bài</h5>
+      <div class="text-center mb-4 p-2 bg-light rounded">
+        <div id="timer-box">00:00</div>
+      </div>
+
+      <h6 class="fw-bold mb-3 border-bottom pb-2">Phiếu trả lời</h6>
+      <div class="d-flex flex-column gap-3" style="padding-right: 4px;" id="sidebar-nav-container">
+        <!-- Navigation sections by Part built dynamically by JS -->
+      </div>
+
+      <button class="btn btn-success w-100 py-2.5 fw-bold shadow-sm mt-4 mb-2" onclick="confirmSubmit(event)"><i class="bi bi-send-fill me-2"></i>Nộp bài thi</button>
+      <button class="btn btn-outline-secondary w-100 py-2 fw-semibold" onclick="cancelExam()"><i class="bi bi-x-circle me-2"></i>Hủy thi</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Parse initial data passed from EJS
+  const rawQuestions = <%- JSON.stringify(questions) %>;
+  const examDuration = <%= exam.ThoiGianLamBai %>;
+  const examForm = document.getElementById('placementExamForm');
+  const timerBox = document.getElementById('timer-box');
+  
+  let timeRemaining = examDuration * 60; // in seconds
+  let activePart = 1;
+  const studentAnswers = {};
+
+  // Formats passage text to be more compact and bolds speaker names in dialogues
+  function formatPassageText(text) {
+    if (!text) return '';
+    
+    // Check if the text is a tab-separated table/calendar
+    if (text.includes('\t') && (text.toLowerCase().includes('monday') || text.toLowerCase().includes('time'))) {
+      const lines = text.trim().split('\n');
+      let tableHtml = '<div class="table-responsive"><table class="table table-bordered align-middle" style="background-color: #fff; width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; margin-bottom: 0;">';
+      
+      lines.forEach((line, index) => {
+        const cells = line.split('\t');
+        if (index === 0) {
+          tableHtml += '<thead class="table-light"><tr>';
+          cells.forEach(cell => {
+            tableHtml += `<th style="padding: 10px; border: 1px solid #dee2e6; font-weight: 600;">${cell.trim()}</th>`;
+          });
+          tableHtml += '</tr></thead><tbody>';
+        } else {
+          tableHtml += '<tr>';
+          cells.forEach(cell => {
+            tableHtml += `<td style="padding: 10px; border: 1px solid #dee2e6;">${cell.trim()}</td>`;
+          });
+          tableHtml += '</tr>';
+        }
+      });
+      tableHtml += '</tbody></table></div>';
+      return tableHtml;
+    }
+
+    let cleanText = text.trim().replace(/\r\n/g, '\n');
+    // Normalize consecutive newlines
+    cleanText = cleanText.replace(/\n{3,}/g, '\n\n');
+    // Bold dialogue speaker names
+    cleanText = cleanText.replace(/^(Woman|Man|Speaker\s*\d+|[A-ZÀ-ỸđĐ][a-zA-ZÀ-ỹđĐ0-9. -]{0,25}):/gm, '<strong>$1:</strong>');
+    return cleanText;
+  }
+
+  // Group questions by Part and Reference Passages
+  function processQuestions(questions) {
+    const parts = {};
+    for (let p = 1; p <= 7; p++) {
+      parts[p] = {
+        partNum: p,
+        partName: `Part ${p}`,
+        groups: []
+      };
+    }
+
+    const partQuestionCounts = { 3: 0, 4: 0 };
+
+    questions.forEach((q, index) => {
+      const partNum = q.part || 1;
+      const part = parts[partNum];
+      
+      let groupHeader = null;
+      let passageText = q.passage || null;
+      let cleanQuestion = q.question;
+      
+      if (partNum === 3 || partNum === 4) {
+        const qCount = partQuestionCounts[partNum];
+        const groupIdx = Math.floor(qCount / 3);
+        groupHeader = `Part${partNum}Group${groupIdx}`;
+        partQuestionCounts[partNum]++;
+      } else {
+        // Parse out the reference (e.g. Questions 32-34 refer to...) and the question text
+        const groupRegex = /^(Questions?\s+\d+[-–]\d+\s+refer\s+to\s+the\s+following\s+[^.\n]+[:.]?)\s*([\s\S]*)$/i;
+        const match = q.question.match(groupRegex);
+        
+        if (match) {
+          groupHeader = match[1].trim();
+          const rest = match[2].trim();
+          
+          // Find if there is a 'Question:' label inside
+          const questionIndex = rest.indexOf("Question:");
+          if (questionIndex !== -1) {
+            if (!passageText) {
+              passageText = rest.substring(0, questionIndex).trim();
+            }
+            cleanQuestion = rest.substring(questionIndex + 9).trim();
+          } else {
+            cleanQuestion = rest;
+          }
+        }
+      }
+      
+      // Clean up any remaining prefixes
+      cleanQuestion = cleanQuestion.replace(/^Question:\s*/i, '').trim();
+      
+      // Handle groups
+      let group = null;
+      if (partNum === 3 || partNum === 4) {
+        group = part.groups.find(g => g.header === groupHeader);
+      } else if (passageText) {
+        group = part.groups.find(g => g.passage === passageText);
+      } else if (q.image && (partNum === 6 || partNum === 7)) {
+        group = part.groups.find(g => g.image === q.image);
+      }
+      
+      if (!group && groupHeader) {
+        group = part.groups.find(g => g.header === groupHeader);
+      }
+      
+      if (!group) {
+        group = {
+          header: groupHeader || (passageText ? "Đoạn văn đọc hiểu" : null),
+          passage: passageText,
+          image: q.image || null,
+          questions: []
+        };
+        part.groups.push(group);
+      } else {
+        if (passageText && !group.passage) {
+          group.passage = passageText;
+        }
+        if (groupHeader && !group.header) {
+          group.header = groupHeader;
+        }
+        if (q.image && !group.image) {
+          group.image = q.image;
+        }
+      }
+      
+      group.questions.push({
+        ...q,
+        originalIndex: index,
+        cleanQuestion: cleanQuestion
+      });
+    });
+
+    // Rewrite group headers to match active sequential numbers for the 100-question test
+    Object.values(parts).forEach(part => {
+      part.groups.forEach(group => {
+        if (part.partNum === 3 || part.partNum === 4) {
+          const startNum = group.questions[0].originalIndex + 1;
+          const endNum = group.questions[group.questions.length - 1].originalIndex + 1;
+          group.header = `Questions ${startNum}-${endNum}`;
+        } else if (group.header) {
+          const headerRegex = /^Questions?\s+(\d+[-–]\d+)\s+(refer\s+to\s+the\s+following\s+.*)$/i;
+          const headerMatch = group.header.match(headerRegex);
+          if (headerMatch) {
+            const referSuffix = headerMatch[2];
+            const startNum = group.questions[0].originalIndex + 1;
+            const endNum = group.questions[group.questions.length - 1].originalIndex + 1;
+            
+            if (startNum === endNum) {
+              group.header = `Question ${startNum} ${referSuffix}`;
+            } else {
+              group.header = `Questions ${startNum}-${endNum} ${referSuffix}`;
+            }
+          }
+        } else if (group.passage) {
+          // Auto-generate header for groups that have a passage but no header
+          const startNum = group.questions[0].originalIndex + 1;
+          const endNum = group.questions[group.questions.length - 1].originalIndex + 1;
+          if (startNum === endNum) {
+            group.header = `Question ${startNum} refer to the following passage:`;
+          } else {
+            group.header = `Questions ${startNum}-${endNum} refer to the following passage:`;
+          }
+        } else if (group.image && (part.partNum === 6 || part.partNum === 7)) {
+          const startNum = group.questions[0].originalIndex + 1;
+          const endNum = group.questions[group.questions.length - 1].originalIndex + 1;
+          if (startNum === endNum) {
+            group.header = `Question ${startNum} refer to the following graphic:`;
+          } else {
+            group.header = `Questions ${startNum}-${endNum} refer to the following graphic:`;
+          }
+        }
+      });
+    });
+    
+    return Object.values(parts);
+  }
+
+  const structuredParts = processQuestions(rawQuestions);
+
+  // Initialize and Render Tabs & Content
+  function renderExamUI() {
+    const tabsContainer = document.getElementById('toeic-parts-tabs');
+    const contentContainer = document.getElementById('toeic-parts-content');
+    const sidebarNav = document.getElementById('sidebar-nav-container');
+    
+    tabsContainer.innerHTML = '';
+    contentContainer.innerHTML = '';
+    sidebarNav.innerHTML = '';
+    
+    structuredParts.forEach((part, pIdx) => {
+      const partNum = part.partNum;
+      
+      // Check if this part has any questions
+      const hasQuestions = part.groups.some(g => g.questions.length > 0);
+      if (!hasQuestions) return;
+
+      // 1. Build tab pills
+      const tabLi = document.createElement('li');
+      tabLi.className = 'nav-item';
+      tabLi.innerHTML = `
+        <button class="nav-link ${partNum === activePart ? 'active' : ''}" 
+                id="part-${partNum}-tab" 
+                type="button" 
+                role="tab" 
+                onclick="changePart(${partNum})">
+          Part ${partNum}
+        </button>
+      `;
+      tabsContainer.appendChild(tabLi);
+      
+      // 2. Build tab panes
+      const tabPane = document.createElement('div');
+      tabPane.className = `tab-pane fade ${partNum === activePart ? 'show active' : ''}`;
+      tabPane.id = `part-pane-${partNum}`;
+      tabPane.role = 'tabpanel';
+      
+      // Render Groups inside the Tab Pane
+      part.groups.forEach((group, gIdx) => {
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'group-card';
+        
+        // Group Header (Refer to...)
+        let headerHtml = '';
+        if (group.header) {
+          headerHtml = `<div class="group-header-badge"><i class="bi bi-file-text me-2"></i>${group.header}</div>`;
+        }
+        
+        // Find if any question in this group has an image (for graphic questions in Part 3 & 4)
+        let groupImage = null;
+        group.questions.forEach(gq => {
+          if (gq.image) groupImage = gq.image;
+        });
+        
+        // Passages & Layout checks
+        let bodyHtml = '';
+        if (groupImage) {
+          bodyHtml = `
+            <div class="split-passage-container">
+              <div class="image-passage-card text-center bg-white border-0">
+                <img src="${groupImage}" class="img-fluid rounded border shadow-sm" alt="Graphic Question Image" />
+              </div>
+              <div class="questions-list-column">
+                ${group.questions.map(q => {
+                  const qCopy = { ...q, image: null };
+                  return renderQuestionHtml(qCopy);
+                }).join('')}
+              </div>
+            </div>
+          `;
+        } else if (group.passage) {
+          bodyHtml = `
+            <div class="split-passage-container">
+              <div class="passage-card">
+                <h6 class="fw-bold mb-2">Đọc hiểu đoạn văn / Passage:</h6>
+                <div style="white-space: pre-line;">${formatPassageText(group.passage)}</div>
+              </div>
+              <div class="questions-list-column">
+                ${group.questions.map(q => {
+                  const qCopy = { ...q, image: null };
+                  return renderQuestionHtml(qCopy);
+                }).join('')}
+              </div>
+            </div>
+          `;
+        } else {
+          // Normal Layout
+          bodyHtml = `
+            <div class="normal-questions-container">
+              ${group.questions.map(q => renderQuestionHtml(q)).join('')}
+            </div>
+          `;
+        }
+        
+        groupDiv.innerHTML = headerHtml + bodyHtml;
+        tabPane.appendChild(groupDiv);
+      });
+      contentContainer.appendChild(tabPane);
+      
+      // 3. Build Sidebar Navigation Sections
+      const navSection = document.createElement('div');
+      navSection.className = 'part-nav-section';
+      
+      // Calculate answered questions in this part
+      const totalQuestionsInPart = part.groups.reduce((acc, g) => acc + g.questions.length, 0);
+      
+      navSection.innerHTML = `
+        <div class="part-nav-title">
+          <span>Part ${partNum}</span>
+          <span class="small text-muted" id="part-count-${partNum}">0/${totalQuestionsInPart}</span>
+        </div>
+        <div class="part-nav-grid">
+          ${part.groups.flatMap(g => g.questions).map(q => {
+            return `
+              <div class="question-nav-btn" 
+                   id="nav-q-${q.id}" 
+                   onclick="jumpToQuestion(${partNum}, ${q.id})">
+                ${q.originalIndex + 1}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+      sidebarNav.appendChild(navSection);
+    });
+    
+    updatePartControlButtons();
+  }
+
+  // Generate HTML for a single question item
+  function renderQuestionHtml(q) {
+    let audioHtml = '';
+    if (q.audio) {
+      audioHtml = `
+        <div class="mb-3">
+          <audio controls preload="none" class="w-100">
+            <source src="${q.audio}" type="audio/mpeg">
+          </audio>
+        </div>
+      `;
+    }
+
+    let imageHtml = '';
+    if (q.image) {
+      imageHtml = `
+        <div class="mb-3 text-center">
+          <img src="${q.image}" class="img-fluid rounded border shadow-sm" style="max-height: 250px; object-fit: contain;" alt="Question Image" />
+        </div>
+      `;
+    }
+
+    // Determine if we show the full question text or just options
+    let questionTextHtml = '';
+    if (q.part !== 1 && q.part !== 2) {
+      questionTextHtml = `<p class="fs-6 fw-semibold text-dark mb-3">${q.cleanQuestion}</p>`;
+    }
+
+    // Generate options list
+    let optionsHtml = '';
+    q.options.forEach(opt => {
+      const optLetter = opt.split('.')[0].trim().toUpperCase();
+      // For parts 1 and 2, show option letters only; else show full option text
+      const displayText = (q.part === 1 || q.part === 2) ? optLetter : opt;
+      
+      optionsHtml += `
+        <div class="option-item mb-2">
+          <input type="radio" 
+                 id="q-${q.id}-opt-${optLetter}" 
+                 name="answers[${q.id}]" 
+                 value="${optLetter}" 
+                 class="option-input"
+                 onchange="onSelectAnswer(${q.id}, '${optLetter}', ${q.part})" />
+          <label for="q-${q.id}-opt-${optLetter}" class="option-label">
+            <span class="option-circle">${optLetter}</span>
+            <span class="option-text">${displayText}</span>
+          </label>
+        </div>
+      `;
+    });
+
+    const isPart6or7 = q.part === 6 || q.part === 7;
+    const badgeHtml = isPart6or7 
+      ? `<div class="d-flex align-items-center gap-2 mb-2"><span class="q-circle-badge">${q.originalIndex + 1}</span></div>`
+      : `<span class="q-circle-badge">${q.originalIndex + 1}</span>`;
+
+    return `
+      <div class="question-item-card" id="q-container-${q.id}">
+        ${badgeHtml}
+        ${audioHtml}
+        ${imageHtml}
+        ${questionTextHtml}
+        <div class="option-wrapper">
+          ${optionsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  // Answer handler
+  function onSelectAnswer(qId, letter, partNum) {
+    studentAnswers[qId] = letter;
+    
+    // Update navigation button status
+    const navBtn = document.getElementById(`nav-q-${qId}`);
+    if (navBtn) {
+      navBtn.classList.add('answered');
+    }
+    
+    // Update counts
+    updatePartAnsweredCount(partNum);
+  }
+
+  // Update counts in sidebar titles
+  function updatePartAnsweredCount(partNum) {
+    const part = structuredParts.find(p => p.partNum === partNum);
+    if (!part) return;
+    
+    const allQuestions = part.groups.flatMap(g => g.questions);
+    const answeredCount = allQuestions.filter(q => studentAnswers[q.id]).length;
+    
+    const label = document.getElementById(`part-count-${partNum}`);
+    if (label) {
+      label.innerText = `${answeredCount}/${allQuestions.length}`;
+    }
+  }
+
+  // Audio ranges for specific tests
+  const audioRanges = {
+    'test_dauvao_01': {
+      1: { start: 0, end: 145 },      // Part 1 (Q1-3): 0:00 - 2:25
+      2: { start: 291, end: 574 },    // Part 2 (Q7-17): 4:51 - 9:34
+      3: { start: 908, end: 1500 },   // Part 3 (Q32-52): 15:08 - 25:00
+      4: { start: 1988, end: 2400 }   // Part 4 (Q71-85): 33:08 - 40:00
+    },
+    'test_dauvao_02': {
+      1: { start: 145, end: 290 },    // Part 1 (Q4-6): 2:25 - 4:50
+      2: { start: 574, end: 907 },    // Part 2 (Q18-31): 9:34 - 15:07
+      3: { start: 1500, end: 1987 },  // Part 3 (Q53-70): 25:00 - 33:07
+      4: { start: 2400, end: 2822 }   // Part 4 (Q86-100): 40:00 - 47:02
+    }
+  };
+
+  const audioUrl = '<%= locals.testAudio || "" %>';
+  let testKey = '';
+  if (audioUrl.includes('test_dauvao_01')) {
+    testKey = 'test_dauvao_01';
+  } else if (audioUrl.includes('test_dauvao_02')) {
+    testKey = 'test_dauvao_02';
+  }
+
+  const audioEl = document.getElementById('global-audio');
+
+  if (audioEl && testKey) {
+    audioEl.addEventListener('timeupdate', () => {
+      const range = audioRanges[testKey][activePart];
+      if (range) {
+        if (audioEl.currentTime < range.start) {
+          audioEl.currentTime = range.start;
+        } else if (audioEl.currentTime > range.end) {
+          audioEl.pause();
+          audioEl.currentTime = range.start;
+        }
+      }
+    });
+
+    audioEl.addEventListener('play', () => {
+      const range = audioRanges[testKey][activePart];
+      if (range) {
+        if (audioEl.currentTime < range.start || audioEl.currentTime > range.end) {
+          audioEl.currentTime = range.start;
+        }
+      }
+    });
+  }
+
+  function seekToRangeStart(partNum) {
+    if (!audioEl || !testKey) return;
+    const range = audioRanges[testKey][partNum];
+    if (range) {
+      if (audioEl.readyState >= 1) {
+        audioEl.currentTime = range.start;
+      } else {
+        const setTimeOnLoad = () => {
+          audioEl.currentTime = range.start;
+          audioEl.removeEventListener('loadedmetadata', setTimeOnLoad);
+        };
+        audioEl.addEventListener('loadedmetadata', setTimeOnLoad);
+      }
+    }
+  }
+
+  // Change active Part (Tab)
+  function changePart(partNum) {
+    activePart = partNum;
+    
+    // Update Tab pills
+    document.querySelectorAll('#toeic-parts-tabs .nav-link').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    const activeTabButton = document.getElementById(`part-${partNum}-tab`);
+    if (activeTabButton) activeTabButton.classList.add('active');
+    
+    // Update Tab panes
+    document.querySelectorAll('#toeic-parts-content .tab-pane').forEach(pane => {
+      pane.classList.remove('show', 'active');
+    });
+    const activePane = document.getElementById(`part-pane-${partNum}`);
+    if (activePane) activePane.classList.add('show', 'active');
+    
+    // Show/hide listening audio block depending on Part (Parts 1-4 are listening)
+    const audioBlock = document.getElementById('global-audio-block');
+    const partInfoEl = document.getElementById('audio-part-info');
+    
+    if (audioBlock) {
+      if (partNum <= 4) {
+        audioBlock.style.display = 'flex';
+        // Auto seek and update UI
+        seekToRangeStart(partNum);
+        if (partInfoEl && testKey) {
+          const range = audioRanges[testKey][partNum];
+          if (range) {
+            const formatTime = (secs) => {
+              const m = Math.floor(secs / 60);
+              const s = secs % 60;
+              return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            };
+            partInfoEl.innerHTML = `Đang phát Part ${partNum} (Phạm vi nghe: ${formatTime(range.start)} - ${formatTime(range.end)}):`;
+          }
+        }
+      } else {
+        audioBlock.style.display = 'none';
+        if (audioEl) audioEl.pause();
+      }
+    }
+
+    updatePartControlButtons();
+    
+    // Scroll left column to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Jump to specific question
+  function jumpToQuestion(partNum, qId) {
+    if (activePart !== partNum) {
+      changePart(partNum);
+    }
+    
+    setTimeout(() => {
+      const qContainer = document.getElementById(`q-container-${qId}`);
+      if (qContainer) {
+        qContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Highlight active card momentarily
+        qContainer.style.outline = '2px solid var(--toeic-accent)';
+        qContainer.style.boxShadow = '0 0 15px rgba(52, 152, 219, 0.2)';
+        setTimeout(() => {
+          qContainer.style.outline = 'none';
+          qContainer.style.boxShadow = '';
+        }, 1500);
+      }
+    }, 100);
+  }
+
+  // Next / Prev Part buttons
+  function switchPart(direction) {
+    const activeIdx = structuredParts.findIndex(p => p.partNum === activePart);
+    let nextIdx = activeIdx + direction;
+    
+    // Bounds check
+    if (nextIdx >= 0 && nextIdx < structuredParts.length) {
+      changePart(structuredParts[nextIdx].partNum);
+    }
+  }
+
+  // Update Next/Prev state buttons
+  function updatePartControlButtons() {
+    const activeIdx = structuredParts.findIndex(p => p.partNum === activePart);
+    const prevBtn = document.getElementById('prev-part-btn');
+    const nextBtn = document.getElementById('next-part-btn');
+    
+    if (activeIdx === 0) {
+      prevBtn.style.display = 'none';
+    } else {
+      prevBtn.style.display = 'block';
+    }
+    
+    if (activeIdx === structuredParts.length - 1) {
+      nextBtn.innerText = 'Xem phiếu trả lời & Nộp bài';
+      nextBtn.classList.remove('btn-primary');
+      nextBtn.classList.add('btn-success');
+      nextBtn.onclick = (e) => confirmSubmit(e);
+    } else {
+      nextBtn.innerHTML = `Phần tiếp theo<i class="bi bi-chevron-right ms-2"></i>`;
+      nextBtn.classList.remove('btn-success');
+      nextBtn.classList.add('btn-primary');
+      nextBtn.onclick = () => switchPart(1);
+    }
+  }
+
+  // Timer logic
+  const testUrlParams = new URLSearchParams(window.location.search);
+  if (testUrlParams.get('timeout') === '1') {
+    timeRemaining = 0;
+  }
+
+  let timerInterval = null;
+
+  function updateTimer() {
+    const minutes = Math.floor(Math.max(0, timeRemaining) / 60);
+    const seconds = Math.max(0, timeRemaining) % 60;
+    timerBox.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    if (timeRemaining <= 0) {
+      if (timerInterval) clearInterval(timerInterval);
+      Swal.fire({
+        title: 'Hết giờ làm bài!',
+        html: '<b>Đã hết thời gian làm bài thi.</b><br>Hệ thống tự động thu bài và nộp kết quả của bạn.',
+        icon: 'warning',
+        confirmButtonText: 'Đồng ý nộp bài',
+        confirmButtonColor: '#dc3545',
+        customClass: { popup: 'rounded-4 shadow-lg' }
+      }).then(() => {
+        submitFinalExam();
+      });
+    }
+    timeRemaining--;
+  }
+
+  function startTimer() {
+    updateTimer();
+    if (!timerInterval) {
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+  }
+
+  function showWelcomeModal() {
+    Swal.fire({
+      title: '📝 Bài Thi Đánh Giá Năng Lực Đầu Vào',
+      html: `
+        <div class="text-start p-2">
+          <div class="p-3 bg-light rounded-3 border mb-3">
+            <h6 class="fw-bold text-primary mb-2"><i class="bi bi-card-checklist me-2"></i>Thông tin cấu trúc bài thi:</h6>
+            <ul class="mb-0 small text-secondary ps-3">
+              <li class="mb-1">Tổng số câu hỏi: <strong class="text-dark">${typeof rawQuestions !== 'undefined' && rawQuestions ? rawQuestions.length : 200} câu (Chuẩn TOEIC 7 Part)</strong></li>
+              <li class="mb-1">Thời gian làm bài: <strong class="text-dark">${typeof examDuration !== 'undefined' ? examDuration : 120} phút</strong></li>
+              <li class="mb-1">Phần Listening (Part 1 - 4): Có trình phát Audio MP3 trực tiếp.</li>
+              <li>Mục tiêu: Đánh giá chính xác trình độ hiện tại để gợi ý <strong>Lộ trình học phù hợp nhất</strong>.</li>
+            </ul>
+          </div>
+          <p class="text-muted small mb-0 text-center">Nhấn nút bên dưới khi bạn đã sẵn sàng bắt đầu làm bài thi!</p>
+        </div>
+      `,
+      icon: 'info',
+      confirmButtonText: '<i class="bi bi-play-circle-fill me-2"></i>Bắt đầu làm bài',
+      confirmButtonColor: '#3498db',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      customClass: { popup: 'rounded-4 shadow-lg p-3' }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        startTimer();
+      }
+    });
+  }
+
+  // Submit test
+  function confirmSubmit(event) {
+    if (event) event.preventDefault();
+    
+    // Count remaining unanswered questions
+    const totalCount = rawQuestions.length;
+    const answeredCount = Object.keys(studentAnswers).length;
+    const unansweredCount = totalCount - answeredCount;
+    
+    let title = 'Nộp bài thi?';
+    let text = 'Bạn có chắc chắn muốn nộp bài thi ngay không?';
+    let icon = 'question';
+    
+    if (unansweredCount > 0) {
+      title = 'Chưa hoàn thành tất cả câu hỏi!';
+      text = `Bạn còn ${unansweredCount} câu hỏi chưa trả lời. Bạn vẫn muốn nộp bài thi chứ?`;
+      icon = 'warning';
+    }
+    
+    Swal.fire({
+      title: title,
+      text: text,
+      icon: icon,
+      showCancelButton: true,
+      confirmButtonColor: '#2ecc71',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Nộp bài',
+      cancelButtonText: 'Làm tiếp'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        submitFinalExam();
+      }
+    });
+  }
+
+  function submitFinalExam() {
+    clearInterval(timerInterval);
+    
+    // Add all answer hidden inputs dynamically to the form
+    const container = document.getElementById('hidden-answers-container');
+    container.innerHTML = '';
+    
+    Object.entries(studentAnswers).forEach(([qId, letter]) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = `answers[${qId}]`;
+      input.value = letter;
+      container.appendChild(input);
+    });
+    
+    examForm.submit();
+  }
+
+  function cancelExam() {
+    Swal.fire({
+      title: 'Hủy bài làm?',
+      text: 'Mọi tiến trình làm bài sẽ bị mất và bạn sẽ quay về trang trước.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        clearInterval(timerInterval);
+        window.location.href = '/exams/free';
+      }
+    });
+  }
+
+  // Render on load
+  window.addEventListener('DOMContentLoaded', () => {
+    renderExamUI();
+    showWelcomeModal();
+  });
+</script>
+
+<%- include('../layouts/footer') %>

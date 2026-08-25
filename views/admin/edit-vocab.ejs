@@ -1,0 +1,395 @@
+<%- include('../layouts/header') %>
+
+<style>
+  .editor-container {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eef2f6;
+  }
+  .nav-pills-custom .nav-link {
+    color: #475569;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    background-color: #f8fafc;
+    transition: all 0.2s;
+  }
+  .nav-pills-custom .nav-link.active {
+    color: white;
+    background: var(--accent-gradient);
+    border-color: transparent;
+  }
+  .table-editor input {
+    border: 1px solid transparent;
+    background: transparent;
+    padding: 6px 10px;
+    width: 100%;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .table-editor input:focus {
+    border-color: var(--accent-color);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+    outline: none;
+  }
+  .table-editor tr:hover input {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+  }
+  .table-editor tr:hover input:focus {
+    background: #ffffff;
+    border-color: var(--accent-color);
+  }
+  .sticky-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 25px;
+    border-radius: 0 0 15px 15px;
+  }
+</style>
+
+<div class="sticky-bar py-3 px-4 shadow-sm">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <a href="/admin/dashboard?tab=content" class="btn btn-outline-secondary me-3"><i class="bi bi-arrow-left me-1"></i>Quay lại</a>
+      <h4 class="fw-bold mb-0 text-dark"><i class="bi bi-file-earmark-spreadsheet-fill text-primary me-2"></i>Quản lý Kho Từ Vựng & Mẫu câu văn phòng</h4>
+    </div>
+    <div>
+      <button class="btn btn-success fw-bold px-4" onclick="saveVocabData()"><i class="bi bi-cloud-arrow-up-fill me-2"></i>Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
+
+<div class="container py-2 mb-5">
+  <div class="editor-container p-4">
+    <!-- Category Tab Pills -->
+    <ul class="nav nav-pills nav-pills-custom mb-4" id="vocabEditorTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="positions-tab" data-bs-toggle="pill" data-bs-target="#positions-pane" type="button" role="tab">Chức vụ (Positions)</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="departments-tab" data-bs-toggle="pill" data-bs-target="#departments-pane" type="button" role="tab">Phòng ban (Departments)</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="welfare-tab" data-bs-toggle="pill" data-bs-target="#welfare-pane" type="button" role="tab">Phúc lợi (Welfare)</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="stationery-tab" data-bs-toggle="pill" data-bs-target="#stationery-pane" type="button" role="tab">Văn phòng phẩm (Stationery)</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="workplace-tab" data-bs-toggle="pill" data-bs-target="#workplace-pane" type="button" role="tab">Môi trường (Workplace)</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="personalities-tab" data-bs-toggle="pill" data-bs-target="#personalities-pane" type="button" role="tab">Tính cách (Colleagues)</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="skills-tab" data-bs-toggle="pill" data-bs-target="#skills-pane" type="button" role="tab">Kỹ năng (Skills)</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="otherBusiness-tab" data-bs-toggle="pill" data-bs-target="#otherBusiness-pane" type="button" role="tab">DN khác (Other Business)</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="phrases-tab" data-bs-toggle="pill" data-bs-target="#phrases-pane" type="button" role="tab">Mẫu câu (Phrases)</button>
+      </li>
+    </ul>
+
+    <!-- Tab Panes -->
+    <div class="tab-content" id="vocabEditorContent">
+      <% 
+        const categories = [
+          { id: "positions", name: "positions", title: "Chức vụ", hasPronounce: true },
+          { id: "departments", name: "departments", title: "Phòng ban", hasPronounce: true },
+          { id: "welfare", name: "welfare", title: "Phúc lợi", hasPronounce: true },
+          { id: "stationery", name: "stationery", title: "Văn phòng phẩm", hasPronounce: true },
+          { id: "workplace", name: "workplace", title: "Môi trường làm việc", hasPronounce: true },
+          { id: "personalities", name: "personalities", title: "Tính cách đồng nghiệp", hasPronounce: true },
+          { id: "skills", name: "skills", title: "Kỹ năng làm việc", hasPronounce: true },
+          { id: "otherBusiness", name: "otherBusiness", title: "Từ vựng doanh nghiệp khác", hasPronounce: true },
+          { id: "phrases", name: "phrases", title: "Mẫu câu giao tiếp", hasPronounce: false }
+        ];
+      %>
+
+      <% categories.forEach((cat, idx) => { %>
+        <div class="tab-pane fade <%= idx === 0 ? 'show active' : '' %>" id="<%= cat.id %>-pane" role="tabpanel">
+          <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+            <h5 class="fw-bold mb-0 text-secondary"><%= cat.title %> (<span id="<%= cat.id %>-count"><%= (vocabData[cat.name] || []).length %></span>)</h5>
+            <div class="input-group" style="width: 300px;">
+              <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+              <input type="text" class="form-control bg-light border-start-0" placeholder="Tìm kiếm từ vựng..." oninput="searchVocab(this, '<%= cat.id %>')" />
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-editor align-middle" id="<%= cat.id %>-table">
+              <thead class="table-light text-secondary small">
+                <tr>
+                  <th style="width: 5%;" class="text-center">STT</th>
+                  <% if (cat.hasPronounce) { %>
+                    <th style="width: 30%;">Từ tiếng Anh (Word)</th>
+                    <th style="width: 25%;">Phiên âm (IPA)</th>
+                    <th style="width: 35%;">Nghĩa tiếng Việt (Meaning)</th>
+                  <% } else { %>
+                    <th style="width: 45%;">Mẫu câu tiếng Anh (English)</th>
+                    <th style="width: 45%;">Nghĩa tiếng Việt (Vietnamese)</th>
+                  <% } %>
+                  <th style="width: 5%;" class="text-center">Xóa</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% (vocabData[cat.name] || []).forEach((item, index) => { %>
+                  <tr data-row-idx="<%= index %>">
+                    <td class="text-center text-muted fw-semibold seq-no"><%= index + 1 %></td>
+                    <% if (cat.hasPronounce) { %>
+                      <td><input type="text" class="field-w fw-bold" value="<%= item.w %>" required /></td>
+                      <td><input type="text" class="field-p ipa-font" value="<%= item.p %>" /></td>
+                      <td><input type="text" class="field-m" value="<%= item.m %>" required /></td>
+                    <% } else { %>
+                      <td><input type="text" class="field-e fw-semibold" value="<%= item.e %>" required /></td>
+                      <td><input type="text" class="field-v" value="<%= item.v %>" required /></td>
+                    <% } %>
+                    <td class="text-center">
+                      <button class="btn btn-sm btn-outline-danger border-0" onclick="deleteRow(this)"><i class="bi bi-trash-fill"></i></button>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Inline Add Form -->
+          <div class="card bg-light border-0 p-3 mt-3">
+            <h6 class="fw-bold mb-3 text-dark"><i class="bi bi-plus-circle-fill text-primary me-2"></i>Thêm dòng mới</h6>
+            <div class="row g-2 align-items-center">
+              <% if (cat.hasPronounce) { %>
+                <div class="col-md-4">
+                  <input type="text" id="add-<%= cat.id %>-w" class="form-control" placeholder="Từ tiếng Anh (e.g. Chairman)" />
+                </div>
+                <div class="col-md-3">
+                  <input type="text" id="add-<%= cat.id %>-p" class="form-control" placeholder="Phiên âm (e.g. /ˈʧeəmən/)" />
+                </div>
+                <div class="col-md-4">
+                  <input type="text" id="add-<%= cat.id %>-m" class="form-control" placeholder="Nghĩa tiếng Việt (e.g. Chủ tịch)" />
+                </div>
+              <% } else { %>
+                <div class="col-md-5">
+                  <input type="text" id="add-<%= cat.id %>-e" class="form-control" placeholder="Mẫu câu tiếng Anh" />
+                </div>
+                <div class="col-md-6">
+                  <input type="text" id="add-<%= cat.id %>-v" class="form-control" placeholder="Nghĩa tiếng Việt" />
+                </div>
+              <% } %>
+              <div class="col-md-1 text-end">
+                <button class="btn btn-primary w-100" onclick="addRow('<%= cat.id %>', <%= cat.hasPronounce %>)"><i class="bi bi-plus-lg"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</div>
+
+<script>
+  function searchVocab(input, catId) {
+    const query = input.value.toLowerCase().trim();
+    const rows = document.querySelectorAll(`#${catId}-table tbody tr`);
+    let visibleCount = 0;
+    rows.forEach(row => {
+      const inputs = row.querySelectorAll('input');
+      let match = false;
+      inputs.forEach(inp => {
+        if (inp.value.toLowerCase().includes(query)) match = true;
+      });
+      row.style.display = match ? '' : 'none';
+      if (match) visibleCount++;
+    });
+    // Update count to show filtered/total
+    const countSpan = document.getElementById(`${catId}-count`);
+    const totalRows = rows.length;
+    if (query) {
+      countSpan.textContent = `${visibleCount}/${totalRows}`;
+    } else {
+      countSpan.textContent = totalRows;
+    }
+  }
+
+  function deleteRow(btn) {
+    Swal.fire({
+      title: 'Xác nhận xóa?',
+      text: 'Bạn có chắc chắn muốn xóa dòng từ vựng/mẫu câu này không?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const row = btn.closest('tr');
+        const tableBody = row.parentNode;
+        const pane = tableBody.closest('.tab-pane');
+        row.remove();
+        
+        // Recalculate STT
+        const rows = tableBody.querySelectorAll('tr');
+        rows.forEach((r, idx) => {
+          r.querySelector('.seq-no').textContent = idx + 1;
+        });
+
+        // Update count display
+        const countSpan = document.getElementById(pane.id.replace('-pane', '-count'));
+        countSpan.textContent = rows.length;
+      }
+    });
+  }
+
+  function addRow(catId, hasPronounce) {
+    const tableBody = document.querySelector(`#${catId}-table tbody`);
+    const newIndex = tableBody.querySelectorAll('tr').length + 1;
+    
+    let w, p, m, e, v;
+    if (hasPronounce) {
+      w = document.getElementById(`add-${catId}-w`).value.trim();
+      p = document.getElementById(`add-${catId}-p`).value.trim();
+      m = document.getElementById(`add-${catId}-m`).value.trim();
+      if (!w || !m) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Thông báo',
+          text: 'Vui lòng nhập đầy đủ Từ và Nghĩa!',
+          confirmButtonText: 'Đồng ý',
+          confirmButtonColor: '#3498db'
+        });
+        return;
+      }
+    } else {
+      e = document.getElementById(`add-${catId}-e`).value.trim();
+      v = document.getElementById(`add-${catId}-v`).value.trim();
+      if (!e || !v) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Thông báo',
+          text: 'Vui lòng nhập đầy đủ Câu tiếng Anh và Nghĩa!',
+          confirmButtonText: 'Đồng ý',
+          confirmButtonColor: '#3498db'
+        });
+        return;
+      }
+    }
+
+    const tr = document.createElement('tr');
+    if (hasPronounce) {
+      tr.innerHTML = `
+        <td class="text-center text-muted fw-semibold seq-no">${newIndex}</td>
+        <td><input type="text" class="field-w fw-bold" value="${w}" required /></td>
+        <td><input type="text" class="field-p ipa-font" value="${p}" /></td>
+        <td><input type="text" class="field-m" value="${m}" required /></td>
+        <td class="text-center">
+          <button class="btn btn-sm btn-outline-danger border-0" onclick="deleteRow(this)"><i class="bi bi-trash-fill"></i></button>
+        </td>
+      `;
+    } else {
+      tr.innerHTML = `
+        <td class="text-center text-muted fw-semibold seq-no">${newIndex}</td>
+        <td><input type="text" class="field-e fw-semibold" value="${e}" required /></td>
+        <td><input type="text" class="field-v" value="${v}" required /></td>
+        <td class="text-center">
+          <button class="btn btn-sm btn-outline-danger border-0" onclick="deleteRow(this)"><i class="bi bi-trash-fill"></i></button>
+        </td>
+      `;
+    }
+
+    tableBody.appendChild(tr);
+
+    // Clear inputs
+    if (hasPronounce) {
+      document.getElementById(`add-${catId}-w`).value = '';
+      document.getElementById(`add-${catId}-p`).value = '';
+      document.getElementById(`add-${catId}-m`).value = '';
+    } else {
+      document.getElementById(`add-${catId}-e`).value = '';
+      document.getElementById(`add-${catId}-v`).value = '';
+    }
+
+    // Update count display
+    const countSpan = document.getElementById(`${catId}-count`);
+    countSpan.textContent = tableBody.querySelectorAll('tr').length;
+  }
+
+  async function saveVocabData() {
+    Swal.fire({
+      title: 'Lưu thay đổi?',
+      text: 'Bạn có chắc chắn muốn lưu tất cả thay đổi cho kho từ vựng văn phòng này không?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#2ecc71',
+      cancelButtonColor: '#95a5a6',
+      confirmButtonText: 'Lưu lại',
+      cancelButtonText: 'Hủy'
+    }).then(async (resConfirm) => {
+      if (!resConfirm.isConfirmed) return;
+      
+      const payload = {};
+      const categories = ['positions', 'departments', 'welfare', 'stationery', 'workplace', 'personalities', 'skills', 'otherBusiness', 'phrases'];
+      
+      categories.forEach(cat => {
+        const rows = document.querySelectorAll(`#${cat}-table tbody tr`);
+        payload[cat] = [];
+        
+        rows.forEach(row => {
+          if (cat !== 'phrases') {
+            const w = row.querySelector('.field-w').value.trim();
+            const p = row.querySelector('.field-p').value.trim();
+            const m = row.querySelector('.field-m').value.trim();
+            payload[cat].push({ w, p, m });
+          } else {
+            const e = row.querySelector('.field-e').value.trim();
+            const v = row.querySelector('.field-v').value.trim();
+            payload[cat].push({ e, v });
+          }
+        });
+      });
+
+      try {
+        const res = await fetch('/admin/news/save-vocab', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ data: payload })
+        });
+        const result = await res.json();
+        if (result.success) {
+          window.location.href = '/admin/dashboard?tab=content&success=' + encodeURIComponent('Cập nhật kho từ vựng văn phòng thành công!');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: 'Lỗi khi lưu dữ liệu: ' + result.error,
+            confirmButtonText: 'Đồng ý',
+            confirmButtonColor: '#e74c3c'
+          });
+        }
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi kết nối',
+          text: 'Lỗi kết nối máy chủ: ' + err.message,
+          confirmButtonText: 'Đồng ý',
+          confirmButtonColor: '#e74c3c'
+        });
+      }
+    });
+  }
+</script>
+
+<%- include('../layouts/footer') %>

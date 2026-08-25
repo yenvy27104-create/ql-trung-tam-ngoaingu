@@ -1,0 +1,17 @@
+{
+  "watch": [
+    "server.js",
+    "controllers",
+    "routes",
+    "models",
+    "utils",
+    "views"
+  ],
+  "ext": "js,ejs",
+  "ignore": [
+    "public/uploads/*",
+    "public/json/*",
+    "scripts/*",
+    "node_modules/*"
+  ]
+}

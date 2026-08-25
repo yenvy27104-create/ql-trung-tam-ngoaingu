@@ -1,0 +1,116 @@
+<%- include('../layouts/header') %>
+<div class="row justify-content-center my-5">
+  <div class="col-md-5">
+    <div class="card border-0 rounded-3 shadow-sm p-4 text-center">
+      <h3 class="fw-bold mb-3">Xác thực mã OTP</h3>
+      <p class="text-muted mb-3">Vui lòng kiểm tra hộp thư và nhập mã 6 số vừa được gửi đến Email: <br><strong><%= Email %></strong></p>
+      
+      <% if (locals.expiresAt) { %>
+        <!-- Aesthetically pleasing round badge countdown timer -->
+        <div id="countdown-container" class="d-flex align-items-center justify-content-center gap-2 py-2 px-3 mb-3 bg-light rounded-pill border" style="max-width: fit-content; margin: 0 auto; transition: all 0.3s ease;" data-expires="<%= expiresAt %>">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-history text-primary" viewBox="0 0 16 16" style="transition: color 0.3s ease;">
+            <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.61.782.002-.002zm1.61.8H15v1h-.022a7 7 0 0 0-.45-.985l-.976.219a8 8 0 0 1 .342 1.126l.87-.493zM15 8.5v.5h-1v-.5a7 7 0 0 0-.022-.589l.976-.219c.03.26.046.524.046.789zm-.71 1.37a7 7 0 0 0-.27-.439l.87-.493a8 8 0 0 1 .654.979l-.782-.61zm-.8 1.61H13v.022a7 7 0 0 0-.985-.45l.219-.976a8 8 0 0 1 1.126.342l-.493.87zm-.45 2.004a7 7 0 0 0-.299-.985l-.976.219a8 8 0 0 1 .342 1.126l-.493-.87zM8 15a7 7 0 0 0 .589-.022l-.219-.976A7 7 0 0 0 8 14zM5.485 14.981A7 7 0 0 0 6 15v1a8 8 0 0 1-.589-.022zm-2.004-.45a7 7 0 0 0 .985.299l-.219.976a8 8 0 0 1-1.126-.342zm-1.37-.71a7 7 0 0 0 .439.27l-.493.87a8 8 0 0 1-.979-.654l.61-.782-.002.002zm-1.61-.8H1v-1h.022a7 7 0 0 0 .45.985l.976-.219a8 8 0 0 1-.342-1.126l-.87.493zM1 7.5v-.5h1v.5a7 7 0 0 0 .022.589L1.046 8.3c-.03-.26-.046-.524-.046-.789zm.71-1.37a7 7 0 0 0 .27.439l-.87.493a8 8 0 0 1-.654-.979l.782.61zm.8-1.61H3v-.022a7 7 0 0 0 .985.45l-.219.976a8 8 0 0 1-1.126-.342l.493-.87zm.45-2.004a7 7 0 0 0 .299.985l.976-.219a8 8 0 0 1-.342-1.126l.493.87zM8 1a7 7 0 0 0-.589.022l.219.976c.121-.012.244-.022.37-.022zm-.5 5.5v-4h1v3.5H12v1z"/>
+          </svg>
+          <span class="text-secondary small fw-medium">Hiệu lực còn: </span>
+          <span id="countdown-text" class="fw-bold text-primary" style="min-width: 45px; display: inline-block; text-align: left; transition: color 0.3s ease;">--:--</span>
+        </div>
+      <% } %>
+
+      <% if (error) { %><div class="alert alert-danger py-2 mb-3 small"><%= error %></div><% } %>
+
+      <form method="POST" action="/auth/verify-otp">
+        <input type="hidden" name="Email" value="<%= Email %>" />
+        <div class="mb-4 mt-3">
+          <input type="text" class="form-control text-center fs-4 fw-bold" 
+                 name="otp" maxlength="6" required placeholder="• • • • • •" 
+                 style="letter-spacing: 0.5rem;" />
+        </div>
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold mb-3">Xác nhận mã OTP</button>
+      </form>
+      
+      <div class="pt-2 border-top mt-2 d-flex flex-column gap-2 align-items-center">
+        <form method="POST" action="/auth/forgot-password" class="w-100">
+          <input type="hidden" name="Email" value="<%= Email %>" />
+          <button type="submit" class="btn btn-outline-primary w-100 py-2 fw-semibold">
+            <i class="bi bi-arrow-repeat me-1"></i> Gửi lại mã OTP mới
+          </button>
+        </form>
+        <a href="/auth/forgot-password" class="text-decoration-none text-secondary small">Nhập lại địa chỉ Email khác</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes pulse {
+  0% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.6; transform: scale(1); }
+}
+.animate-pulse {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+</style>
+
+<script>
+  (function() {
+    const container = document.getElementById('countdown-container');
+    const textElement = document.getElementById('countdown-text');
+    const svgIcon = container ? container.querySelector('svg') : null;
+    
+    if (container && textElement) {
+      const expiresAt = parseInt(container.dataset.expires, 10);
+      
+      function update() {
+        const now = Date.now();
+        const timeLeft = expiresAt - now;
+        
+        if (timeLeft <= 0) {
+          textElement.textContent = "Hết hạn";
+          textElement.className = "fw-bold text-danger animate-pulse";
+          container.className = "d-flex align-items-center justify-content-center gap-2 py-2 px-3 mb-3 bg-danger-subtle rounded-pill border border-danger";
+          if (svgIcon) {
+            svgIcon.setAttribute('class', 'bi bi-clock-history text-danger');
+          }
+          clearInterval(interval);
+          return;
+        }
+        
+        const minutes = Math.floor(timeLeft / 60000);
+        const seconds = Math.floor((timeLeft % 60000) / 1000);
+        
+        const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+        const secondsStr = seconds < 10 ? '0' + seconds : seconds;
+        textElement.textContent = `${minutesStr}:${secondsStr}`;
+        
+        // Visual indicator changes depending on time left
+        if (timeLeft >= 60000) {
+          // Normal state: Primary blue
+          container.className = "d-flex align-items-center justify-content-center gap-2 py-2 px-3 mb-3 bg-light rounded-pill border";
+          textElement.className = "fw-bold text-primary";
+          if (svgIcon) {
+            svgIcon.setAttribute('class', 'bi bi-clock-history text-primary');
+          }
+        } else if (timeLeft < 60000 && timeLeft >= 15000) {
+          // Warning state: Orange (less than 1 minute)
+          container.className = "d-flex align-items-center justify-content-center gap-2 py-2 px-3 mb-3 bg-warning-subtle rounded-pill border border-warning";
+          textElement.className = "fw-bold text-warning-emphasis";
+          if (svgIcon) {
+            svgIcon.setAttribute('class', 'bi bi-clock-history text-warning');
+          }
+        } else if (timeLeft < 15000) {
+          // Danger state: Red (less than 15 seconds)
+          container.className = "d-flex align-items-center justify-content-center gap-2 py-2 px-3 mb-3 bg-danger-subtle rounded-pill border border-danger";
+          textElement.className = "fw-bold text-danger";
+          if (svgIcon) {
+            svgIcon.setAttribute('class', 'bi bi-clock-history text-danger animate-pulse');
+          }
+        }
+      }
+      
+      update();
+      const interval = setInterval(update, 1000);
+    }
+  })();
+</script>
+<%- include('../layouts/footer') %>

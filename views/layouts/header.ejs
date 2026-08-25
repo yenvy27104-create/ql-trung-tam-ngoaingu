@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Fonts: Open Sans for readability, Be Vietnam Pro & Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <title>Trung tâm luyện đề TOEIC Y&V</title>
+  <style>
+    :root {
+      --primary-color: #1a252f;
+      --accent-color: #3498db;
+      --accent-gradient: linear-gradient(135deg, #3498db, #2ecc71);
+      --bg-light: #f8f9fa;
+    }
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+    }
+    html {
+      scroll-behavior: smooth;
+      font-size: 18px; /* Globally increase root size to scale up all font sizes */
+    }
+    body {
+      font-family: 'Open Sans', 'Be Vietnam Pro', 'Inter', sans-serif;
+      line-height: 1.6;
+      letter-spacing: -0.01em;
+      background-color: #f4f6f8;
+      color: #2c3e50;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Expand content width on larger screens */
+    @media (min-width: 1200px) {
+      .container {
+        max-width: 1400px !important;
+      }
+    }
+    @media (min-width: 1400px) {
+      .container {
+        max-width: 1650px !important;
+      }
+    }
+
+    /* ===== Header ===== */
+    header {
+      background: #ffffff;
+      box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
+      position: sticky;
+      top: 0;
+      z-index: 1030;
+    }
+    .header-accent {
+      height: 3px;
+      background: var(--accent-gradient);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      gap: 24px;
+    }
+
+    /* Brand */
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    .brand-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    /* Nav links */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-menu .nav-link {
+      font-weight: 500;
+      font-size: 1.05rem;
+      color: #4a5568;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+    .nav-menu .nav-link:hover {
+      color: var(--accent-color);
+      background: rgba(52, 152, 219, 0.07);
+    }
+    .nav-menu .nav-link.active {
+      color: var(--accent-color);
+      background: rgba(52, 152, 219, 0.1);
+    }
+    .nav-menu .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent-color);
+      transition: all 0.25s ease;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    .nav-menu .nav-link:hover::after {
+      width: 60%;
+    }
+
+    /* Separator dot */
+    .nav-sep {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #d1d5db;
+      flex-shrink: 0;
+    }
+
+    /* Action buttons */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .btn-header-outline {
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 7px 18px;
+      border-radius: 6px;
+      border: 1.5px solid #cbd5e0;
+      color: #4a5568;
+      background: transparent;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-header-outline:hover {
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+      background: rgba(52, 152, 219, 0.04);
+    }
+    .btn-header-primary {
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 7px 20px;
+      border-radius: 6px;
+      border: none;
+      color: #fff;
+      background: var(--accent-gradient);
+      transition: all 0.25s ease;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(52, 152, 219, 0.25);
+    }
+    .btn-header-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(52, 152, 219, 0.35);
+      color: #fff;
+    }
+    .btn-header-red {
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 7px 20px;
+      border-radius: 6px;
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, #e53e3e, #f56565);
+      transition: all 0.25s ease;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(229, 62, 62, 0.25);
+    }
+    .btn-header-red:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(229, 62, 62, 0.35);
+      color: #fff;
+      background: linear-gradient(135deg, #c53030, #e53e3e);
+    }
+    .btn-header-danger {
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 7px 18px;
+      border-radius: 6px;
+      border: 1.5px solid #e53e3e;
+      color: #e53e3e;
+      background: transparent;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-header-danger:hover {
+      background: #e53e3e;
+      color: #fff;
+    }
+    .no-arrow::after {
+      display: none !important;
+    }
+
+    /* Mobile hamburger */
+    .mobile-toggle {
+      display: none;
+      border: none;
+      background: none;
+      padding: 4px;
+      cursor: pointer;
+      color: #4a5568;
+      font-size: 1.4rem;
+    }
+
+    /* Mobile drawer */
+    .mobile-drawer {
+      background: #fff;
+      border-top: 1px solid #f0f0f0;
+    }
+    .mobile-drawer .mobile-nav-link {
+      display: block;
+      padding: 10px 16px;
+      color: #4a5568;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+    .mobile-drawer .mobile-nav-link:hover {
+      color: var(--accent-color);
+      background: rgba(52, 152, 219, 0.06);
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+      .desktop-nav { display: none !important; }
+      .mobile-toggle { display: block; }
+      
+      /* Hide regular button actions in the header bar on mobile to fit brand & burger menu */
+      .header-actions > .btn-header-red,
+      .header-actions > .btn-header-outline,
+      .header-actions > .btn-header-primary,
+      .header-actions > .btn-header-danger {
+        display: none !important;
+      }
+      
+      .brand-name {
+        font-size: 1.1rem !important; /* Make text fit on small screens */
+      }
+    }
+    @media (min-width: 992px) {
+      .mobile-toggle { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-accent"></div>
+  <div class="container">
+    <div class="header-inner">
+
+      <!-- Brand -->
+      <a href="/" class="brand-link">
+        <img src="/images/logo.png" alt="Logo" class="brand-logo" />
+        <h1 class="brand-name">Anh Ngữ Y&V</h1>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav" style="display:flex;">
+        <ul class="nav-menu">
+          <li><a class="nav-link" href="/">Trang chủ</a></li>
+          <li><a class="nav-link" href="/#KhoaHoc">Khóa học</a></li>
+          <li><span class="nav-sep"></span></li>
+          <li><a class="nav-link" href="/exams/placement" onclick="checkPlacementTest(event, <%= user ? 'true' : 'false' %>)">Test đầu vào</a></li>
+          <li><a class="nav-link" href="/exams/free">Luyện đề</a></li>
+          <li><span class="nav-sep"></span></li>
+          <li><a class="nav-link" href="/#NhanSu">Giảng viên</a></li>
+          <li><a class="nav-link" href="/#TinTuc">Tin tức</a></li>
+          <li><a class="nav-link" href="/courses">Lịch khai giảng</a></li>
+        </ul>
+      </nav>
+
+      <!-- Actions -->
+      <div class="header-actions">
+        <% if (user) { %>
+        <!-- Cart Icon Link -->
+        <a href="/courses/cart" class="position-relative me-1 d-flex align-items-center justify-content-center bg-light hover-primary rounded-circle" style="width: 40px; height: 40px; color: #4a5568; border: 1px solid #e2e8f0; text-decoration: none;" title="Giỏ hàng khóa học">
+          <i class="bi bi-cart3 fs-5"></i>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger <%= cartCount > 0 ? '' : 'd-none' %>" id="header-cart-badge" style="font-size: 0.65rem; padding: 0.3em 0.5em;">
+            <%= cartCount %>
+          </span>
+        </a>
+        <% } %>
+
+        <% if (!user) { %>
+          <button class="btn-header-red" data-bs-toggle="modal" data-bs-target="#registerModal">Đăng ký</button>
+          <a href="/login" class="btn-header-outline">Đăng nhập</a>
+        <% } else { %>
+          <% if (user.TenVaiTro === 'Học viên') { %>
+            <a href="/classes/my-classes" class="btn-header-primary"><i class="bi bi-person-circle me-1"></i><%= user.HoTen %></a>
+          <% } else if (user.TenVaiTro === 'Giảng viên') { %>
+            <a href="/classes/dashboard" class="btn-header-primary"><i class="bi bi-person-circle me-1"></i><%= user.HoTen %></a>
+          <% } else if (user.TenVaiTro === 'Admin') { %>
+            <a href="/admin/dashboard" class="btn-header-primary"><i class="bi bi-shield-lock me-1"></i><%= user.HoTen %></a>
+          <% } %>
+          <a href="/logout" class="btn-header-danger">Đăng xuất</a>
+        <% } %>
+
+        <!-- Mobile Toggle -->
+        <button class="mobile-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-expanded="false" aria-label="Menu">
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div class="collapse d-lg-none mobile-drawer" id="mobileMenu">
+    <div class="container py-2 d-flex flex-column gap-1">
+      <a class="mobile-nav-link" href="/">Trang chủ</a>
+      <a class="mobile-nav-link" href="/#KhoaHoc">Khóa học</a>
+      <a class="mobile-nav-link" href="/exams/placement" onclick="checkPlacementTest(event, <%= user ? 'true' : 'false' %>)">Test đầu vào</a>
+      <a class="mobile-nav-link" href="/exams/free">Luyện đề</a>
+      <a class="mobile-nav-link" href="/#NhanSu">Giảng viên</a>
+      <a class="mobile-nav-link" href="/#TinTuc">Tin tức</a>
+      <a class="mobile-nav-link" href="/#homeBannerCarousel">Khuyến mãi</a>
+      <a class="mobile-nav-link" href="/courses">Lịch khai giảng</a>
+      <% if (user) { %>
+      <a class="mobile-nav-link" href="/courses/cart"><i class="bi bi-cart3 me-1 text-primary"></i>Giỏ hàng (<%= cartCount %>)</a>
+      <% if (user.TenVaiTro === 'Học viên') { %>
+      <a class="mobile-nav-link fw-bold text-primary" href="/classes/my-classes"><i class="bi bi-person-circle me-1"></i>Trang học viên: <%= user.HoTen %></a>
+      <% } else if (user.TenVaiTro === 'Giảng viên') { %>
+      <a class="mobile-nav-link fw-bold text-primary" href="/classes/dashboard"><i class="bi bi-person-circle me-1"></i>Trang giảng viên: <%= user.HoTen %></a>
+      <% } else if (user.TenVaiTro === 'Admin') { %>
+      <a class="mobile-nav-link fw-bold text-primary" href="/admin/dashboard"><i class="bi bi-shield-lock me-1"></i>Trang quản trị: <%= user.HoTen %></a>
+      <% } %>
+      <% } %>
+      <hr class="my-1">
+      <div class="d-flex gap-2 pb-2">
+        <% if (!user) { %>
+          <button class="btn-header-red flex-fill" data-bs-toggle="modal" data-bs-target="#registerModal">Đăng ký</button>
+          <a href="/login" class="btn-header-outline flex-fill text-center">Đăng nhập</a>
+        <% } else { %>
+          <a href="/logout" class="btn-header-danger flex-fill text-center">Đăng xuất</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  function checkPlacementTest(event, isLoggedIn) {
+    if (!isLoggedIn) {
+      event.preventDefault();
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'info',
+          title: 'Yêu cầu tài khoản',
+          text: 'Bài Test đầu vào yêu cầu bạn phải có tài khoản. Bạn vui lòng Đăng ký (nếu chưa có tài khoản) hoặc Đăng nhập!',
+          showCancelButton: true,
+          confirmButtonText: '<i class="bi bi-person-plus-fill me-1"></i> Đăng ký ngay',
+          cancelButtonText: '<i class="bi bi-box-arrow-in-right me-1"></i> Đăng nhập',
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#3498db'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const regModal = document.getElementById('registerModal');
+            if (regModal && typeof bootstrap !== 'undefined') {
+              const modal = bootstrap.Modal.getOrCreateInstance(regModal);
+              modal.show();
+            } else {
+              window.location.href = '/login?mode=register&redirect=/exams/placement';
+            }
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            const loginModal = document.getElementById('loginModal');
+            if (loginModal && typeof bootstrap !== 'undefined') {
+              const modal = bootstrap.Modal.getOrCreateInstance(loginModal);
+              modal.show();
+            } else {
+              window.location.href = '/login?redirect=/exams/placement';
+            }
+          }
+        });
+      } else {
+        alert('Bài Test đầu vào yêu cầu bạn phải có tài khoản. Vui lòng Đăng ký hoặc Đăng nhập!');
+        window.location.href = '/login?redirect=/exams/placement';
+      }
+    }
+  }
+</script>
+
+<main class="py-4 py-md-5 flex-grow-1">
+  <div class="container">

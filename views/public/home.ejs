@@ -1,0 +1,1450 @@
+<%- include('../layouts/header') %>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Outfit:wght@900&family=Pacifico&family=Great+Vibes&display=swap');
+  
+  /* Top Banner */
+  .banner-container {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 5px solid var(--accent-color);
+  }
+  .banner-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  /* Intro Stats Custom */
+  .stat-card-custom {
+    background: #e8f4fd;
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(52, 152, 219, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .stat-card-custom:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(52, 152, 219, 0.12);
+  }
+  .stat-number {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #ff0000;
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+  .stat-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  
+  /* Course Grid Items */
+  .course-item {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eef2f5;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    cursor: pointer;
+    transition: all 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .course-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.15);
+    border-color: var(--accent-color);
+  }
+  
+  /* News & Promotions Cards */
+  .custom-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    transition: all 0.3s;
+    background: #fff;
+  }
+  .custom-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  }
+  .custom-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  /* Staff Cards */
+  .staff-card {
+    background: #ffffff;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+  }
+  .staff-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(52, 152, 219, 0.12);
+  }
+  .avatar-wrapper {
+    width: 110px;
+    height: 110px;
+    position: relative;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3498db, #1a252f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .staff-avatar {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 3px solid #000080;
+    border-radius: 50%;
+  }
+  .staff-avatar-placeholder {
+    width: 100px;
+    height: 100px;
+    border: 3px solid #000080;
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    letter-spacing: 1px;
+  }
+  .staff-info {
+    background: rgba(248, 249, 250, 0.7);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #f1f3f5;
+  }
+
+  /* Teacher Poster Card Styles */
+  .teacher-poster-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eef2f5;
+    overflow: hidden;
+    position: relative;
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    min-height: 380px;
+  }
+  .teacher-poster-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  }
+  .teacher-poster-card::before {
+    content: "";
+    position: absolute;
+    top: -90px;
+    right: -90px;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, #e74c3c 60%, #c0392b 100%);
+    border-radius: 50%;
+    z-index: 1;
+  }
+  .teacher-poster-card::after {
+    content: "";
+    position: absolute;
+    top: 115px;
+    right: 115px;
+    width: 10px;
+    height: 10px;
+    background: #ffffff;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.2);
+  }
+  .poster-logo {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 3;
+    color: #ffffff;
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.8rem;
+    font-weight: normal;
+    text-align: right;
+    line-height: 0.95;
+    transform: rotate(-3deg);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  }
+  .poster-content-layout {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 20px;
+    height: 100%;
+    z-index: 2;
+    position: relative;
+    align-items: center;
+  }
+  .poster-left-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .poster-avatar-ring {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    border: 5px solid #3498db;
+    padding: 4px;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .poster-avatar-ring img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .poster-badge-yellow {
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    color: #1a252f;
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3);
+    transform: rotate(-3deg);
+    margin-bottom: 8px;
+    border: 2px solid #1a252f;
+    text-align: center;
+    display: inline-block;
+  }
+  .poster-badge-red {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+    transform: rotate(2deg);
+    border: 2px solid #ffffff;
+    text-align: center;
+    display: inline-block;
+  }
+  .poster-right-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 75px;
+    padding-top: 10px;
+  }
+  .poster-teacher-name {
+    font-size: 1.55rem;
+    font-weight: 850;
+    color: #1abc9c;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    word-break: break-word;
+  }
+  .poster-bullets-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+  }
+  .poster-bullets-list li {
+    font-size: 0.82rem;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    position: relative;
+    padding-left: 12px;
+    font-weight: 550;
+  }
+  .poster-bullets-list li::before {
+    content: "-";
+    position: absolute;
+    left: 0;
+    color: #2c3e50;
+    font-weight: bold;
+  }
+  .poster-footer-url {
+    font-size: 0.8rem;
+    color: #3498db;
+    font-weight: bold;
+    text-decoration: none;
+  }
+</style>
+
+<!-- TOP CAROUSEL BANNER -->
+<div class="banner-container mb-5">
+  <div id="homeBannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#homeBannerCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <% if (typeof promotions !== 'undefined' && promotions && promotions.length > 0) { %>
+        <% promotions.forEach((p, idx) => { %>
+          <button type="button" data-bs-target="#homeBannerCarousel" data-bs-slide-to="<%= idx + 1 %>" aria-label="Slide <%= idx + 2 %>"></button>
+        <% }) %>
+      <% } %>
+    </div>
+    <div class="carousel-inner">
+      <!-- Default Main Slide -->
+      <div class="carousel-item active">
+        <img src="/images/panel.JPG" class="d-block w-100" alt="Banner Y&V" style="height: auto;" />
+      </div>
+      <!-- Active Promotions Slides -->
+      <% if (typeof promotions !== 'undefined' && promotions && promotions.length > 0) { %>
+        <% promotions.forEach((p, idx) => { %>
+          <div class="carousel-item">
+            <div class="w-100 position-relative">
+              <img src="<%= p.HinhAnh || '/images/logo.png' %>" class="d-block w-100" alt="<%= p.TenKhuyenMai %>" style="height: auto;" />
+            </div>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+<!-- VỀ TRUNG TÂM Y&V (ABOUT STATS) -->
+<section class="container mb-5 py-4">
+  <div class="text-center mb-4 mx-auto" style="max-width: 950px;">
+    <h2 class="fw-bold mb-3" style="font-size: 2.2rem; color: #1a252f;">Về Trung tâm Y&V</h2>
+    <p class="text-dark fs-5 fw-semibold mb-0" style="line-height: 1.6; opacity: 0.95;">
+      Trung tâm Y&V là đơn vị đào tạo TOEIC uy tín với hàng chục ngàn học viên đạt mục tiêu mỗi&nbsp;năm. Chúng tôi mang đến chương trình học chất lượng, lộ trình rõ ràng và cam kết đầu ra.
+    </p>
+  </div>
+  
+  <div class="row g-4 justify-content-center mt-2">
+    <div class="col-md-4">
+      <div class="stat-card-custom">
+        <div class="stat-number">10,000+</div>
+        <div class="stat-label">Học viên đã luyện thi</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card-custom">
+        <div class="stat-number">650+</div>
+        <div class="stat-label">Điểm TOEIC trung bình</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card-custom">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Cam kết chất lượng</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DANH SÁCH KHÓA HỌC (GRID) -->
+<section id="KhoaHoc" class="container mb-5 py-4">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">Khóa học</h2>
+    <p class="text-muted">Nhấp vào từng chương trình dưới đây để hiển thị danh sách các lớp học đang mở tuyển sinh.</p>
+  </div>
+
+  <div class="row g-4 justify-content-center">
+    <% if (courses && courses.length > 0) { %>
+      <% courses.forEach(course => { 
+        const formattedFee = (course.HocPhi !== null && course.HocPhi !== undefined) ? Number(course.HocPhi).toLocaleString('vi-VN') : 'Liên hệ';
+        const nameLower = (course.TenKhoaHoc || '').toLowerCase();
+        let badgeColor = 'bg-primary-subtle text-primary';
+        let badgeIcon = 'bi-award';
+
+        if (nameLower.includes('cấp tốc')) {
+          badgeColor = 'bg-danger text-white';
+          badgeIcon = 'bi-lightning-charge-fill';
+        } else if (nameLower.includes('luyện đề')) {
+          badgeColor = 'bg-warning-subtle text-dark border border-warning';
+          badgeIcon = 'bi-pencil-square';
+        } else if (nameLower.includes('pre') || nameLower.includes('foundation')) {
+          badgeColor = 'bg-info-subtle text-info-emphasis border border-info-subtle';
+          badgeIcon = 'bi-star';
+        }
+
+        const courseClassesData = [course];
+      %>
+        <div class="col-md-6 col-lg-4">
+          <div class="course-item h-100 d-flex flex-column justify-content-between shadow-sm border rounded-4 p-4 bg-white"
+            data-ten="<%= course.TenKhoaHoc %>"
+            data-mota="<%= course.MoTa || 'Chương trình đào tạo ngoại ngữ chất lượng cao chuẩn quốc tế.' %>"
+            data-thoiluong="<%= course.ThoiLuong || 26 %> buổi"
+            data-hocphi="<%= formattedFee %>"
+            data-capdo="<%= course.CapDo || 'Mọi trình độ' %>"
+            data-classes='<%- JSON.stringify(courseClassesData).replace(/'/g, "&#39;") %>'
+            onclick="openProgramModal(this)"
+            style="cursor: pointer;">
+            
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge <%= badgeColor %> px-3 py-1.5 fw-semibold rounded-pill">
+                  <i class="bi <%= badgeIcon %> me-1"></i><%= course.CapDo || course.TenKhoaHoc %>
+                </span>
+                <span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 fw-bold rounded-pill">
+                  <i class="bi bi-journal-check me-1"></i><%= course.ThoiLuong || 26 %> buổi học
+                </span>
+              </div>
+              <h4 class="fw-bold mb-2 text-dark"><%= course.TenKhoaHoc %></h4>
+              <p class="text-secondary small line-clamp-3"><%= course.MoTa || 'Chương trình đào tạo ngoại ngữ chất lượng cao chuẩn quốc tế.' %></p>
+            </div>
+            
+            <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
+              <div>
+                <span class="text-muted d-block small">Học phí</span>
+                <strong class="text-success fs-5"><%= formattedFee %> <%= (course.HocPhi !== null && course.HocPhi !== undefined) ? 'đ' : '' %></strong>
+              </div>
+              <span class="text-primary fw-semibold small">Xem chi tiết & Lớp học <i class="bi bi-arrow-right"></i></span>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="col-12 text-center py-5">
+        <div class="alert alert-info py-4">
+          <i class="bi bi-info-circle fs-3 d-block mb-2"></i>
+          Hiện chưa có khóa học nào được xuất bản. Vui lòng quay lại sau!
+        </div>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<!-- ĐỘI NGŨ NHÂN SỰ -->
+<% if (typeof staff !== 'undefined' && staff && staff.length > 0) { %>
+<section id="NhanSu" class="container mb-5 py-4 border-top">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Đội Ngũ Giảng Viên </h2>
+    <p class="text-muted">Đội ngũ giảng viên giàu kinh nghiệm, tận tâm, cam kết đồng hành cùng học viên bứt phá điểm số.</p>
+  </div>
+  
+  <div class="row g-4 justify-content-center">
+    <% staff.forEach(member => { %>
+      <% const imgSrc = member.AnhDaiDien && member.AnhDaiDien !== 'default_avatar.png' ? ((member.AnhDaiDien.startsWith('/') || member.AnhDaiDien.startsWith('http')) ? member.AnhDaiDien : '/images/' + member.AnhDaiDien) : ''; %>
+      <div class="col-xl-6 col-lg-6">
+        <div class="teacher-poster-card shadow-lg"
+             data-hoten="<%= member.HoTen %>"
+             data-chucvu="<%= member.ChucVu %>"
+             data-hocvi="<%= member.HocVi %>"
+             data-chungchi="<%= member.ChungChiNgoaiNgu %>"
+             data-kinhnghiem="<%= member.KinhNghiem %>"
+             data-ngayvaolam="<%= new Date(member.NgayVaoLam).toLocaleDateString('vi-VN') %>"
+             data-avatar="<%= imgSrc %>"
+             onclick="openTeacherModal(this)">
+          
+          <!-- Logo in top-right -->
+          <div class="poster-logo">
+            Anh Ngữ<br>Y & V
+          </div>
+
+          <!-- Main Layout -->
+          <div class="poster-content-layout">
+            <!-- Left Column: Avatar & Sticker badges -->
+            <div class="poster-left-col">
+              <div class="poster-avatar-ring">
+                <% if (member.AnhDaiDien && member.AnhDaiDien !== 'default_avatar.png') { %>
+                  <img src="<%= imgSrc %>" alt="<%= member.HoTen %>" <% if (member.HoTen.includes('Khoa')) { %>style="object-position: center 15%;"<% } %> onerror="this.src='https://api.dicebear.com/7.x/adventurer/svg?seed=<%= encodeURIComponent(member.HoTen) %>'" />
+                <% } else { %>
+                  <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white fw-bold fs-3" style="width: 100%; height: 100%;">
+                    <%= member.HoTen.split(' ').map(n => n[0]).slice(-2).join('').toUpperCase() %>
+                  </div>
+                <% } %>
+              </div>
+              <div class="poster-badge-yellow">Top Giáo viên Ưu Tú</div>
+              <div class="poster-badge-red">tại Anh ngữ Y&V</div>
+            </div>
+
+            <!-- Right Column: Name & Bullet Points -->
+            <div class="poster-right-col">
+              <h3 class="poster-teacher-name"><%= member.HoTen %></h3>
+              <ul class="poster-bullets-list">
+                <li><%= member.ChungChiNgoaiNgu %></li>
+                <li>Học vị: <%= member.HocVi %></li>
+                <li><%= member.KinhNghiem %></li>
+                <li>Hơn <%= new Date().getFullYear() - new Date(member.NgayVaoLam).getFullYear() %> năm đồng hành tại Anh ngữ Y&V</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</section>
+<% } %>
+
+<!-- TIN TỨC & BÀI VIẾT NỔI BẬT -->
+<section id="TinTuc" class="container mb-5 py-4 border-top">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">Tin tức nổi bật</h2>
+    <p class="text-secondary small">Cập nhật tin tức mới nhất và bí kíp ôn thi TOEIC hiệu quả</p>
+  </div>
+  <div class="row g-4">
+    <% if (typeof news !== 'undefined' && news && news.length > 0) { %>
+      <% news.forEach(n => { 
+        let link = `/news/detail/${n.MaTinTuc}`;
+        const titleLower = (n.TieuDe || '').toLowerCase();
+        if (n.MaTinTuc === 1 || titleLower.includes('format') || titleLower.includes('cấu trúc')) {
+          link = '/format-toeic';
+        } else if (n.MaTinTuc === 2 || titleLower.includes('mẹo') || titleLower.includes('listening')) {
+          link = '/meo-toeic-listening';
+        } else if (n.MaTinTuc === 3 || titleLower.includes('từ vựng') || titleLower.includes('văn phòng')) {
+          link = '/tu-vung-van-phong';
+        }
+      %>
+        <div class="col-md-4">
+          <div class="card custom-card h-100 border-0 shadow-sm overflow-hidden rounded-4 transition-all"
+               style="cursor: pointer;"
+               onclick="window.location.href='<%= link %>'">
+            <div style="height: 230px; overflow: hidden; background-color: #fcfcfc;" class="position-relative d-flex align-items-center justify-content-center border-bottom">
+              <img src="<%= n.HinhAnh ? n.HinhAnh : '/images/Cap_Nhat_Fomat.png' %>" 
+                   class="img-fluid w-100 h-100 p-2" 
+                   style="object-fit: contain;" 
+                   alt="<%= n.TieuDe %>" 
+                   onerror="this.onerror=null; this.src='/images/Cap_Nhat_Fomat.png';" />
+            </div>
+            <div class="card-body p-4 d-flex flex-column">
+              <h5 class="card-title fw-bold text-dark mb-2" style="font-size: 1.1rem; line-height: 1.4;"><%= n.TieuDe %></h5>
+              <p class="card-text text-secondary small flex-grow-1 mb-3" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
+                <%= n.TomTat || 'Nội dung thông tin bài viết...' %>
+              </p>
+              <div class="d-flex align-items-center justify-content-between pt-3 border-top text-muted small mt-auto">
+                <span><i class="bi bi-calendar3 me-1"></i><%= n.NgayDang ? new Date(n.NgayDang).toLocaleDateString('vi-VN') : '' %></span>
+                <span class="text-primary fw-semibold">Xem chi tiết <i class="bi bi-arrow-right"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="col-12 text-center text-muted py-4">Chưa có bài viết nào được đăng.</div>
+    <% } %>
+  </div>
+</section>
+
+
+<!-- MODAL CHI TIẾT KHÓA HỌC -->
+<div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="courseModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content border-0 rounded-4 shadow-lg">
+      <div class="modal-header border-0 bg-light p-4">
+        <h3 class="modal-title fw-bold text-dark fs-3 mb-0" id="modalTen">Tên chương trình</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 p-md-5">
+        <p id="modalMoTa" class="text-secondary fs-6 mb-4 line-height-base"></p>
+        
+        <div class="row g-3 mb-4">
+          <div class="col-md-4">
+            <div class="bg-light p-3.5 rounded-3 text-center border shadow-sm">
+              <span class="text-secondary d-block fs-6 mb-1">Thời lượng trung bình</span>
+              <strong id="modalThoiLuong" class="fs-4 fw-bold text-primary">--</strong>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="bg-light p-3.5 rounded-3 text-center border shadow-sm">
+              <span class="text-secondary d-block fs-6 mb-1">Học phí gốc</span>
+              <strong class="text-success fs-4 fw-bold"><span id="modalHocPhi">--</span> VNĐ</strong>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="bg-light p-3.5 rounded-3 text-center border shadow-sm">
+              <span class="text-secondary d-block fs-6 mb-1">Cấp độ tối thiểu</span>
+              <strong id="modalCapDo" class="fs-4 fw-bold text-dark">--</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nav Tabs cho Lớp học & Đề cương đào tạo -->
+        <ul class="nav nav-tabs nav-justified mb-4" id="courseModalTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-bold fs-6 py-2.5" id="classes-tab" data-bs-toggle="tab" data-bs-target="#classes-pane" type="button" role="tab" aria-controls="classes-pane" aria-selected="true">
+              <i class="bi bi-calendar3 me-2 text-primary"></i>Danh sách lớp học mở tuyển sinh
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold fs-6 py-2.5" id="syllabus-tab" data-bs-toggle="tab" data-bs-target="#syllabus-pane" type="button" role="tab" aria-controls="syllabus-pane" aria-selected="false">
+              <i class="bi bi-journal-bookmark-fill me-2 text-success"></i>Đề cương đào tạo chi tiết (Syllabus)
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="courseModalTabContent">
+          <!-- Pane 1: Danh sách lớp học -->
+          <div class="tab-pane fade show active" id="classes-pane" role="tabpanel" aria-labelledby="classes-tab" tabindex="0">
+            <div id="modalClassesList" class="mb-3">
+              <!-- Injected via JavaScript -->
+            </div>
+          </div>
+
+          <!-- Pane 2: Đề cương đào tạo chi tiết -->
+          <div class="tab-pane fade" id="syllabus-pane" role="tabpanel" aria-labelledby="syllabus-tab" tabindex="0">
+            <div id="modalSyllabusContainer" class="mb-3">
+              <!-- Injected via JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 pt-2">
+          <button type="button" class="btn btn-secondary btn-lg w-100 fw-bold" data-bs-dismiss="modal">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CHI TIẾT GIẢNG VIÊN -->
+<div class="modal fade" id="teacherModal" tabindex="-1" aria-labelledby="teacherModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+      <!-- Modal Header with gradient background -->
+      <div class="modal-header border-0 text-white p-4" style="background: linear-gradient(135deg, #1a252f, #3498db); position: relative; min-height: 120px;">
+        <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 pt-0 text-center" style="position: relative; margin-top: -65px;">
+        <!-- Avatar Wrapper -->
+        <div class="d-inline-block position-relative rounded-circle mb-3 p-1" style="background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.15); width: 130px; height: 130px; z-index: 10;">
+          <img id="tModalAvatar" src="" class="rounded-circle" style="width: 100%; height: 100%; object-fit: cover;" alt="Teacher Avatar" />
+        </div>
+        
+        <h4 class="fw-bold text-dark mb-1" id="tModalName">Tên Giảng Viên</h4>
+        <span class="badge bg-primary-subtle text-primary px-3 py-1.5 mb-4 fw-bold" id="tModalBadge">Chức vụ - Học vị</span>
+        
+        <!-- Info Grid -->
+        <div class="text-start bg-light p-3.5 rounded-3 border border-light-subtle mb-4">
+          <div class="d-flex align-items-start gap-3 mb-3 pb-2.5 border-bottom border-light-subtle">
+            <div class="text-warning fs-4"><i class="bi bi-award-fill"></i></div>
+            <div>
+              <span class="text-secondary small d-block">Chứng chỉ chuyên môn</span>
+              <strong class="text-dark" id="tModalChungChi">---</strong>
+            </div>
+          </div>
+          
+          <div class="d-flex align-items-start gap-3 mb-3 pb-2.5 border-bottom border-light-subtle">
+            <div class="text-info fs-4"><i class="bi bi-briefcase-fill"></i></div>
+            <div>
+              <span class="text-secondary small d-block">Kinh nghiệm giảng dạy</span>
+              <strong class="text-dark" id="tModalKinhNghiem">---</strong>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-start gap-3 mb-3 pb-2.5 border-bottom border-light-subtle">
+            <div class="text-success fs-4"><i class="bi bi-calendar-check-fill"></i></div>
+            <div>
+              <span class="text-secondary small d-block">Ngày bắt đầu làm việc tại Anh ngữ Y&V</span>
+              <strong class="text-dark" id="tModalNgayLam">---</strong>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary w-100 py-2.5 fw-bold rounded-3 shadow-sm" data-bs-dismiss="modal">Đóng hồ sơ</button>
+      </div>
+    </div>
+  </div>
+<!-- MODAL CHI TIẾT TIN TỨC / KHUYẾN MÃI -->
+<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+      <!-- Modal Header with gradient background -->
+      <div class="modal-header border-0 text-white p-4" style="background: linear-gradient(135deg, #1a252f, #3498db); position: relative; min-height: 100px;">
+        <h5 class="modal-title fw-bold text-white m-0" id="infoModalTitle">Tiêu đề</h5>
+        <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 text-center" style="position: relative;">
+        <!-- Image Wrapper -->
+        <div class="mb-4 rounded-3 overflow-hidden shadow-sm border" style="max-height: 280px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+          <img id="infoModalImage" src="" class="img-fluid w-100" style="max-height: 280px; object-fit: contain;" alt="Banner" />
+        </div>
+        <!-- Detail Text -->
+        <div class="text-start bg-light p-3.5 rounded-3 border border-light-subtle mb-4">
+          <p class="text-dark mb-0" id="infoModalContent" style="white-space: pre-wrap; line-height: 1.6; font-size: 0.95rem;">Nội dung chi tiết...</p>
+        </div>
+        <button type="button" class="btn btn-primary w-100 py-2.5 fw-bold rounded-3 shadow-sm" data-bs-dismiss="modal">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CHI TIẾT KHUYẾN MÃI ĐỘNG -->
+<div class="modal fade" id="promoDetailModal" tabindex="-1" aria-labelledby="promoDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+      <!-- Modal Header with gradient background -->
+      <div class="modal-header border-0 text-white p-4" style="background: linear-gradient(135deg, #11998e, #38ef7d); position: relative; min-height: 100px;">
+        <h5 class="modal-title fw-bold text-white m-0" id="promoModalTitle">Chi Tiết Khuyến Mãi</h5>
+        <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 text-center" style="position: relative;">
+        <!-- Image Wrapper -->
+        <div class="mb-4 rounded-3 overflow-hidden shadow-sm border" style="max-height: 280px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+          <img id="promoModalImage" src="" class="img-fluid w-100" style="max-height: 280px; object-fit: contain;" alt="Banner Khuyến Mãi" />
+        </div>
+        
+        <!-- Promo Code Copy Box -->
+        <div class="promo-code-box d-flex align-items-center justify-content-between p-3 mb-4 rounded-3 border border-dashed border-success bg-success-subtle bg-opacity-10 text-start">
+          <div>
+            <span class="text-secondary small d-block mb-1">Mã ưu đãi giảm <span id="promoPercent" class="fw-bold text-success">0</span>%</span>
+            <code class="fs-4 text-success fw-bold" id="promoCodeVal">CODE</code>
+          </div>
+          <button class="btn btn-success fw-bold px-3 py-2 rounded-3" onclick="copyPromoCode(this)">
+            <i class="bi bi-clipboard-fill me-1"></i>Sao chép
+          </button>
+        </div>
+
+        <!-- Detail Text -->
+        <div class="text-start bg-light p-3 rounded-3 border border-light-subtle mb-4">
+          <p class="text-dark mb-0" id="promoModalContent" style="white-space: pre-wrap; line-height: 1.6; font-size: 0.95rem;">Nội dung chi tiết...</p>
+        </div>
+        <button type="button" class="btn btn-secondary w-100 py-2.5 fw-bold rounded-3 shadow-sm" data-bs-dismiss="modal">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentProgram = null;
+  let courseBsModal = null;
+  let teacherBsModal = null;
+
+  function cleanClassName(name) {
+    if (name.includes('Foundation A')) return 'Lớp Foundation A';
+    if (name.includes('Foundation B')) return 'Lớp Foundation B';
+    if (name.includes('Foundation C')) return 'Lớp Foundation C';
+    if (name.includes('450+ - Lớp A') || name.includes('450A')) return 'Lớp 450A';
+    if (name.includes('450+ - Lớp B') || name.includes('450B')) return 'Lớp 450B';
+    if (name.includes('450+ - Lớp C') || name.includes('450C')) return 'Lớp 450C';
+    if (name.includes('650+ - Lớp A') || name.includes('650A')) return 'Lớp 650A';
+    if (name.includes('650+ - Lớp B') || name.includes('650B')) return 'Lớp 650B';
+    return name;
+  }
+
+  function openProgramModal(element) {
+    // 1. Lấy dữ liệu dbCourses (Chỉ khai báo 1 lần duy nhất ở đây)
+    const dbCourses = JSON.parse(element.dataset.classes || '[]');
+    
+    let calculatedFee = element.dataset.hocphi;
+    if (dbCourses && dbCourses.length > 0 && dbCourses[0].HocPhi !== null && dbCourses[0].HocPhi !== undefined) {
+      calculatedFee = Number(dbCourses[0].HocPhi).toLocaleString('vi-VN');
+    }
+
+    let currentProgram = {
+      ten: element.dataset.ten,
+      mota: element.dataset.mota,
+      thoiluong: element.dataset.thoiluong,
+      hocphi: calculatedFee,
+      capdo: element.dataset.capdo
+    };
+
+    document.getElementById('modalTen').innerText = currentProgram.ten;
+    document.getElementById('modalMoTa').innerText = currentProgram.mota;
+    document.getElementById('modalThoiLuong').innerText = currentProgram.thoiluong;
+    document.getElementById('modalHocPhi').innerText = currentProgram.hocphi;
+    document.getElementById('modalCapDo').innerText = currentProgram.capdo;
+
+    // Render classes from course objects
+    const classesListContainer = document.getElementById('modalClassesList');
+    classesListContainer.innerHTML = '';
+    
+    if (dbCourses.length === 0) {
+      classesListContainer.innerHTML = `
+        <div class="alert alert-warning py-3 small mb-0">
+          Hiện tại chưa có lớp học nào mở cho chương trình này. Vui lòng liên hệ trung tâm để nhận lịch học mới nhất.
+        </div>
+      `;
+    } else {
+      dbCourses.forEach(kh => {
+        const cleanName = typeof cleanClassName === 'function' ? cleanClassName(kh.TenKhoaHoc) : kh.TenKhoaHoc;
+        const subClassItem = document.createElement('div');
+        subClassItem.className = 'border rounded-4 p-4 mb-4 bg-light shadow-sm';
+        
+        let schedulesHtml = '';
+        if (kh.classes && kh.classes.length > 0) {
+          kh.classes.forEach(cls => {
+            const getLocalDateStr = (d) => {
+              if (!d) return '';
+              if (typeof d === 'string') return d.split('T')[0];
+              const dt = new Date(d);
+              const year = dt.getFullYear();
+              const month = String(dt.getMonth() + 1).padStart(2, '0');
+              const day = String(dt.getDate()).padStart(2, '0');
+              return `${year}-${month}-${day}`;
+            };
+            const todayStr = getLocalDateStr(new Date());
+            const classStartStr = getLocalDateStr(cls.NgayKhaiGiang);
+            const isPast = classStartStr && classStartStr <= todayStr;
+
+            if (isPast) {
+              cls.TrangThaiLop = 'Đã khai giảng';
+            }
+
+            const startDate = cls.NgayKhaiGiang ? new Date(cls.NgayKhaiGiang).toLocaleDateString('vi-VN') : 'Đang cập nhật';
+            const spotsLeft = cls.SiSoToiDa - (cls.SiSoHienTai || 0);
+            const isFull = spotsLeft <= 0;
+
+            const isSapMo = (cls.TrangThaiLop === 'Sắp mở' || cls.TrangThaiLop === 'Đang mở') && !isPast;
+            const isDangDienRa = cls.TrangThaiLop === 'Đang diễn ra';
+
+            let displayStatus = cls.TrangThaiLop;
+            let displayBadgeClass = 'bg-secondary text-white';
+
+            if (isSapMo || cls.TrangThaiLop === 'Đang mở') {
+              if (isFull) {
+                displayStatus = 'Hết chỗ';
+                displayBadgeClass = 'bg-danger text-white';
+              } else {
+                displayStatus = `Còn chỗ (Còn ${spotsLeft} chỗ)`;
+                displayBadgeClass = 'bg-success text-white';
+              }
+            } else if (isDangDienRa) {
+              displayBadgeClass = 'bg-info text-white';
+            }
+            
+            let enrollButton;
+            if (isSapMo) {
+              if (isFull) {
+                enrollButton = `<button class="btn btn-outline-danger px-3 py-2 fw-bold" disabled>Lớp đã đầy</button>`;
+              } else {
+                enrollButton = `<div class="d-flex gap-2">
+                   <button class="btn btn-outline-primary px-3 py-2" onclick="addtoCartHandler(${cls.MaLopHoc}, '${cls.TenLop}')" title="Thêm vào giỏ hàng"><i class="bi bi-cart-plus fs-5"></i></button>
+                   <button class="btn btn-primary px-4 py-2 fw-bold shadow-sm" onclick="enrollInClass(${cls.MaLopHoc}, '${cls.TenLop}', ${kh.MaKhoaHoc})">Đăng ký lớp</button>
+                   </div>`;
+              }
+            } else if (isDangDienRa) {
+              enrollButton = `<span class="badge bg-info-subtle text-info px-3 py-2 fw-bold fs-6"><i class="bi bi-play-circle me-1"></i>Đang diễn ra</span>`;
+            } else {
+              enrollButton = `<button class="btn btn-outline-secondary px-3 py-2 fw-bold" disabled>Đã khai giảng</button>`;
+            }
+
+            const endDate = cls.NgayKetThuc ? new Date(cls.NgayKetThuc).toLocaleDateString('vi-VN') : '';
+            const durationText = endDate ? `Từ ${startDate} đến ${endDate}` : `Khai giảng: ${startDate}`;
+
+            const loaiLopBadge = cls.LoaiLop === 'Cấp tốc' 
+              ? `<span class="badge bg-danger text-white rounded-pill px-2.5 py-1 fw-bold" style="font-size: 0.78rem;"><i class="bi bi-lightning-charge-fill me-1"></i>🔥 Cấp tốc (1 tháng)</span>`
+              : `<span class="badge bg-secondary-subtle text-secondary rounded-pill px-2.5 py-1 fw-semibold" style="font-size: 0.78rem;"><i class="bi bi-clock me-1"></i>Tiêu chuẩn (2-3 tháng)</span>`;
+
+            const classFeeText = Number(cls.HocPhi || kh.HocPhi).toLocaleString('vi-VN');
+
+            schedulesHtml += `
+              <div class="d-flex flex-wrap align-items-center justify-content-between p-3.5 mt-3 bg-white rounded-3 border border-light-subtle shadow-sm gap-3">
+                <div class="flex-grow-1">
+                  <div class="d-flex align-items-center gap-2 mb-2.5 flex-wrap">
+                    <span class="fw-bold text-dark fs-5 me-1">${cls.TenLop}</span>
+                    ${loaiLopBadge}
+                    <span class="badge ${displayBadgeClass} px-3 py-1.5 rounded-pill fw-semibold" style="font-size: 0.78rem;">${displayStatus}</span>
+                    <span class="badge bg-light text-success border border-success-subtle px-3 py-1.5 rounded-pill fw-bold" style="font-size: 0.78rem;"><i class="bi bi-tag-fill me-1"></i>${classFeeText} VNĐ</span>
+                  </div>
+                  
+                  <div class="d-flex flex-wrap gap-4 text-muted small mt-2">
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="bg-primary-subtle p-2 rounded-3 text-primary"><i class="bi bi-calendar-range fs-6"></i></div>
+                      <div>
+                        <span class="d-block text-secondary small">Thời gian học (Kéo dài)</span>
+                        <strong class="text-dark">${durationText}</strong>
+                      </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="bg-success-subtle p-2 rounded-3 text-success"><i class="bi bi-journal-check fs-6"></i></div>
+                      <div>
+                        <span class="d-block text-secondary small">Tổng số buổi</span>
+                        <strong class="text-success fs-6">${kh.ThoiLuong || 30} buổi học</strong>
+                      </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="bg-info-subtle p-2 rounded-3 text-info"><i class="bi bi-clock fs-6"></i></div>
+                      <div>
+                        <span class="d-block text-secondary small">Lịch học cố định</span>
+                        <strong class="text-dark">${cls.LichHoc || 'Chưa có lịch'}</strong>
+                      </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="bg-warning-subtle p-2 rounded-3 text-warning"><i class="bi bi-people fs-6"></i></div>
+                      <div>
+                        <span class="d-block text-secondary small">Sĩ số</span>
+                        <strong class="text-dark">${cls.SiSoHienTai || 0} / ${cls.SiSoToiDa} học viên</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  ${enrollButton}
+                </div>
+              </div>
+            `;
+          });
+        } else {
+          schedulesHtml = `
+            <div class="text-muted fs-6 mt-3 ps-2">
+              <i class="bi bi-info-circle me-2 text-warning"></i>Hiện tại chưa có lịch khai giảng mới cho khóa học này.
+            </div>
+          `;
+        }
+
+        subClassItem.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center pb-2 border-bottom border-secondary-subtle">
+            <h5 class="fw-bold mb-0 text-primary fs-5">${cleanName}</h5>
+            <span class="text-success fw-bold fs-5">${Number(kh.HocPhi).toLocaleString('vi-VN')} VNĐ</span>
+          </div>
+          <div class="text-secondary fs-6 my-3 bg-white p-3 rounded-3 border border-light-subtle" style="line-height: 1.6;">
+            <i class="bi bi-info-circle text-primary me-2 fs-6"></i>${kh.MoTa || 'Chi tiết nội dung giảng dạy đang được cập nhật.'}
+          </div>
+          ${schedulesHtml}
+        `;
+        classesListContainer.appendChild(subClassItem);
+      });
+
+      const firstCourseId = dbCourses.length > 0 ? dbCourses[0].MaKhoaHoc : 1;
+      if (typeof loadCourseSyllabus === 'function') {
+        loadCourseSyllabus(firstCourseId);
+      }
+    }
+    
+    // Đảm bảo biến courseBsModal đã được khởi tạo trước đó
+    if (typeof courseBsModal !== 'undefined') {
+      courseBsModal.show();
+    } else {
+      // Khởi tạo nếu chưa có
+      const modalEl = document.getElementById('courseModal');
+      if (modalEl) {
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+      }
+    }
+}
+
+  async function loadCourseSyllabus(courseId) {
+    const container = document.getElementById('modalSyllabusContainer');
+    if (!container) return;
+    container.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-muted">Đang tải đề cương chi tiết...</p></div>';
+    try {
+      const res = await fetch(`/courses/syllabus/${courseId}`);
+      const data = await res.json();
+      if (data.success && data.syllabus && data.syllabus.length > 0) {
+        let metaHtml = '';
+        if (data.meta) {
+          metaHtml = `
+            <div class="card border-0 bg-light rounded-3 mb-4 shadow-sm">
+              <div class="card-body p-4">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="d-flex align-items-start gap-2 mb-2.5">
+                      <i class="bi bi-person-badge-fill text-primary fs-5"></i>
+                      <div>
+                        <strong class="text-dark">Đối tượng đầu vào:</strong> <span class="text-secondary d-block mt-0.5">${data.meta.inputLevel}</span>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-2 mb-2.5">
+                      <i class="bi bi-headset text-success fs-5"></i>
+                      <div>
+                        <strong class="text-dark">Dịch vụ bổ trợ:</strong> <span class="text-secondary d-block mt-0.5">${data.meta.services}</span>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-2">
+                      <i class="bi bi-clipboard-check-fill text-warning fs-5"></i>
+                      <div>
+                        <strong class="text-dark">Kiểm tra đánh giá:</strong> <span class="text-secondary d-block mt-0.5">${data.meta.tests}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="bg-white p-3.5 rounded-3 border">
+                      <h6 class="fw-bold text-dark mb-2.5"><i class="bi bi-book-half text-danger me-2"></i>Trọng tâm kiến thức chính (Listening & Reading)</h6>
+                      <ul class="list-unstyled mb-0 small text-secondary" style="line-height: 1.6;">
+                        <li class="mb-2"><strong class="text-dark">🗣️ Ngữ âm:</strong> ${data.meta.phonetics}</li>
+                        <li class="mb-2"><strong class="text-dark">📖 Từ vựng:</strong> ${data.meta.vocabulary}</li>
+                        <li><strong class="text-dark">📝 Ngữ pháp:</strong> ${data.meta.grammar}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        let rowsHtml = '';
+        data.syllabus.forEach(item => {
+          let skillBadge = 'bg-primary-subtle text-primary';
+          if (item.type.includes('Listening')) skillBadge = 'bg-info-subtle text-info-emphasis';
+          else if (item.type.includes('Reading')) skillBadge = 'bg-success-subtle text-success';
+          else if (item.type.includes('Exam') || item.type.includes('Test') || item.type.includes('PROGRESS')) skillBadge = 'bg-danger text-white';
+
+          let testBadge = item.test ? `<span class="badge bg-warning-subtle text-dark border border-warning fw-bold"><i class="bi bi-pencil-square me-1"></i>${item.test}</span>` : '<span class="text-muted small">--</span>';
+
+          rowsHtml += `
+            <tr>
+              <td class="fw-bold text-center" style="width: 100px;">Buổi ${item.session}</td>
+              <td style="width: 150px;"><span class="badge ${skillBadge} px-2.5 py-1 fw-semibold">${item.type}</span></td>
+              <td class="fw-semibold text-dark">${item.content}</td>
+              <td class="text-center" style="width: 160px;">${testBadge}</td>
+            </tr>
+          `;
+        });
+
+        container.innerHTML = `
+          ${metaHtml}
+          <div class="table-responsive rounded-3 border">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-dark">
+                <tr>
+                  <th class="text-center">Buổi học</th>
+                  <th>Kỹ năng / Chủ đề</th>
+                  <th>Nội dung chi tiết</th>
+                  <th class="text-center">Bài kiểm tra / Đánh giá</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        `;
+      } else {
+        container.innerHTML = '<div class="alert alert-warning">Chưa có thông tin đề cương chi tiết cho khóa học này.</div>';
+      }
+    } catch (err) {
+      container.innerHTML = '<div class="alert alert-warning">Không thể tải đề cương chi tiết.</div>';
+    }
+  }
+
+  function addtoCartHandler(classId, className) {
+    const isLoggedIn = <%= user ? 'true' : 'false' %>;
+    const isGoogleGuest = <%= user && user.isGoogleGuest ? 'true' : 'false' %>;
+    const userRole = '<%= user ? user.TenVaiTro : "null" %>';
+
+    if (!isLoggedIn) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Yêu cầu tài khoản',
+        text: `Vui lòng đăng nhập hoặc đăng ký tài khoản để thêm lớp ${className} vào giỏ hàng.`,
+        showCancelButton: true,
+        confirmButtonText: 'Đăng nhập / Đăng ký',
+        cancelButtonText: 'Hủy',
+        confirmButtonColor: '#3498db'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `/login?redirect=/`;
+        }
+      });
+      return;
+    }
+
+    if (isGoogleGuest) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Yêu cầu đăng ký tài khoản',
+        text: 'Tài khoản Google của bạn chưa hoàn tất đăng ký thông tin học viên. Vui lòng đăng ký tài khoản trước khi đăng ký lớp học.',
+        showCancelButton: true,
+        confirmButtonText: 'Đăng ký ngay',
+        cancelButtonText: 'Hủy',
+        confirmButtonColor: '#3498db'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/register';
+        }
+      });
+      return;
+    }
+
+    if (userRole !== 'Học viên') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Thông báo',
+        text: 'Chỉ tài khoản học viên mới được thêm lớp học vào giỏ hàng.',
+        confirmButtonText: 'Đồng ý',
+        confirmButtonColor: '#3498db'
+      });
+      return;
+    }
+
+    const processHomeCartResult = (data, isDirectEnroll = false) => {
+      if (data.requireInputWarning) {
+        const displayTitle = data.className || className || 'lớp học';
+        const checkboxText = data.confirmCheckboxText || `Tôi xác nhận đã đọc kỹ yêu cầu đầu vào của lớp ${displayTitle} và tự chịu trách nhiệm về lựa chọn này.`;
+
+        Swal.fire({
+          icon: 'warning',
+          title: 'Cảnh báo điều kiện đầu vào',
+          html: `
+            <div class="text-start p-1">
+              <div class="alert alert-warning border-warning rounded-3 mb-3 p-3" style="background-color: #fff3cd; color: #664d03;">
+                <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill text-warning me-2 fs-5"></i>Lưu ý điều kiện đầu vào:</div>
+                <div class="small" style="line-height: 1.5;">
+                  Hệ thống ghi nhận học viên <strong>chưa làm Bài Test đầu vào</strong> hoặc <strong>chưa học Khóa học tiền đề</strong> (Pre-TOEIC / Cơ bản) trước khi đăng ký lớp <strong>"${displayTitle}"</strong>.
+                </div>
+              </div>
+              <div class="form-check p-3 bg-light rounded-3 border border-secondary-subtle">
+                <input class="form-check-input ms-0 me-2" type="checkbox" id="inputConditionCheckboxHome" style="cursor: pointer; width: 1.2em; height: 1.2em;">
+                <label class="form-check-label fw-semibold text-dark small" for="inputConditionCheckboxHome" style="cursor: pointer; user-select: none;">
+                  ${checkboxText}
+                </label>
+              </div>
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonText: '<i class="bi bi-check-circle-fill me-1"></i>Xác nhận & Đăng ký',
+          cancelButtonText: 'Hủy',
+          confirmButtonColor: '#f39c12',
+          cancelButtonColor: '#6c757d',
+          focusConfirm: false,
+          preConfirm: () => {
+            const chk = document.getElementById('inputConditionCheckboxHome');
+            if (!chk || !chk.checked) {
+              Swal.showValidationMessage('Vui lòng tích chọn xác nhận đã đọc kỹ yêu cầu đầu vào trước khi tiếp tục!');
+              return false;
+            }
+            return true;
+          }
+        }).then((warnRes) => {
+          if (warnRes.isConfirmed) {
+            fetch('/courses/cart/add', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ MaLopHoc: classId, confirmedInputWarning: true })
+            })
+            .then(res => res.json())
+            .then(resData => processHomeCartResult(resData, isDirectEnroll))
+            .catch(err => {
+              console.error(err);
+              Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Có lỗi xảy ra khi thêm vào giỏ hàng.' });
+            });
+          }
+        });
+        return;
+      }
+
+      if (data.success) {
+        if (isDirectEnroll) {
+          window.location.href = '/courses/cart';
+        } else {
+          const badge = document.getElementById('header-cart-badge');
+          if (badge) {
+            badge.innerText = data.cartCount;
+            badge.classList.remove('d-none');
+          }
+          Swal.fire({
+            icon: 'success',
+            title: 'Thêm vào giỏ hàng thành công!',
+            text: `Đã thêm lớp học "${className}" vào giỏ hàng. Bạn có muốn đến giỏ hàng ngay không?`,
+            showCancelButton: true,
+            confirmButtonText: 'Đến giỏ hàng',
+            cancelButtonText: 'Hủy',
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d'
+          }).then((navRes) => {
+            if (navRes.isConfirmed) {
+              window.location.href = '/courses/cart';
+            }
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: 'info',
+          title: 'Thông báo',
+          text: data.message || `Lớp học "${className}" đã có trong giỏ hàng. Bạn có muốn đến giỏ hàng không?`,
+          showCancelButton: true,
+          confirmButtonText: 'Đến giỏ hàng',
+          cancelButtonText: 'Hủy',
+          confirmButtonColor: '#3498db',
+          cancelButtonColor: '#6c757d'
+        }).then((navRes) => {
+          if (navRes.isConfirmed) {
+            window.location.href = '/courses/cart';
+          }
+        });
+      }
+    };
+
+    fetch('/courses/cart/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ MaLopHoc: classId })
+    })
+    .then(res => res.json())
+    .then(data => processHomeCartResult(data, false))
+    .catch(err => {
+      console.error(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Đã xảy ra lỗi khi thêm vào giỏ hàng.',
+        confirmButtonText: 'Đồng ý',
+        confirmButtonColor: '#e74c3c'
+      });
+    });
+  }
+
+  function enrollInClass(classId, className, courseId) {
+    if (courseBsModal) {
+      courseBsModal.hide();
+    }
+    const isLoggedIn = <%= user ? 'true' : 'false' %>;
+    const isGoogleGuest = <%= user && user.isGoogleGuest ? 'true' : 'false' %>;
+    const userRole = '<%= user ? user.TenVaiTro : "null" %>';
+
+    if (!isLoggedIn) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Yêu cầu tài khoản',
+        text: `Vui lòng đăng nhập hoặc đăng ký tài khoản để tiến hành đăng ký lớp ${className}.`,
+        showCancelButton: true,
+        confirmButtonText: 'Đăng nhập / Đăng ký',
+        cancelButtonText: 'Hủy',
+        confirmButtonColor: '#3498db'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `/login?redirect=/?courseId=${courseId}`;
+        }
+      });
+      return;
+    }
+
+    if (isGoogleGuest) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Yêu cầu đăng ký tài khoản',
+        text: 'Tài khoản Google của bạn chưa hoàn tất đăng ký thông tin học viên. Vui lòng đăng ký tài khoản trước khi đăng ký lớp học.',
+        showCancelButton: true,
+        confirmButtonText: 'Đăng ký ngay',
+        cancelButtonText: 'Hủy',
+        confirmButtonColor: '#3498db'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/register';
+        }
+      });
+      return;
+    }
+
+    if (userRole !== 'Học viên') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Thông báo',
+        text: 'Chỉ tài khoản học viên mới được đăng ký lớp học.',
+        confirmButtonText: 'Đồng ý',
+        confirmButtonColor: '#3498db'
+      });
+      return;
+    }
+
+    const processDirectEnrollResult = (data) => {
+      if (data.requireInputWarning) {
+        const displayTitle = data.className || className || 'lớp học';
+        const checkboxText = data.confirmCheckboxText || `Tôi xác nhận đã đọc kỹ yêu cầu đầu vào của lớp ${displayTitle} và tự chịu trách nhiệm về lựa chọn này.`;
+
+        Swal.fire({
+          icon: 'warning',
+          title: 'Cảnh báo điều kiện đầu vào',
+          html: `
+            <div class="text-start p-1">
+              <div class="alert alert-warning border-warning rounded-3 mb-3 p-3" style="background-color: #fff3cd; color: #664d03;">
+                <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill text-warning me-2 fs-5"></i>Lưu ý điều kiện đầu vào:</div>
+                <div class="small" style="line-height: 1.5;">
+                  Hệ thống ghi nhận học viên <strong>chưa làm Bài Test đầu vào</strong> hoặc <strong>chưa học Khóa học tiền đề</strong> (Pre-TOEIC / Cơ bản) trước khi đăng ký lớp <strong>"${displayTitle}"</strong>.
+                </div>
+              </div>
+              <div class="form-check p-3 bg-light rounded-3 border border-secondary-subtle">
+                <input class="form-check-input ms-0 me-2" type="checkbox" id="inputConditionCheckboxHomeEnroll" style="cursor: pointer; width: 1.2em; height: 1.2em;">
+                <label class="form-check-label fw-semibold text-dark small" for="inputConditionCheckboxHomeEnroll" style="cursor: pointer; user-select: none;">
+                  ${checkboxText}
+                </label>
+              </div>
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonText: '<i class="bi bi-check-circle-fill me-1"></i>Xác nhận & Đăng ký',
+          cancelButtonText: 'Hủy',
+          confirmButtonColor: '#f39c12',
+          cancelButtonColor: '#6c757d',
+          focusConfirm: false,
+          preConfirm: () => {
+            const chk = document.getElementById('inputConditionCheckboxHomeEnroll');
+            if (!chk || !chk.checked) {
+              Swal.showValidationMessage('Vui lòng tích chọn xác nhận đã đọc kỹ yêu cầu đầu vào trước khi tiếp tục!');
+              return false;
+            }
+            return true;
+          }
+        }).then((warnRes) => {
+          if (warnRes.isConfirmed) {
+            fetch('/courses/cart/add', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ MaLopHoc: classId, confirmedInputWarning: true })
+            })
+            .then(res => res.json())
+            .then(resData => processDirectEnrollResult(resData))
+            .catch(err => {
+              console.error(err);
+              Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Có lỗi xảy ra khi thực hiện đăng ký.' });
+            });
+          }
+        });
+        return;
+      }
+
+      if (data.success) {
+        window.location.href = '/courses/cart';
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Không thể đăng ký!',
+          text: data.message || 'Bạn đã đăng ký lớp học này rồi!',
+          confirmButtonText: 'Đồng ý',
+          confirmButtonColor: '#e74c3c'
+        });
+      }
+    };
+
+    fetch('/courses/cart/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ MaLopHoc: classId })
+    })
+    .then(res => res.json())
+    .then(data => processDirectEnrollResult(data))
+    .catch(err => {
+      console.error(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Có lỗi xảy ra khi thực hiện đăng ký.',
+        confirmButtonText: 'Đồng ý',
+        confirmButtonColor: '#e74c3c'
+      });
+    });
+  }
+
+  function openTeacherModal(element) {
+    // Lấy dữ liệu và gán vào Modal giảng viên
+    document.getElementById('tModalName').innerText = element.getAttribute('data-hoten');
+    document.getElementById('tModalBadge').innerText = element.getAttribute('data-chucvu') + ' - ' + element.getAttribute('data-hocvi');
+    document.getElementById('tModalChungChi').innerText = element.getAttribute('data-chungchi');
+    document.getElementById('tModalKinhNghiem').innerText = element.getAttribute('data-kinhnghiem');
+    document.getElementById('tModalNgayLam').innerText = element.getAttribute('data-ngayvaolam');
+    
+    const avatarSrc = element.getAttribute('data-avatar');
+    const avatarEl = document.getElementById('tModalAvatar');
+    if (avatarSrc) {
+      avatarEl.src = avatarSrc;
+    } else {
+      // Fallback nếu không có ảnh
+      avatarEl.src = 'https://api.dicebear.com/7.x/adventurer/svg?seed=' + encodeURIComponent(element.getAttribute('data-hoten'));
+    }
+
+    // Khởi tạo và hiển thị Modal
+    const teacherModal = new bootstrap.Modal(document.getElementById('teacherModal'));
+    teacherModal.show();
+  }
+
+  let infoBsModal = null;
+  function openInfoModal(element) {
+    const title = element.dataset.title;
+    const content = element.dataset.content;
+    const image = element.dataset.image;
+
+    document.getElementById('infoModalTitle').innerText = title;
+    document.getElementById('infoModalContent').innerText = content;
+    document.getElementById('infoModalImage').src = image;
+
+    if (!infoBsModal) {
+      infoBsModal = new bootstrap.Modal(document.getElementById('infoModal'));
+    }
+    infoBsModal.show();
+  }
+
+  let promoBsModal = null;
+  function openPromoDetailModal(element) {
+    const title = element.dataset.title;
+    const code = element.dataset.code;
+    const percent = element.dataset.percent;
+    const content = element.dataset.content;
+    const image = element.dataset.image;
+
+    document.getElementById('promoModalTitle').innerText = title;
+    document.getElementById('promoModalContent').innerText = content;
+    document.getElementById('promoModalImage').src = image;
+    document.getElementById('promoPercent').innerText = percent;
+    document.getElementById('promoCodeVal').innerText = code;
+
+    if (!promoBsModal) {
+      promoBsModal = new bootstrap.Modal(document.getElementById('promoDetailModal'));
+    }
+    promoBsModal.show();
+  }
+
+  function copyPromoCode(btn) {
+    const codeVal = document.getElementById('promoCodeVal').innerText;
+    navigator.clipboard.writeText(codeVal).then(() => {
+      const origText = btn.innerHTML;
+      btn.innerHTML = '<i class="bi bi-check-lg me-1"></i>Đã chép!';
+      btn.classList.replace('btn-success', 'btn-light');
+      btn.classList.add('text-success');
+      setTimeout(() => {
+        btn.innerHTML = origText;
+        btn.classList.replace('btn-light', 'btn-success');
+        btn.classList.remove('text-success');
+      }, 2000);
+    }).catch(err => {
+      console.error('Sao chép thất bại: ', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi sao chép',
+        text: 'Không thể tự động chép, vui lòng bôi đen và sao chép thủ công!',
+        confirmButtonText: 'Đồng ý',
+        confirmButtonColor: '#e74c3c'
+      });
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    courseBsModal = new bootstrap.Modal(document.getElementById('courseModal'));
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const courseId = urlParams.get('courseId');
+    if (courseId) {
+      let card = null;
+      const courseLower = courseId.toString();
+      if (courseLower === '1' || courseLower === '2' || courseLower === '3') {
+        card = document.querySelector('.course-item[data-ten*="nền tảng"]') || document.querySelector('.course-item[data-ten*="Pre"]');
+      } else if (courseLower === '4' || courseLower === '5' || courseLower === '6') {
+        card = document.querySelector('.course-item[data-ten*="450"]') || document.querySelector('.course-item[data-ten*="TOEIC A"]');
+      } else if (courseLower === '7' || courseLower === '8') {
+        card = document.querySelector('.course-item[data-ten*="650"]') || document.querySelector('.course-item[data-ten*="TOEIC B"]');
+      }
+      
+      if (card) {
+        setTimeout(() => {
+          document.getElementById('KhoaHoc').scrollIntoView({ behavior: 'smooth' });
+          openProgramModal(card);
+        }, 300);
+      }
+    }
+  });
+</script>
+
+<%- include('../layouts/footer') %>

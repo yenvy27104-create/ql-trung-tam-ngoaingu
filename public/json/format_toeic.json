@@ -1,0 +1,245 @@
+{
+  "intro": "Trước khi bắt đầu đặt mục tiêu điểm số, việc hiểu rõ cấu trúc đề thi TOEIC hiện hành là chìa khóa then chốt. Nắm vững số lượng câu hỏi, các dạng bài và cách phân bổ thời gian hợp lý cho từng phần thi sẽ giúp bạn tự tin bứt phá điểm số tối đa.",
+  "overview": {
+    "listening": {
+      "title": "TOEIC Listening (45 phút - 100 câu)",
+      "parts": [
+        {
+          "id": "Part 1",
+          "count": "6 câu",
+          "desc": "Mô tả tranh"
+        },
+        {
+          "id": "Part 2",
+          "count": "25 câu",
+          "desc": "Hỏi - đáp"
+        },
+        {
+          "id": "Part 3",
+          "count": "39 câu",
+          "desc": "Hội thoại ngắn (13 đoạn)"
+        },
+        {
+          "id": "Part 4",
+          "count": "30 câu",
+          "desc": "Bài nói ngắn (10 bài)"
+        }
+      ]
+    },
+    "reading": {
+      "title": "TOEIC Reading (75 phút - 100 câu)",
+      "parts": [
+        {
+          "id": "Part 5",
+          "count": "30 câu",
+          "desc": "Hoàn thành câu đơn"
+        },
+        {
+          "id": "Part 6",
+          "count": "16 câu",
+          "desc": "Hoàn thành đoạn văn (4 đoạn)"
+        },
+        {
+          "id": "Part 7",
+          "count": "54 câu",
+          "desc": "Đọc hiểu (Đoạn đơn & Đoạn kép/ba)"
+        }
+      ]
+    }
+  },
+  "parts_detail": [
+    {
+      "id": 1,
+      "title": "Part 1: Mô tả tranh (Picture Description)",
+      "count": "6 câu hỏi",
+      "desc": "Thí sinh quan sát một bức tranh trong đề thi, sau đó nghe 4 câu mô tả (A), (B), (C), (D) được phát từ băng ghi âm để chọn ra phương án mô tả chính xác nhất. Đề thi mới đã rút gọn chỉ còn 6 bức tranh. Phần này đòi hỏi sự nhanh nhạy và tránh các yếu tố lừa về từ vựng đồng âm hoặc hành động gây nhầm lẫn.",
+      "steps": [
+        {
+          "num": "1",
+          "name": "Phân tích tranh (15s)",
+          "desc": "Tranh thủ lúc đọc hướng dẫn hoặc nghỉ giữa các câu, quét nhanh qua bức tranh kế tiếp để định hình đối tượng, hành động và bối cảnh."
+        },
+        {
+          "num": "2",
+          "name": "Nghe & Tô (3s)",
+          "desc": "Nghe lần lượt 4 phương án, dùng 3 giây đầu tiên ngay sau khi có đáp án đúng để tô kín ô trên phiếu trả lời."
+        },
+        {
+          "num": "3",
+          "name": "Chuẩn bị câu sau (5s)",
+          "desc": "Quên ngay câu vừa làm và hướng mắt sang phân tích bức tranh kế tiếp trước khi băng đọc số thứ tự câu tiếp theo."
+        }
+      ],
+      "tactics": [
+        "Tranh có người: 80% đáp án đúng mô tả hành động bằng cấu trúc: S + is/are + V-ing + O. Hãy chú ý vị trí tay, mắt nhìn, trang phục.",
+        "Tranh vật/cảnh: Cảnh báo bẫy bị động ở hiện tại tiếp diễn: being + V-pII. Cấu trúc này mô tả hành động đang có người tác động trực tiếp vào vật. Nếu tranh không có người xuất hiện, loại ngay các đáp án có being (ngoại trừ từ displaying).",
+        "Bẫy vị trí: Chú ý giới từ chỉ không gian (in front of, next to, under, behind) để nhận diện đúng vị trí các vật thể."
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Part 2: Hỏi - đáp (Question - Response)",
+      "count": "25 câu hỏi",
+      "desc": "Thí sinh nghe một câu hỏi hoặc một câu nhận định, sau đó nghe tiếp 3 câu phản hồi (A), (B), (C) để chọn ra câu trả lời hợp lý nhất. Đây là phần có tỷ lệ bẫy cao nhất liên quan đến từ đồng âm và từ đa nghĩa.",
+      "steps": [
+        {
+          "num": "1",
+          "name": "Nghe từ để hỏi (100%)",
+          "desc": "Tập trung tối đa vào 3 từ đầu tiên của câu hỏi (Who, When, Where, Why, How, Yes/No, Nhận định...) để xác định thông tin cần trả lời."
+        },
+        {
+          "num": "2",
+          "name": "Phương pháp loại trừ",
+          "desc": "Khi nghe đáp án, loại ngay các câu trả lời lạc đề (ví dụ hỏi Where nhưng trả lời về thời gian)."
+        },
+        {
+          "num": "3",
+          "name": "Tô nhanh lập tức",
+          "desc": "Tô đáp án ngay khi nghe xong phương án (C). Không lưỡng lự để tránh bị mất dấu câu tiếp theo."
+        }
+      ],
+      "tactics": [
+        "Bẫy từ đồng âm: Cẩn thận với các từ có phát âm giống nhau nhưng nghĩa hoàn toàn khác biệt trong câu hỏi và câu trả lời (ví dụ: copy - coffee, late - rate).",
+        "Câu hỏi lựa chọn (Or): Đáp án đúng thường chọn một trong hai phương án, hoặc chọn cả hai (either/both), hoặc từ chối cả hai (neither). Tuyệt đối không chọn đáp án trả lời Yes/No cho dạng câu hỏi này.",
+        "Đáp án gián tiếp: Xu hướng đề thi mới có rất nhiều câu hỏi Yes/No hoặc Wh-questions nhưng trả lời gián tiếp bằng một câu hỏi ngược lại hoặc đẩy trách nhiệm (ví dụ: \"Hãy hỏi quản lý\" hoặc \"Nó chưa được quyết định\")."
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Part 3: Hội thoại ngắn (Short Conversations)",
+      "count": "39 câu hỏi (13 đoạn)",
+      "desc": "Thí sinh nghe đoạn hội thoại giữa 2 hoặc 3 người nói. Mỗi đoạn hội thoại có 3 câu hỏi đi kèm. Đây là phần thi đòi hỏi khả năng đọc trước đề nhanh và kết hợp nghe hiểu thông tin chi tiết.",
+      "steps": [
+        {
+          "num": "1",
+          "name": "Đọc trước câu hỏi (Golden Time)",
+          "desc": "Dành 20 - 30 giây trước khi băng đọc đoạn hội thoại để quét nhanh 3 câu hỏi và gạch chân các từ khóa quan trọng (chủ thể là Nam hay Nữ, hành động tiếp theo, địa điểm...)."
+        },
+        {
+          "num": "2",
+          "name": "Nghe bắt từ khóa chính",
+          "desc": "Vừa nghe vừa dò mắt theo 3 câu hỏi trên đề để bắt lấy thông tin tương thích."
+        },
+        {
+          "num": "3",
+          "name": "Tô nhanh khi nghe xong",
+          "desc": "Tô đáp án cực nhanh trong lúc băng đang đọc 3 câu hỏi của đoạn vừa rồi, dùng thời gian đó để đọc tiếp câu hỏi của đoạn kế tiếp."
+        }
+      ],
+      "tactics": [
+        "Phương pháp 3 ngón tay: Đặt 3 ngón tay tương ứng lên các đáp án được chọn trên đề thi trong lúc nghe để tránh quên đáp án trước khi kịp tô vào phiếu.",
+        "Nhận diện bối cảnh: Để ý các câu hỏi đầu tiên thường hỏi về chủ đề chung (Nghề nghiệp của họ, Địa điểm trò chuyện, Vấn đề đang gặp phải). Đáp án thường nằm ở 2-3 câu thoại đầu tiên.",
+        "Nghe từ đồng nghĩa (Paraphrasing): Đáp án trên đề thường sử dụng từ đồng nghĩa hoặc cấu trúc khác với âm thanh nghe được (ví dụ: nghe \"buy some tickets\" -> đáp án ghi \"make a purchase\")."
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Part 4: Bài nói ngắn (Short Talks)",
+      "count": "30 câu hỏi (10 bài nói)",
+      "desc": "Thí sinh nghe một bài nói ngắn từ duy nhất 1 người phát ngôn (thông báo công cộng, tin nhắn thoại, bản tin thời tiết, giới thiệu...). Tương tự Part 3, mỗi bài nói đi kèm 3 câu hỏi.",
+      "steps": [
+        {
+          "num": "1",
+          "name": "Đọc trước câu hỏi & biểu đồ",
+          "desc": "Đọc kỹ câu hỏi và chú ý đặc biệt các bài nói có biểu đồ hoặc hình ảnh đính kèm để định vị cột/hàng cần nhìn."
+        },
+        {
+          "num": "2",
+          "name": "Theo dõi mạch bài nói",
+          "desc": "Mạch thông tin của bài nói thường đi thẳng từ trên xuống dưới, tương ứng với thứ tự của 3 câu hỏi."
+        },
+        {
+          "num": "3",
+          "name": "Tô đáp án song song",
+          "desc": "Tô nhanh đáp án ngay khi thông tin xuất hiện và chuẩn bị tinh thần đọc tiếp 3 câu hỏi tiếp theo."
+        }
+      ],
+      "tactics": [
+        "Bắt giọng điệu & Từ khóa bẻ lái: Đặc biệt lưu ý các từ nối thể hiện sự thay đổi thông tin như: But, However, Unfortunately, In fact, Actually. Thông tin sau các từ này chính là đáp án cho câu hỏi về thay đổi kế hoạch hoặc sự cố.",
+        "Dạng bài Graphic: Đề thi yêu cầu kết hợp nhìn hình và nghe thông tin. Lưu ý: thông tin nghe được trong audio sẽ KHÔNG trùng khớp với đáp án đúng trên đề, mà chỉ liên quan đến đối tượng đối xứng hoặc liền kề trong hình vẽ."
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Part 5: Hoàn thành câu đơn (Incomplete Sentences)",
+      "count": "30 câu hỏi",
+      "desc": "Thí sinh chọn từ thích hợp nhất trong 4 phương án (A), (B), (C), (D) để điền vào chỗ trống của một câu đơn lẻ. Đây là phần kiểm tra kiến thức ngữ pháp và từ vựng cơ bản.",
+      "steps": [
+        {
+          "num": "1",
+          "name": "Phân loại câu hỏi (2s)",
+          "desc": "Nhìn nhanh 4 đáp án để biết đây là câu hỏi Ngữ pháp (các đáp án có chung gốc từ) hay câu hỏi Từ vựng (các đáp án là từ hoàn toàn khác nhau)."
+        },
+        {
+          "num": "2",
+          "name": "Phân tích khoảng trống",
+          "desc": "Xác định từ loại cần điền dựa vào các từ đứng liền trước và liền sau khoảng trống."
+        },
+        {
+          "num": "3",
+          "name": "Chọn & Điền (10s - 15s)",
+          "desc": "Áp dụng công thức ngữ pháp hoặc dịch nghĩa nhanh để chọn đáp án."
+        }
+      ],
+      "tactics": [
+        "Câu hỏi Ngữ pháp (Grammar): Không cần dịch nghĩa toàn câu. Chỉ cần nhìn từ loại đứng trước và sau chỗ trống (ví dụ: sau tính từ sở hữu hoặc mạo từ phải là một danh từ). Mục tiêu hoàn thành trong vòng 5 - 10 giây/câu.",
+        "Câu hỏi Từ vựng (Vocabulary): Yêu cầu dịch nghĩa và xét tính kết hợp từ (Collocation). Chú ý các cụm động từ hoặc giới từ thường đi kèm nhau (ví dụ: depend on, interest in, participate in). Dành tối đa 20 giây cho dạng câu này, nếu không biết hãy loại trừ và chọn ngẫu nhiên."
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Part 6: Hoàn thành đoạn văn (Text Completion)",
+      "count": "16 câu hỏi (4 đoạn)",
+      "desc": "Thí sinh điền từ, cụm từ hoặc một câu hoàn chỉnh vào chỗ trống trong một đoạn văn (email, thông báo, thư tín...). Mỗi đoạn văn gồm 4 câu hỏi cần hoàn thành.",
+      "steps": [
+        {
+          "num": "1",
+          "name": "Đọc lướt tiêu đề & người gửi",
+          "desc": "Xác định nhanh loại văn bản, người gửi, người nhận và mốc thời gian để chọn đúng đại từ hoặc thì của động từ."
+        },
+        {
+          "num": "2",
+          "name": "Giải quyết câu ngữ pháp trước",
+          "desc": "Hoàn thành các câu hỏi ngữ pháp đơn giản tương tự Part 5 trước."
+        },
+        {
+          "num": "3",
+          "name": "Liên kết câu hoàn chỉnh",
+          "desc": "Đọc kỹ câu đứng trước và câu đứng sau chỗ trống cần điền một câu hoàn chỉnh để đảm bảo tính mạch lạc, nhất quán."
+        }
+      ],
+      "tactics": [
+        "Câu điền cả câu: Đòi hỏi sự liên kết logic cao. Hãy tìm kiếm các từ nối chỉ nguyên nhân - kết quả (Therefore, As a result), tương phản (However, On the other hand) hoặc bổ sung thông tin (In addition, Furthermore) để kết nối mạch văn.",
+        "Nhất quán về \"Thì\": Chú ý mốc thời gian xuất hiện trong bài để chia động từ chính xác cho cả đoạn, tránh sự mâu thuẫn thời gian giữa các câu liên kề."
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Part 7: Đọc hiểu (Reading Comprehension)",
+      "count": "54 câu hỏi",
+      "desc": "Thí sinh đọc các đoạn văn đơn (29 câu), đoạn văn kép (10 câu) và đoạn văn ba (15 câu) rồi trả lời các câu hỏi trắc nghiệm liên quan. Đây là phần thi dài nhất, tốn sức nhất và dễ bị thiếu thời gian nhất.",
+      "steps": [
+        {
+          "num": "1",
+          "name": "Phân bổ 55 phút cuối cùng",
+          "desc": "Đặt mốc thời gian cố định cho Part 7. Dành tối đa 25 phút cho đoạn đơn và 30 phút cho các đoạn văn kép/ba."
+        },
+        {
+          "num": "2",
+          "name": "Đọc câu hỏi trước (Wh-questions)",
+          "desc": "Xác định từ khóa trong câu hỏi (Tên riêng, Con số, Thời gian) để định vị thông tin cần quét trong đoạn văn."
+        },
+        {
+          "num": "3",
+          "name": "Đọc dò & Kết nối thông tin",
+          "desc": "Dò tìm từ khóa trong bài đọc. Đối với đoạn kép/ba, cần kết nối thông tin giữa các văn bản để rút ra đáp án đúng."
+        }
+      ],
+      "tactics": [
+        "Quản lý thời gian ngược: Nên làm từ câu 200 ngược lại hoặc làm các đoạn văn kép/ba trước khi bạn còn tỉnh táo, vì đây là những đoạn dài và chiếm nhiều điểm. Tránh để các đoạn văn ba xuống cuối giờ khi đã mệt mỏi.",
+        "Câu hỏi liên kết (Double/Triple passages): Đáp án cho các câu hỏi này không nằm riêng lẻ ở một văn bản mà yêu cầu kết hợp (ví dụ: Vé tàu mua ở bảng giá của văn bản 1, nhưng ngày khởi hành nằm ở email của văn bản 2).",
+        "Từ đồng nghĩa (Synonym): Chú ý dạng câu hỏi tìm từ đồng nghĩa trong ngữ cảnh cụm từ. Hãy thay thế thử 4 đáp án vào vị trí của từ gốc trong đoạn văn để tìm từ phù hợp nhất."
+      ]
+    }
+  ]
+}

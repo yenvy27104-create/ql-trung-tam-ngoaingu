@@ -1,0 +1,498 @@
+<%- include('../layouts/header') %>
+
+<%
+function formatTacticText(text) {
+  if (!text) return '';
+  let clean = text.replace(/<\/?[^>]+(>|$)/g, ""); // Strip any leftover tags
+  
+  // 1. If there's a colon (e.g. "Tranh có người: ..."), wrap the prefix in strong tags
+  let firstColonIdx = clean.indexOf(':');
+  if (firstColonIdx > 0 && firstColonIdx < 45) {
+    let title = clean.substring(0, firstColonIdx).trim();
+    let body = clean.substring(firstColonIdx + 1).trim();
+    
+    // 2. Wrap formulas and keywords inside the body in code / em tags
+    body = highlightKeywords(body);
+    return `<strong>${title}:</strong> ${body}`;
+  }
+  
+  return highlightKeywords(clean);
+}
+
+function highlightKeywords(body) {
+  // Highlight formulas
+  body = body.replace(/(S \+ is\/are \+ V-ing \+ O|being \+ V-pII|being|displaying)/g, '<code>$1</code>');
+  // Highlight quoted words
+  body = body.replace(/("copy"|"coffee"|"work"|"walk"|'copy'|'coffee'|'work'|'walk')/g, '<em>$1</em>');
+  // Highlight key terms like "Direction", "Answer Sheet", "Double/Triple passages", "Synonym"
+  body = body.replace(/(Direction|Answer Sheet|Double\/Triple passages|Synonym)/g, '<strong>$1</strong>');
+  return body;
+}
+%>
+
+<style>
+  .article-container {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid #eef2f5;
+  }
+
+  .nav-pills-custom {
+    border-bottom: 2px solid #eef2f5;
+    padding-bottom: 10px;
+  }
+
+  .nav-pills-custom .nav-link {
+    color: #5c6a79;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 12px;
+    transition: all 0.3s;
+    border: 1.5px solid transparent;
+  }
+
+  .nav-pills-custom .nav-link.active {
+    color: var(--accent-color);
+    background: rgba(52, 152, 219, 0.08);
+    border-color: rgba(52, 152, 219, 0.2);
+  }
+
+  .step-card {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #eaedf0;
+    transition: all 0.2s;
+  }
+
+  .step-card:hover {
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    border-color: #cbd5e1;
+  }
+
+  .timeline-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-right: 10px;
+  }
+
+  .formula-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #0f172a;
+  }
+
+  .tip-box {
+    background: rgba(241, 196, 15, 0.08);
+    border-left: 4px solid #f1c40f;
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+
+  .sidebar-card {
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+    border: 1px solid #eef2f5;
+  }
+
+  @media (max-width: 768px) {
+    .part-tab-content {
+      padding: 20px 15px;
+    }
+  }
+</style>
+
+<div class="container py-2">
+  <!-- Breadcrumbs -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted"><i class="bi bi-house-door-fill me-1"></i>Trang chủ</a></li>
+      <li class="breadcrumb-item"><a href="/#TinTuc" class="text-decoration-none text-muted">Tin tức</a></li>
+      <li class="breadcrumb-item active text-primary fw-medium" aria-current="page">Cập nhật format TOEIC mới</li>
+    </ol>
+  </nav>
+
+  <!-- Title Section -->
+  <div class="my-4">
+    <h1 class="fw-bold text-dark mb-2" style="font-size: 2.2rem; line-height: 1.25;">
+      <%= article ? article.TieuDe : 'Cập nhật format TOEIC mới: Những thay đổi quan trọng và Chiến thuật làm bài' %>
+    </h1>
+    <div class="d-flex flex-wrap align-items-center gap-3 text-muted" style="font-size: 0.9rem;">
+      <span class="d-flex align-items-center"><i class="bi bi-calendar3 me-1.5"></i><%= new Date(article ? article.NgayDang : Date.now()).toLocaleDateString('vi-VN') %></span>
+      <span class="d-flex align-items-center"><i class="bi bi-person-fill me-1.5"></i>Ban chuyên môn Anh ngữ Y&V</span>
+      <span class="d-flex align-items-center"><i class="bi bi-eye-fill me-1.5"></i>1,482 lượt xem</span>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Main Content Column (Full Width) -->
+    <div class="col-12">
+      <div class="article-container p-4 p-md-5">
+        
+        <!-- Introduction -->
+        <p class="lead text-secondary fw-semibold mb-4" style="line-height: 1.7; font-size: 1.15rem;">
+          <%= article ? article.TomTat : (formatData.intro || 'Trước khi bắt đầu đặt mục tiêu điểm số, việc hiểu rõ cấu trúc đề thi TOEIC hiện hành là chìa khóa then chốt. Nắm vững số lượng câu hỏi, các dạng bài và cách phân bổ thời gian hợp lý cho từng phần thi sẽ giúp bạn tự tin bứt phá điểm số tối đa.') %>
+        </p>
+        
+        <!-- OVERVIEW TABLES SECTION -->
+        <div class="border-top pt-4 mt-4">
+          <h3 class="fw-bold mb-3 text-dark d-flex align-items-center">
+            <span class="badge bg-primary me-2.5" style="padding: 6px 12px; font-size: 0.9rem;">I</span>
+            Cấu Trúc Đề Thi TOEIC Hiện Hành
+          </h3>
+          <p class="text-muted mb-4">Bài thi TOEIC bao gồm 2 phần thi chính: <strong>Listening (Nghe hiểu)</strong> trong 45 phút và <strong>Reading (Đọc hiểu)</strong> trong 75 phút. Dưới đây là bảng tổng hợp số câu hỏi của các phần:</p>
+          
+          <div class="row g-4 mb-5">
+            <!-- Listening Table Card -->
+            <% if (formatData.overview && formatData.overview.listening) { %>
+              <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-3 h-100" style="background: #fcfdfe; border: 1px solid #eef2f6 !important;">
+                  <div class="card-header bg-dark text-white fw-bold py-3">
+                    <i class="bi bi-headphones me-2"></i><%= formatData.overview.listening.title %>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light text-secondary small">
+                          <tr>
+                            <th class="ps-3">Phần</th>
+                            <th>Số câu</th>
+                            <th>Nội dung câu hỏi</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% (formatData.overview.listening.parts || []).forEach(part => { %>
+                            <tr>
+                              <td class="fw-bold ps-3"><%= part.id %></td>
+                              <td class="text-primary fw-semibold"><%= part.count %></td>
+                              <td><%= part.desc %></td>
+                            </tr>
+                          <% }); %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+
+            <!-- Reading Table Card -->
+            <% if (formatData.overview && formatData.overview.reading) { %>
+              <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-3 h-100" style="background: #fcfdfe; border: 1px solid #eef2f6 !important;">
+                  <div class="card-header bg-success text-white fw-bold py-3">
+                    <i class="bi bi-book-half me-2"></i><%= formatData.overview.reading.title %>
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light text-secondary small">
+                          <tr>
+                            <th class="ps-3">Phần</th>
+                            <th>Số câu</th>
+                            <th>Nội dung câu hỏi</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% (formatData.overview.reading.parts || []).forEach(part => { %>
+                            <tr>
+                              <td class="fw-bold ps-3"><%= part.id %></td>
+                              <td class="text-success fw-semibold"><%= part.count %></td>
+                              <td><%= part.desc %></td>
+                            </tr>
+                          <% }); %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- DETAILED INTERACTIVE SECTIONS (TABS) -->
+        <div class="border-top pt-4">
+          <h3 class="fw-bold mb-3 text-dark d-flex align-items-center">
+            <span class="badge bg-primary me-2.5" style="padding: 6px 12px; font-size: 0.9rem;">II</span>
+            Phân Tích Chi Tiết &amp; Chiến Thuật Part 1 - Part 7
+          </h3>
+          <p class="text-muted mb-4">Chọn từng Part dưới đây để xem phân tích chi tiết, các dạng câu hỏi, cách phân bổ thời gian và lời khuyên làm bài thực chiến:</p>
+          
+          <!-- Tab Navigation buttons -->
+          <ul class="nav nav-pills nav-pills-custom gap-2 mb-3" role="tablist" id="toeicPartsTab">
+            <% (formatData.parts_detail || []).forEach((part, idx) => { %>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link <%= idx === 0 ? 'active' : '' %>" id="p<%= part.id %>-tab" data-bs-toggle="pill" data-bs-target="#p<%= part.id %>-content" type="button" role="tab">Part <%= part.id %></button>
+              </li>
+            <% }); %>
+          </ul>
+          
+          <!-- Tab Contents -->
+          <div class="tab-content" id="toeicPartsTabContent">
+            
+            <% (formatData.parts_detail || []).forEach((part, idx) => { %>
+              <div class="tab-pane fade <%= idx === 0 ? 'show active' : '' %>" id="p<%= part.id %>-content" role="tabpanel">
+                <div class="part-tab-content">
+                  <div class="d-flex align-items-center mb-3">
+                    <h4 class="fw-bold text-dark m-0"><%= part.title %></h4>
+                    <span class="badge bg-primary-subtle text-primary ms-3"><%= part.count %></span>
+                  </div>
+                  
+                  <h5 class="fw-bold mt-4 mb-2 text-primary-emphasis"><i class="bi bi-info-circle-fill me-2"></i>1. Cấu trúc bài thi</h5>
+                  <p><%- part.desc %></p>
+                  
+                  <% if (part.steps && part.steps.length > 0) { %>
+                    <h5 class="fw-bold mt-4 mb-2 text-primary-emphasis"><i class="bi bi-clock-history me-2"></i>2. Phân bổ thời gian thực chiến</h5>
+                    <div class="row g-3">
+                      <% part.steps.forEach(step => { %>
+                        <div class="col-md-4">
+                          <div class="step-card h-100">
+                            <div class="d-flex align-items-center mb-2">
+                              <span class="timeline-badge"><%= step.num %></span>
+                              <h6 class="fw-bold m-0 text-dark"><%= step.name %></h6>
+                            </div>
+                            <p class="small text-secondary mb-0"><%- step.desc %></p>
+                          </div>
+                        </div>
+                      <% }); %>
+                    </div>
+                  <% } %>
+
+                  <!-- Custom visual layouts per part -->
+                  <% if (part.id === 1) { %>
+                    <h5 class="fw-bold mt-4 mb-2 text-primary-emphasis"><i class="bi bi-tags-fill me-2"></i>3. Các loại tranh thường gặp</h5>
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <div class="card border-light-subtle h-100">
+                          <div class="card-body">
+                            <h6 class="fw-bold text-dark"><i class="bi bi-people-fill me-2 text-warning"></i>Tranh tả người (Chiếm đa số)</h6>
+                            <p class="small text-secondary">Tập trung vào hành động của con người (tay, mắt, tư thế). Các cấu trúc câu thường gặp:</p>
+                            <div class="formula-card mb-2">S + is/are + V-ing + O</div>
+                            <div class="formula-card">S + is/are + being V-pII (bị tác động)</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="card border-light-subtle h-100">
+                          <div class="card-body">
+                            <h6 class="fw-bold text-dark"><i class="bi bi-box-seam-fill me-2 text-warning"></i>Tranh tả vật &amp; phong cảnh</h6>
+                            <p class="small text-secondary">Tập trung vào vị trí, trạng thái của đồ vật xung quanh. Các cấu trúc thường gặp:</p>
+                            <div class="formula-card mb-2">S + is/are + V-pII + Preposition</div>
+                            <div class="formula-card">There is/are + N + Preposition</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% } else if (part.id === 2) { %>
+                    <h5 class="fw-bold mt-4 mb-2 text-primary-emphasis"><i class="bi bi-question-circle-fill me-2"></i>3. Các dạng câu hỏi chính &amp; Mẫu trả lời</h5>
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-striped small align-middle">
+                        <thead class="table-light">
+                          <tr>
+                            <th>Dạng câu hỏi</th>
+                            <th>Đặc điểm chính</th>
+                            <th>Ví dụ thực tế</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="fw-bold">Wh- Questions</td>
+                            <td>Bắt đầu bằng Who, Where, When, Why, How, What. Thường không trả lời bằng Yes/No.</td>
+                            <td><em>Q: Who has the copy of the report?</em><br><span class="text-success">A: John does, in his office.</span></td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">Yes/No Questions</td>
+                            <td>Hỏi đảo trợ động từ (Is, Do, Can, Have...). Có thể trả lời gián tiếp không cần Yes/No.</td>
+                            <td><em>Q: Haven't you had lunch yet?</em><br><span class="text-success">A: No, I didn't have time.</span></td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">Tag Questions</td>
+                            <td>Câu hỏi đuôi ở cuối nhằm xác nhận thông tin.</td>
+                            <td><em>Q: The report is hard, isn't it?</em><br><span class="text-success">A: Yes, it's very confusing.</span></td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">Suggestion/Request</td>
+                            <td>Yêu cầu, đề nghị (Would you like, Why don't we...).</td>
+                            <td><em>Q: Would you like to walk to the center?</em><br><span class="text-success">A: That sounds like a great idea.</span></td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">Choice Questions</td>
+                            <td>Hỏi sự lựa chọn, chứa từ khóa "or". Thường trả lời bằng cách chọn 1 trong 2, hoặc từ chối cả 2.</td>
+                            <td><em>Q: Do you want table inside or outside?</em><br><span class="text-success">A: I'll take the table inside.</span></td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">Statement</td>
+                            <td>Một câu trần thuật đưa ra quan điểm, sự việc. Câu trả lời thường là sự đồng tình hoặc làm rõ.</td>
+                            <td><em>Q: The neighbors upstairs are noisy.</em><br><span class="text-success">A: Yes, they certainly are.</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  <% } else if (part.id === 3) { %>
+                    <h5 class="fw-bold mt-4 mb-2 text-primary-emphasis"><i class="bi bi-grid-1x2-fill me-2"></i>3. Cấu trúc của đoạn hội thoại &amp; Cách bắt từ</h5>
+                    <p class="small text-secondary">Đoạn hội thoại luôn có mạch logic từ mở đầu, diễn biến và kết thúc. Đáp án thường xuất hiện theo thứ tự câu hỏi:</p>
+                    <div class="row g-3">
+                      <div class="col-md-4">
+                        <div class="p-3 bg-white border rounded h-100">
+                          <h6 class="small fw-bold text-primary">Câu thoại 1 &amp; 2 (Câu hỏi 1)</h6>
+                          <p class="small text-muted mb-0">Thường trả lời cho câu hỏi về chủ đề chung, địa điểm diễn ra hội thoại hoặc nghề nghiệp người nói.</p>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="p-3 bg-white border rounded h-100">
+                          <h6 class="small fw-bold text-success">Câu thoại giữa (Câu hỏi 2)</h6>
+                          <p class="small text-muted mb-0">Thường trả lời cho câu hỏi chi tiết về vấn đề đang xảy ra, yêu cầu hoặc lý do của cuộc trò chuyện.</p>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="p-3 bg-white border rounded h-100">
+                          <h6 class="small fw-bold text-danger">Câu thoại cuối (Câu hỏi 3)</h6>
+                          <p class="small text-muted mb-0">Thường trả lời cho hành động người nói sẽ làm tiếp theo (next, do next) hoặc đề xuất hỗ trợ.</p>
+                        </div>
+                      </div>
+                    </div>
+                  <% } else if (part.id === 5) { %>
+                    <h5 class="fw-bold mt-4 mb-2 text-primary-emphasis"><i class="bi bi-tags-fill me-2"></i>3. Phân biệt các dạng câu hỏi Part 5</h5>
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <div class="card border-success border-left-4 h-100">
+                          <div class="card-body">
+                            <h6 class="fw-bold text-success"><i class="bi bi-lightning-charge-fill me-2"></i>Câu Ngữ Pháp (Grammar) - 10s/câu</h6>
+                            <p class="small text-secondary mb-0">Chiếm 60% đề thi. Các đáp án có chung một gốc từ, chỉ khác đuôi từ loại. Dựa vào từ loại trước/sau chỗ trống để chọn ngay không cần dịch nghĩa toàn câu.</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="card border-warning border-left-4 h-100">
+                          <div class="card-body">
+                            <h6 class="fw-bold text-warning-emphasis"><i class="bi bi-translate me-2"></i>Câu Từ Vựng (Vocabulary) - 30s/câu</h6>
+                            <p class="small text-secondary mb-0">Các đáp án là các từ khác nhau hoàn toàn. Cần dịch đại ý của câu và ghép các từ thích hợp. Chú ý các cấu trúc Collocations đi liền nhau.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% } else if (part.id === 6) { %>
+                    <h5 class="fw-bold mt-4 mb-2 text-primary-emphasis"><i class="bi bi-file-earmark-text-fill me-2"></i>3. Các thể loại văn bản thường gặp</h5>
+                    <div class="row g-3">
+                      <div class="col-md-4">
+                        <div class="p-3 bg-white border rounded-3 h-100">
+                          <h6 class="fw-bold text-dark"><i class="bi bi-envelope-fill me-2 text-primary"></i>Email / Letter</h6>
+                          <p class="small text-secondary mb-0">Thư gửi đồng nghiệp, đối tác hoặc khách hàng nhằm trao đổi công việc, phản hồi dịch vụ.</p>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="p-3 bg-white border rounded-3 h-100">
+                          <h6 class="fw-bold text-dark"><i class="bi bi-info-square-fill me-2 text-primary"></i>Notice / Announcement</h6>
+                          <p class="small text-secondary mb-0">Thông báo chính sách mới, nâng cấp trang thiết bị hoặc giới thiệu nhân sự mới trong công ty.</p>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="p-3 bg-white border rounded-3 h-100">
+                          <h6 class="fw-bold text-dark"><i class="bi bi-journal-richtext me-2 text-primary"></i>Article / Advertisement</h6>
+                          <p class="small text-secondary mb-0">Bài báo ngắn về kinh tế, tài chính hoặc đoạn quảng cáo giới thiệu sản phẩm, dịch vụ mới.</p>
+                        </div>
+                      </div>
+                    </div>
+                  <% } %>
+
+                  <% if (part.tactics && part.tactics.length > 0) { %>
+                    <div class="tip-box mt-4">
+                      <h6 class="fw-bold text-warning-emphasis"><i class="bi bi-lightbulb-fill me-2"></i>Chiến thuật ghi điểm Part <%= part.id %></h6>
+                      <ul class="small mb-0 text-dark" style="padding-left: 20px;">
+                        <% part.tactics.forEach(tactic => { %>
+                          <li class="mb-2"><%- formatTacticText(tactic) %></li>
+                        <% }); %>
+                      </ul>
+                    </div>
+                  <% } %>
+                </div>
+              </div>
+            <% }); %>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Action Cards Section -->
+  <div class="row g-4 mt-4">
+    <!-- Card 1: Placement Test -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 text-center border-0 h-100 d-flex flex-column justify-content-between" style="background: linear-gradient(135deg, #1a252f, #2c3e50); color: white;">
+        <div>
+          <h5 class="fw-bold mb-3"><i class="bi bi-pencil-square me-2 text-warning"></i>Đánh giá năng lực</h5>
+          <p class="small text-white-50 mb-4">Làm bài kiểm tra đầu vào TOEIC (100 câu) hoàn toàn miễn phí để biết chính xác trình độ hiện tại của bạn.</p>
+        </div>
+        <a href="/exams/placement" 
+           onclick="checkPlacementTest(event, <%= user ? 'true' : 'false' %>)" 
+           class="btn btn-warning fw-bold w-100 py-2.5 rounded-3 shadow">
+          Thi thử đầu vào
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 2: Practice Exams -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 text-center h-100 d-flex flex-column justify-content-between">
+        <div>
+          <h5 class="fw-bold text-dark mb-3"><i class="bi bi-journal-check me-2 text-primary"></i>Luyện đề thi thử</h5>
+          <p class="small text-secondary mb-4">Kho đề thi thử TOEIC chuẩn cấu trúc IIG kèm giải thích chi tiết đáp án giúp bạn rèn luyện phản xạ.</p>
+        </div>
+        <a href="/exams/free" class="btn btn-primary fw-bold w-100 py-2.5 rounded-3 shadow-sm">
+          Luyện đề miễn phí
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 3: Related News -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 h-100">
+        <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">Tin tức liên quan</h5>
+        <div class="d-flex flex-column gap-3 text-start">
+          
+          <a href="/meo-toeic-listening" class="text-decoration-none text-dark d-flex gap-2">
+            <div class="rounded overflow-hidden" style="width: 70px; height: 50px; flex-shrink: 0;">
+              <img src="/images/Meo copy.png" class="w-100 h-100 object-fit-cover" alt="Mẹo nghe" />
+            </div>
+            <div>
+              <h6 class="small fw-bold mb-1 line-clamp-2" style="font-size: 0.85rem; line-height: 1.3;">Mẹo làm bài Toeic Listening bứt phá điểm số</h6>
+              <span class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Hot</span>
+            </div>
+          </a>
+
+          <a href="/tu-vung-van-phong" class="text-decoration-none text-dark d-flex gap-2">
+            <div class="rounded overflow-hidden" style="width: 70px; height: 50px; flex-shrink: 0;">
+              <img src="/images/Kho_Tu_Vung.png" class="w-100 h-100 object-fit-cover" alt="Từ vựng" />
+            </div>
+            <div>
+              <h6 class="small fw-bold mb-1 line-clamp-2" style="font-size: 0.85rem; line-height: 1.3;">Kho 100 từ vựng TOEIC chủ đề văn phòng hay gặp</h6>
+              <span class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Hot</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

@@ -1,0 +1,562 @@
+<%- include('../layouts/header') %>
+
+<style>
+  /* Page Header styling */
+  .schedules-header {
+    background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
+    padding: 60px 0;
+    color: #ffffff;
+    border-radius: 20px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .schedules-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(52, 152, 219, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* Course Category Tabs/Cards */
+  .course-section-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #eef2f5;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+  }
+  .course-section-card:hover {
+    box-shadow: 0 8px 30px rgba(52, 152, 219, 0.08);
+    border-color: rgba(52, 152, 219, 0.2);
+  }
+
+  .course-badge-level {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 50px;
+  }
+
+  /* Timetable/Class rows */
+  .class-schedule-row {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+    transition: all 0.25s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .class-schedule-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.03);
+    border-color: #cbd5e0;
+  }
+
+  .class-info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .class-info-icon {
+    font-size: 1.25rem;
+    color: #3498db;
+    background: rgba(52, 152, 219, 0.08);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .class-status-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  /* Action Buttons */
+  .btn-enroll-primary {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+  }
+  .btn-enroll-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(52, 152, 219, 0.3);
+    color: #ffffff;
+  }
+
+  .btn-cart-outline {
+    background: transparent;
+    border: 1.5px solid #cbd5e0;
+    color: #4a5568;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+  }
+  .btn-cart-outline:hover {
+    border-color: #3498db;
+    color: #3498db;
+    background: rgba(52, 152, 219, 0.03);
+  }
+
+  /* Responsive styling */
+  @media (max-width: 768px) {
+    .class-schedule-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+    .class-actions {
+      width: 100%;
+      display: flex;
+      gap: 10px;
+    }
+    .class-actions > button, .class-actions > a {
+      flex: 1;
+      text-align: center;
+    }
+  }
+</style>
+
+<div class="container py-4">
+  <!-- PAGE HEADER -->
+  <div class="schedules-header text-center">
+    <div class="container px-4">
+      <span class="badge px-4 py-2 fw-bold mb-3 shadow-sm" style="text-transform: uppercase; font-size: 0.95rem; letter-spacing: 1.5px; background: linear-gradient(45deg, #00f2fe 0%, #4facfe 100%); color: #ffffff; box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4); border: 1px solid rgba(255, 255, 255, 0.15);">Tuyển sinh 2026</span>
+      <h1 class="fw-bold mb-2 display-5">Lịch Khai Giảng Lớp Học</h1>
+      <p class="text-white-50 fs-5 mb-0 max-width-600 mx-auto">Chọn lộ trình phù hợp và tham gia các lớp học khai giảng mới nhất cùng đội ngũ giảng viên chuyên nghiệp.</p>
+    </div>
+  </div>
+
+  <!-- LIST OF COURSES -->
+  <% if (courses && courses.length > 0) { %>
+    <div class="row">
+      <div class="col-lg-12">
+        <% courses.forEach(kh => { %>
+          <div class="course-section-card">
+            <!-- Course Header Info -->
+            <div class="row align-items-start border-bottom pb-4 mb-4 g-3">
+              <div class="col-md-8 col-lg-9">
+                <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
+                  <h3 class="fw-bold text-dark mb-0"><%= kh.TenKhoaHoc %></h3>
+                  <span class="badge bg-primary-subtle text-primary course-badge-level"><%= kh.CapDo %></span>
+                </div>
+                <p class="text-secondary mb-0"><%= kh.MoTa %></p>
+              </div>
+              <div class="col-md-4 col-lg-3 text-end">
+                <span class="text-muted d-block small mb-1 fw-semibold">Học phí toàn khóa</span>
+                <span class="text-success fw-bold fs-4 d-block"><%= Number(kh.HocPhi).toLocaleString('vi-VN') %> đ</span>
+                <span class="text-muted small mt-1 d-inline-block"><i class="bi bi-journal-check me-1 text-success"></i><%= kh.ThoiLuong %> buổi học</span>
+              </div>
+            </div>
+
+            <!-- Opening Classes Under This Course -->
+            <div>
+              <h5 class="fw-bold text-secondary mb-3"><i class="bi bi-calendar3 me-2 text-primary"></i>Các lớp học tuyển sinh mới nhất</h5>
+              <% if (kh.classes && kh.classes.length > 0) { %>
+                <div class="d-flex flex-column gap-3">
+                  <% kh.classes.forEach(cls => { %>
+                    <% 
+                      const getLocalDateStr = (d) => {
+                        if (!d) return '';
+                        if (typeof d === 'string') return d.split('T')[0];
+                        const dt = new Date(d);
+                        const year = dt.getFullYear();
+                        const month = String(dt.getMonth() + 1).padStart(2, '0');
+                        const day = String(dt.getDate()).padStart(2, '0');
+                        return `${year}-${month}-${day}`;
+                      };
+                      const todayStr = getLocalDateStr(new Date());
+                      const classStartStr = getLocalDateStr(cls.NgayKhaiGiang);
+                      const isPastStartDate = classStartStr && classStartStr <= todayStr;
+                      const spotsLeft = cls.SiSoToiDa - (cls.SiSoHienTai || 0);
+                      const isFull = spotsLeft <= 0;
+
+                      let badgeClass = 'bg-warning-subtle text-warning';
+                      let availabilityText = cls.TrangThaiLop;
+
+                      if (isPastStartDate || cls.TrangThaiLop === 'Đã khai giảng' || cls.TrangThaiLop === 'Kết thúc' || cls.TrangThaiLop === 'Đã đóng') {
+                        badgeClass = 'bg-secondary-subtle text-secondary';
+                        availabilityText = 'Đã khai giảng (Đã đóng tuyển sinh)';
+                      } else if (cls.TrangThaiLop === 'Đang mở') {
+                        if (isFull) {
+                          badgeClass = 'bg-danger-subtle text-danger';
+                          availabilityText = 'Hết chỗ';
+                        } else {
+                          badgeClass = 'bg-success-subtle text-success';
+                          availabilityText = `Còn chỗ (Còn ${spotsLeft} chỗ)`;
+                        }
+                      } else if (cls.TrangThaiLop === 'Đã đầy' || isFull) {
+                        badgeClass = 'bg-danger-subtle text-danger';
+                        availabilityText = 'Hết chỗ';
+                      }
+
+                      const startDate = new Date(cls.NgayKhaiGiang).toLocaleDateString('vi-VN');
+                    %>
+                    <div class="class-schedule-row">
+                      <!-- Left: Name & Status -->
+                      <div>
+                        <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                          <span class="fw-bold text-dark fs-5"><%= cls.TenLop %></span>
+                          <% if (cls.LoaiLop === 'Cấp tốc') { %>
+                            <span class="badge bg-danger text-white rounded-pill px-2.5 py-1"><i class="bi bi-lightning-charge-fill me-1"></i>🔥 Cấp tốc (1 tháng)</span>
+                          <% } else { %>
+                            <span class="badge bg-secondary-subtle text-secondary rounded-pill px-2.5 py-1"><i class="bi bi-clock me-1"></i>Tiêu chuẩn (2-3 tháng)</span>
+                          <% } %>
+                          <span class="badge <%= badgeClass %> class-status-badge"><%= availabilityText %></span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-4 text-muted small">
+                          <div class="class-info-item">
+                            <div class="class-info-icon"><i class="bi bi-calendar-range text-primary"></i></div>
+                            <div>
+                              <span class="d-block text-secondary small">Thời gian học (Kéo dài)</span>
+                              <strong class="text-dark">Từ <%= startDate %> đến <%= new Date(cls.NgayKetThuc).toLocaleDateString('vi-VN') %></strong>
+                            </div>
+                          </div>
+                          <div class="class-info-item">
+                            <div class="class-info-icon"><i class="bi bi-journal-check text-success"></i></div>
+                            <div>
+                              <span class="d-block text-secondary small">Tổng số buổi</span>
+                              <strong class="text-success fs-6"><%= cls.ThoiLuong || course.ThoiLuong || 30 %> buổi học</strong>
+                            </div>
+                          </div>
+                          <div class="class-info-item">
+                            <div class="class-info-icon"><i class="bi bi-clock text-primary"></i></div>
+                            <div>
+                              <span class="d-block text-secondary small">Lịch học cố định</span>
+                              <strong class="text-dark"><%= cls.LichHoc %></strong>
+                            </div>
+                          </div>
+                          <div class="class-info-item">
+                            <div class="class-info-icon"><i class="bi bi-people text-info"></i></div>
+                            <div>
+                              <span class="d-block text-secondary small">Sĩ số</span>
+                              <strong class="text-dark"><%= cls.SiSoHienTai || 0 %> / <%= cls.SiSoToiDa %> học viên</strong>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Right: Action Buttons -->
+                      <div class="class-actions d-flex align-items-center gap-2">
+                        <% if (!isPastStartDate && cls.TrangThaiLop !== 'Đã khai giảng' && cls.TrangThaiLop !== 'Kết thúc' && cls.TrangThaiLop !== 'Đã đóng') { %>
+                          <% if (!isFull) { %>
+                            <button class="btn btn-cart-outline" onclick="addtoCartHandler(<%= cls.MaLopHoc %>, '<%= cls.TenLop %>')" title="Thêm vào giỏ hàng">
+                              <i class="bi bi-cart-plus me-1"></i>Thêm vào giỏ
+                            </button>
+                            <button class="btn btn-enroll-primary" onclick="enrollInClass(<%= cls.MaLopHoc %>, '<%= cls.TenLop %>')">
+                              Đăng ký lớp
+                            </button>
+                          <% } else { %>
+                            <button class="btn btn-outline-danger px-4 py-2" disabled>Lớp đã đầy</button>
+                          <% } %>
+                        <% } else { %>
+                          <button class="btn btn-outline-secondary px-4 py-2" disabled><i class="bi bi-lock-fill me-1"></i>Đã khai giảng</button>
+                        <% } %>
+                      </div>
+                    </div>
+                  <% }) %>
+                </div>
+              <% } else { %>
+                <div class="p-4 bg-light rounded text-center border">
+                  <p class="text-muted mb-0"><i class="bi bi-info-circle me-2"></i>Hiện tại chưa có lịch khai giảng mới cho khóa học này. Vui lòng liên hệ trung tâm để nhận lịch học mới nhất.</p>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="text-center py-5 bg-white rounded-4 border">
+      <i class="bi bi-calendar-x text-muted" style="font-size: 3.5rem;"></i>
+      <h4 class="fw-bold mt-3">Chưa có lịch khai giảng nào</h4>
+      <p class="text-muted">Các lớp học tuyển sinh đang được cập nhật, vui lòng quay lại sau.</p>
+    </div>
+  <% } %>
+</div>
+
+<!-- Modal Alert/Handler Script -->
+<script>
+  const isLoggedIn = <%= user ? 'true' : 'false' %>;
+  const isGoogleGuest = <%= user && user.isGoogleGuest ? 'true' : 'false' %>;
+  const userRole = '<%= user ? user.TenVaiTro : "null" %>';
+
+  function addtoCartHandler(classId, className) {
+    if (!isLoggedIn) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Yêu cầu tài khoản',
+        text: `Vui lòng đăng nhập hoặc đăng ký tài khoản để thêm lớp ${className} vào giỏ hàng.`,
+        showCancelButton: true,
+        confirmButtonText: 'Đăng nhập / Đăng ký',
+        cancelButtonText: 'Hủy',
+        confirmButtonColor: '#3498db'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `/login?redirect=/courses`;
+        }
+      });
+      return;
+    }
+
+    if (isGoogleGuest) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Yêu cầu đăng ký tài khoản',
+        text: 'Tài khoản Google của bạn chưa hoàn tất đăng ký thông tin học viên. Vui lòng đăng ký tài khoản trước khi đăng ký lớp học.',
+        showCancelButton: true,
+        confirmButtonText: 'Đăng ký ngay',
+        cancelButtonText: 'Hủy',
+        confirmButtonColor: '#3498db'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/register';
+        }
+      });
+      return;
+    }
+
+    if (userRole !== 'Học viên') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Thông báo',
+        text: 'Chỉ tài khoản học viên mới được thêm lớp học vào giỏ hàng.',
+        confirmButtonText: 'Đồng ý',
+        confirmButtonColor: '#3498db'
+      });
+      return;
+    }
+
+    const processCartResult = (data) => {
+      if (data.requireInputWarning) {
+        const displayTitle = data.className || className || 'lớp học';
+        const checkboxText = data.confirmCheckboxText || `Tôi xác nhận đã đọc kỹ yêu cầu đầu vào của lớp ${displayTitle} và tự chịu trách nhiệm về lựa chọn này.`;
+
+        Swal.fire({
+          icon: 'warning',
+          title: 'Cảnh báo điều kiện đầu vào',
+          html: `
+            <div class="text-start p-1">
+              <div class="alert alert-warning border-warning rounded-3 mb-3 p-3" style="background-color: #fff3cd; color: #664d03;">
+                <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill text-warning me-2 fs-5"></i>Lưu ý điều kiện đầu vào:</div>
+                <div class="small" style="line-height: 1.5;">
+                  Hệ thống ghi nhận học viên <strong>chưa làm Bài Test đầu vào</strong> hoặc <strong>chưa học Khóa học tiền đề</strong> (Pre-TOEIC / Cơ bản) trước khi đăng ký lớp <strong>"${displayTitle}"</strong>.
+                </div>
+              </div>
+              <div class="form-check p-3 bg-light rounded-3 border border-secondary-subtle">
+                <input class="form-check-input ms-0 me-2" type="checkbox" id="inputConditionCheckboxSched" style="cursor: pointer; width: 1.2em; height: 1.2em;">
+                <label class="form-check-label fw-semibold text-dark small" for="inputConditionCheckboxSched" style="cursor: pointer; user-select: none;">
+                  ${checkboxText}
+                </label>
+              </div>
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonText: '<i class="bi bi-check-circle-fill me-1"></i>Xác nhận & Đăng ký',
+          cancelButtonText: 'Hủy',
+          confirmButtonColor: '#f39c12',
+          cancelButtonColor: '#6c757d',
+          focusConfirm: false,
+          preConfirm: () => {
+            const chk = document.getElementById('inputConditionCheckboxSched');
+            if (!chk || !chk.checked) {
+              Swal.showValidationMessage('Vui lòng tích chọn xác nhận đã đọc kỹ yêu cầu đầu vào trước khi tiếp tục!');
+              return false;
+            }
+            return true;
+          }
+        }).then((warnRes) => {
+          if (warnRes.isConfirmed) {
+            fetch('/courses/cart/add', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ MaLopHoc: classId, confirmedInputWarning: true })
+            })
+            .then(res => res.json())
+            .then(resData => processCartResult(resData))
+            .catch(err => {
+              console.error(err);
+              Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Có lỗi xảy ra khi thêm vào giỏ hàng.' });
+            });
+          }
+        });
+        return;
+      }
+
+      if (data.success) {
+        const badge = document.getElementById('header-cart-badge');
+        if (badge) {
+          badge.innerText = data.cartCount;
+          badge.classList.remove('d-none');
+        }
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Thêm vào giỏ hàng thành công!',
+          text: `Đã thêm lớp học "${className}" vào giỏ hàng. Bạn có muốn đến giỏ hàng ngay không?`,
+          showCancelButton: true,
+          confirmButtonText: 'Đến giỏ hàng',
+          cancelButtonText: 'Hủy',
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#6c757d'
+        }).then((navRes) => {
+          if (navRes.isConfirmed) {
+            window.location.href = '/courses/cart';
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'info',
+          title: 'Thông báo',
+          text: data.message || `Lớp học "${className}" đã có trong giỏ hàng. Bạn có muốn đến giỏ hàng không?`,
+          showCancelButton: true,
+          confirmButtonText: 'Đến giỏ hàng',
+          cancelButtonText: 'Hủy',
+          confirmButtonColor: '#3498db',
+          cancelButtonColor: '#6c757d'
+        }).then((navRes) => {
+          if (navRes.isConfirmed) {
+            window.location.href = '/courses/cart';
+          }
+        });
+      }
+    };
+
+    fetch('/courses/cart/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ MaLopHoc: classId })
+    })
+    .then(res => res.json())
+    .then(data => processCartResult(data))
+    .catch(err => {
+      console.error(err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Lỗi',
+        text: 'Có lỗi xảy ra khi thêm vào giỏ hàng.',
+        confirmButtonText: 'Đồng ý',
+        confirmButtonColor: '#e74c3c'
+      });
+    });
+  }
+
+  function enrollInClass(classId, className) {
+    if (!isLoggedIn) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Yêu cầu tài khoản',
+        text: `Vui lòng đăng nhập hoặc đăng ký tài khoản để tiến hành đăng ký lớp ${className}.`,
+        showCancelButton: true,
+        confirmButtonText: 'Đăng nhập / Đăng ký',
+        cancelButtonText: 'Hủy',
+        confirmButtonColor: '#3498db'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `/login?redirect=/courses`;
+        }
+      });
+      return;
+    }
+
+    if (isGoogleGuest) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Yêu cầu đăng ký tài khoản',
+        text: 'Tài khoản Google của bạn chưa hoàn tất đăng ký thông tin học viên. Vui lòng đăng ký tài khoản trước khi đăng ký lớp học.',
+        showCancelButton: true,
+        confirmButtonText: 'Đăng ký ngay',
+        cancelButtonText: 'Hủy',
+        confirmButtonColor: '#3498db'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/register';
+        }
+      });
+      return;
+    }
+
+    if (userRole !== 'Học viên') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Thông báo',
+        text: 'Chỉ tài khoản học viên mới được đăng ký lớp học.',
+        confirmButtonText: 'Đồng ý',
+        confirmButtonColor: '#3498db'
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: 'Xác nhận đăng ký học?',
+      html: `Bạn có chắc chắn muốn đăng ký lớp học <strong>${className || ''}</strong> không?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Đồng ý & Đăng ký',
+      cancelButtonText: 'Hủy',
+      confirmButtonColor: '#3498db',
+      cancelButtonColor: '#6c757d'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch('/courses/cart/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ MaLopHoc: classId })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = '/courses/cart';
+          } else {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Không thể đăng ký!',
+              text: data.message || 'Bạn đã đăng ký lớp học này rồi!',
+              confirmButtonText: 'Đồng ý',
+              confirmButtonColor: '#e74c3c'
+            });
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: 'Có lỗi xảy ra khi thực hiện đăng ký.',
+            confirmButtonText: 'Đồng ý',
+            confirmButtonColor: '#e74c3c'
+          });
+        });
+      }
+    });
+  }
+</script>
+
+
+<%- include('../layouts/footer') %>

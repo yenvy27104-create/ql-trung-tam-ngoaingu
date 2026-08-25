@@ -1,0 +1,260 @@
+<%- include('../layouts/header') %>
+
+<%
+function formatListeningTactic(text) {
+  if (!text) return '';
+  let clean = text.replace(/<\/?[^>]+(>|$)/g, ""); // Strip any leftover tags
+  
+  // Format bold prefixes like "Tranh có người:" or "Tranh phong cảnh/đồ vật:" or "Ví dụ:" or "Lưu ý:" or "Lợi ích:" or "Quy tắc:"
+  let firstColonIdx = clean.indexOf(':');
+  if (firstColonIdx > 0 && firstColonIdx < 45) {
+    let title = clean.substring(0, firstColonIdx).trim();
+    let body = clean.substring(firstColonIdx + 1).trim();
+    body = highlightListeningKeywords(body);
+    return `<strong>${title}:</strong> ${body}`;
+  }
+  
+  return highlightListeningKeywords(clean);
+}
+
+function highlightListeningKeywords(body) {
+  // Highlight formulas
+  body = body.replace(/(being \+ V-pII|being|displaying|S \+ is\/are \+ V-ing \+ O)/g, '<code>$1</code>');
+  // Highlight quoted words
+  body = body.replace(/("copy"|"coffee"|"work"|"walk"|'copy'|'coffee'|'work'|'walk')/g, '<em>$1</em>');
+  // Highlight key terms like "Direction", "Answer Sheet", "Golden Time"
+  body = body.replace(/(Direction|Answer Sheet|Golden Time|3-Finger Technique|Graphic|Wh- Questions|Yes\/No Questions|Tag Questions)/g, '<strong>$1</strong>');
+  return body;
+}
+%>
+
+<style>
+  .article-container {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid #eef2f5;
+  }
+
+  .tactic-card {
+    background: #fcfdfe;
+    border-radius: 18px;
+    border: 1px solid #eef3f7;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+    transition: all 0.3s ease;
+  }
+
+  .tactic-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+    border-color: #dbeafe;
+  }
+
+  .tactic-badge {
+    background: linear-gradient(135deg, #1abc9c, #16a085);
+    color: white;
+    font-weight: bold;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(26, 188, 156, 0.2);
+  }
+
+  .example-box {
+    background: rgba(52, 152, 219, 0.06);
+    border-left: 4px solid #3498db;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 15px;
+  }
+
+  .tip-box {
+    background: rgba(241, 196, 15, 0.08);
+    border-left: 4px solid #f1c40f;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-top: 15px;
+  }
+
+  .subtactic-box {
+    background: #ffffff;
+    border: 1px solid #eaedf0;
+    border-radius: 12px;
+    padding: 18px;
+    margin-top: 12px;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.01);
+  }
+
+  .sidebar-card {
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+    border: 1px solid #eef2f5;
+  }
+</style>
+
+<div class="container py-2">
+  <!-- Breadcrumbs -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted"><i class="bi bi-house-door-fill me-1"></i>Trang chủ</a></li>
+      <li class="breadcrumb-item"><a href="/#TinTuc" class="text-decoration-none text-muted">Tin tức</a></li>
+      <li class="breadcrumb-item active text-primary fw-medium" aria-current="page">Mẹo làm bài TOEIC Listening</li>
+    </ol>
+  </nav>
+
+  <!-- Title Section -->
+  <div class="my-4">
+    <span class="badge bg-danger mb-2 px-3 py-2 text-uppercase fw-semibold" style="letter-spacing: 0.5px; font-size: 0.75rem;">Cẩm nang TOEIC</span>
+    <h1 class="fw-bold text-dark mb-2" style="font-size: 2.2rem; line-height: 1.25;">
+      <%= article ? article.TieuDe : 'Mẹo làm bài TOEIC Listening bứt phá điểm số: 5 Chiến thuật đỉnh cao' %>
+    </h1>
+    <div class="d-flex flex-wrap align-items-center gap-3 text-muted" style="font-size: 0.9rem;">
+      <span class="d-flex align-items-center"><i class="bi bi-calendar3 me-1.5"></i><%= new Date(article ? article.NgayDang : Date.now()).toLocaleDateString('vi-VN') %></span>
+      <span class="d-flex align-items-center"><i class="bi bi-person-fill me-1.5"></i>Ban chuyên môn Anh ngữ Y&V</span>
+      <span class="d-flex align-items-center"><i class="bi bi-eye-fill me-1.5"></i>2,845 lượt xem</span>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Main Content Column (Full Width) -->
+    <div class="col-12">
+      <div class="article-container p-4 p-md-5">
+        
+        <!-- Introduction -->
+        <p class="lead text-secondary fw-semibold mb-5" style="line-height: 1.7; font-size: 1.15rem;">
+          <%= article ? article.TomTat : (meoData.intro || 'Phần thi Listening của TOEIC (gồm 100 câu nghe trong 45 phút) thường tạo áp lực thời gian cực lớn cho thí sinh. Để bứt phá điểm số tối đa, bạn không chỉ cần nghe tốt mà còn cần trang bị những chiến thuật phân bổ thời gian và nhận diện bẫy thực chiến dưới đây từ Anh ngữ Y&V.') %>
+        </p>
+
+        <!-- TACTICS LOOP -->
+        <% (meoData.tactics || []).forEach((tactic, idx) => { %>
+          <div class="tactic-card">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+              <span class="tactic-badge">Chiến thuật <%= idx + 1 %></span>
+              <h4 class="fw-bold text-dark m-0 flex-grow-1 ps-md-2"><%= tactic.title %></h4>
+            </div>
+            <% if (tactic.desc) { %>
+              <p><%- formatListeningTactic(tactic.desc) %></p>
+            <% } %>
+            
+            <div class="row g-3 mt-1">
+              <% (tactic.sections || []).forEach(sec => { %>
+                <div class="<%= tactic.sections.length > 1 ? 'col-md-6' : 'col-12' %>">
+                  <div class="subtactic-box h-100">
+                    <h6 class="fw-bold text-<%= sec.theme %>"><i class="bi <%= sec.icon %> me-2"></i><%= sec.name %></h6>
+                    <% if (sec.desc) { %>
+                      <p class="small text-secondary mb-0"><%- formatListeningTactic(sec.desc) %></p>
+                    <% } %>
+                    <% if (sec.items && sec.items.length > 0) { %>
+                      <ul class="small text-secondary mt-2 mb-0" style="padding-left: 20px;">
+                        <% sec.items.forEach(item => { %>
+                          <li><%- formatListeningTactic(item) %></li>
+                        <% }); %>
+                      </ul>
+                    <% } %>
+                    <% if (sec.note) { %>
+                      <div class="tip-box py-2 px-3 mt-2 mb-0" style="font-size: 0.85rem;">
+                        <i class="bi bi-lightbulb-fill me-1 text-warning"></i><%- formatListeningTactic(sec.note) %>
+                      </div>
+                    <% } %>
+                    <% if (sec.example) { %>
+                      <div class="example-box py-2 px-3 mt-2" style="font-size: 0.85rem;">
+                        <%- formatListeningTactic(sec.example) %>
+                      </div>
+                    <% } %>
+                    <% if (sec.choices && sec.choices.length > 0) { %>
+                      <div class="row g-2 mt-2">
+                        <% sec.choices.forEach(ch => { %>
+                          <div class="col-sm-6"><div class="p-2 border rounded bg-white text-center small fw-semibold"><%= ch %></div></div>
+                        <% }); %>
+                      </div>
+                    <% } %>
+                    <% if (sec.keywords) { %>
+                      <div class="text-center fw-bold my-2 text-primary">
+                        <%= sec.keywords %>
+                      </div>
+                    <% } %>
+                    <% if (sec.benefit) { %>
+                      <p class="small text-secondary mt-2 mb-0"><%- formatListeningTactic(sec.benefit) %></p>
+                    <% } %>
+                    <% if (sec.tip) { %>
+                      <div class="tip-box py-2 px-3 mt-2 mb-0" style="font-size: 0.85rem;">
+                        <i class="bi bi-lightbulb-fill me-1 text-warning"></i><%- formatListeningTactic(sec.tip) %>
+                      </div>
+                    <% } %>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+        <% }); %>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Action Cards Section -->
+  <div class="row g-4 mt-4">
+    <!-- Card 1: Placement Test -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 text-center border-0 h-100 d-flex flex-column justify-content-between" style="background: linear-gradient(135deg, #1a252f, #2c3e50); color: white;">
+        <div>
+          <h5 class="fw-bold mb-3"><i class="bi bi-pencil-square me-2 text-warning"></i>Đánh giá năng lực</h5>
+          <p class="small text-white-50 mb-4">Làm bài kiểm tra đầu vào TOEIC (100 câu) hoàn toàn miễn phí để biết chính xác trình độ hiện tại của bạn.</p>
+        </div>
+        <a href="/exams/placement" 
+           onclick="checkPlacementTest(event, <%= user ? 'true' : 'false' %>)" 
+           class="btn btn-warning fw-bold w-100 py-2.5 rounded-3 shadow">
+          Thi thử đầu vào
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 2: Practice Exams -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 text-center h-100 d-flex flex-column justify-content-between">
+        <div>
+          <h5 class="fw-bold text-dark mb-3"><i class="bi bi-journal-check me-2 text-primary"></i>Luyện đề thi thử</h5>
+          <p class="small text-secondary mb-4">Kho đề thi thử TOEIC chuẩn cấu trúc IIG kèm giải thích chi tiết đáp án giúp bạn rèn luyện phản xạ.</p>
+        </div>
+        <a href="/exams/free" class="btn btn-primary fw-bold w-100 py-2.5 rounded-3 shadow-sm">
+          Luyện đề miễn phí
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 3: Related News -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 h-100">
+        <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">Tin tức liên quan</h5>
+        <div class="d-flex flex-column gap-3 text-start">
+          
+          <a href="/format-toeic" class="text-decoration-none text-dark d-flex gap-2">
+            <div class="rounded overflow-hidden" style="width: 70px; height: 50px; flex-shrink: 0;">
+              <img src="/images/Cap_Nhat_Fomat.png" class="w-100 h-100 object-fit-cover" alt="Format" />
+            </div>
+            <div>
+              <h6 class="small fw-bold mb-1 line-clamp-2" style="font-size: 0.85rem; line-height: 1.3;">Cấu trúc đề thi TOEIC mới nhất năm 2026</h6>
+              <span class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Mới nhất</span>
+            </div>
+          </a>
+
+          <a href="/tu-vung-van-phong" class="text-decoration-none text-dark d-flex gap-2">
+            <div class="rounded overflow-hidden" style="width: 70px; height: 50px; flex-shrink: 0;">
+              <img src="/images/Kho_Tu_Vung.png" class="w-100 h-100 object-fit-cover" alt="Từ vựng" />
+            </div>
+            <div>
+              <h6 class="small fw-bold mb-1 line-clamp-2" style="font-size: 0.85rem; line-height: 1.3;">Kho 100 từ vựng TOEIC chủ đề văn phòng hay gặp</h6>
+              <span class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Hot</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

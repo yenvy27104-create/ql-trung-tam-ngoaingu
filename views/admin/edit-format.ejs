@@ -1,0 +1,701 @@
+<%- include('../layouts/header') %>
+
+<style>
+  .article-container {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid #eef2f5;
+  }
+
+  .nav-pills-custom {
+    border-bottom: 2px solid #eef2f5;
+    padding-bottom: 10px;
+  }
+
+  .nav-pills-custom .nav-link {
+    color: #5c6a79;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 12px;
+    transition: all 0.3s;
+    border: 1.5px solid transparent;
+    background-color: transparent;
+  }
+
+  .nav-pills-custom .nav-link.active {
+    color: var(--accent-color);
+    background: rgba(52, 152, 219, 0.08);
+    border-color: rgba(52, 152, 219, 0.2);
+  }
+
+  .step-card {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #eaedf0;
+    transition: all 0.2s;
+  }
+
+  .step-card:hover {
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    border-color: #cbd5e1;
+  }
+
+  .timeline-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-right: 10px;
+  }
+
+  .formula-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #0f172a;
+  }
+
+  .tip-box {
+    background: rgba(241, 196, 15, 0.08);
+    border-left: 4px solid #f1c40f;
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+
+  .sticky-action-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 25px;
+    border-radius: 0 0 16px 16px;
+  }
+
+  /* Seamless Form inputs */
+  .seamless-input {
+    border: 1px solid transparent;
+    background: transparent;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .seamless-input:hover {
+    background: rgba(0,0,0,0.02);
+    border-color: #cbd5e1;
+  }
+  .seamless-input:focus {
+    background: #ffffff;
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+  }
+</style>
+
+<!-- Sticky Admin Actions Header -->
+<div class="sticky-action-bar py-3 px-4 shadow-sm mb-4">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <a href="/admin/dashboard?tab=content" class="btn btn-outline-secondary me-3"><i class="bi bi-arrow-left me-1"></i>Quay lại</a>
+      <h4 class="fw-bold mb-0 text-dark"><i class="bi bi-layout-text-sidebar-reverse text-primary me-2"></i>Chỉnh sửa Cấu trúc &amp; Format TOEIC</h4>
+    </div>
+    <div>
+      <button class="btn btn-success fw-bold px-4 shadow" onclick="saveFormatData()"><i class="bi bi-cloud-arrow-up-fill me-2"></i>Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
+
+<div class="container py-2 mb-5">
+  <!-- Breadcrumbs -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/dashboard?tab=content" class="text-decoration-none text-muted"><i class="bi bi-house-door-fill me-1"></i>Quản trị</a></li>
+      <li class="breadcrumb-item active text-primary fw-medium" aria-current="page">Sửa chi tiết: Cấu trúc format TOEIC</li>
+    </ol>
+  </nav>
+
+  <div class="row g-4 mt-2">
+    <!-- Main Content Column -->
+    <div class="col-12">
+      <div class="article-container p-4 p-md-5">
+        
+        <!-- Introduction edit section -->
+        <div class="mb-4">
+          <label class="form-label fw-bold text-secondary small"><i class="bi bi-card-text me-2"></i>Đoạn giới thiệu mở đầu (Introduction)</label>
+          <textarea id="format-intro" class="form-control lead fw-semibold text-secondary seamless-input p-3" rows="3" style="line-height: 1.7; font-size: 1.15rem; background: #f8fafc;"><%= formatData.intro %></textarea>
+        </div>
+        
+        <!-- OVERVIEW TABLES SECTION -->
+        <div class="border-top pt-4 mt-4">
+          <h3 class="fw-bold mb-3 text-dark d-flex align-items-center">
+            <span class="badge bg-primary me-2.5" style="padding: 6px 12px; font-size: 0.9rem;">I</span>
+            Cấu Trúc Đề Thi TOEIC Hiện Hành (Chỉnh sửa bảng tổng quan)
+          </h3>
+          
+          <div class="row g-4 mb-5">
+            <!-- Listening Table Card -->
+            <% if (formatData.overview && formatData.overview.listening) { %>
+              <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-3 h-100" style="background: #fcfdfe; border: 1px solid #eef2f6 !important;">
+                  <div class="card-header bg-dark text-white fw-bold py-3 d-flex align-items-center justify-content-between">
+                    <span><i class="bi bi-headphones me-2"></i>Tiêu đề bảng:</span>
+                    <input type="text" id="overview-listening-title" class="form-control form-control-sm bg-transparent text-white border-0 fw-bold w-50 text-end p-0" value="<%= formatData.overview.listening.title %>" required />
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-hover mb-0 align-middle" id="overview-listening-table">
+                        <thead class="table-light text-secondary small">
+                          <tr>
+                            <th class="ps-3" style="width: 15%;">Phần</th>
+                            <th style="width: 20%;">Số câu</th>
+                            <th style="width: 55%;">Nội dung câu hỏi</th>
+                            <th style="width: 10%;" class="text-center">Xóa</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% (formatData.overview.listening.parts || []).forEach(part => { %>
+                            <tr data-part-id="<%= part.id %>">
+                              <td class="fw-bold ps-3"><input type="text" class="form-control form-control-sm seamless-input fw-bold p-1 part-id-input" value="<%= part.id %>" style="width: 80px;" required /></td>
+                              <td><input type="text" class="form-control form-control-sm part-count-input seamless-input fw-semibold text-primary p-1" value="<%= part.count %>" required /></td>
+                              <td><input type="text" class="form-control form-control-sm part-desc-input seamless-input p-1" value="<%= part.desc %>" required /></td>
+                              <td class="text-center"><button type="button" class="btn btn-sm btn-outline-danger border-0" onclick="confirmDeleteRow(this)"><i class="bi bi-trash-fill"></i></button></td>
+                            </tr>
+                          <% }); %>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="p-2 text-end">
+                      <button type="button" class="btn btn-sm btn-outline-primary fw-bold" onclick="addOverviewRow('overview-listening-table', 'primary')"><i class="bi bi-plus-circle me-1"></i>Thêm dòng</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+
+            <!-- Reading Table Card -->
+            <% if (formatData.overview && formatData.overview.reading) { %>
+              <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-3 h-100" style="background: #fcfdfe; border: 1px solid #eef2f6 !important;">
+                  <div class="card-header bg-success text-white fw-bold py-3 d-flex align-items-center justify-content-between">
+                    <span><i class="bi bi-book-half me-2"></i>Tiêu đề bảng:</span>
+                    <input type="text" id="overview-reading-title" class="form-control form-control-sm bg-transparent text-white border-0 fw-bold w-50 text-end p-0" value="<%= formatData.overview.reading.title %>" required />
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive">
+                      <table class="table table-hover mb-0 align-middle" id="overview-reading-table">
+                        <thead class="table-light text-secondary small">
+                          <tr>
+                            <th class="ps-3" style="width: 15%;">Phần</th>
+                            <th style="width: 20%;">Số câu</th>
+                            <th style="width: 55%;">Nội dung câu hỏi</th>
+                            <th style="width: 10%;" class="text-center">Xóa</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% (formatData.overview.reading.parts || []).forEach(part => { %>
+                            <tr data-part-id="<%= part.id %>">
+                              <td class="fw-bold ps-3"><input type="text" class="form-control form-control-sm seamless-input fw-bold p-1 part-id-input" value="<%= part.id %>" style="width: 80px;" required /></td>
+                              <td><input type="text" class="form-control form-control-sm part-count-input seamless-input fw-semibold text-success p-1" value="<%= part.count %>" required /></td>
+                              <td><input type="text" class="form-control form-control-sm part-desc-input seamless-input p-1" value="<%= part.desc %>" required /></td>
+                              <td class="text-center"><button type="button" class="btn btn-sm btn-outline-danger border-0" onclick="confirmDeleteRow(this)"><i class="bi bi-trash-fill"></i></button></td>
+                            </tr>
+                          <% }); %>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="p-2 text-end">
+                      <button type="button" class="btn btn-sm btn-outline-success fw-bold" onclick="addOverviewRow('overview-reading-table', 'success')"><i class="bi bi-plus-circle me-1"></i>Thêm dòng</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- DETAILED INTERACTIVE SECTIONS (TABS) -->
+        <div class="border-top pt-4">
+          <h3 class="fw-bold mb-3 text-dark d-flex align-items-center">
+            <span class="badge bg-primary me-2.5" style="padding: 6px 12px; font-size: 0.9rem;">II</span>
+            Phân Tích Chi Tiết &amp; Chiến Thuật Part 1 - Part 7 (Chỉnh sửa nội dung)
+          </h3>
+          
+          <!-- Tab Navigation buttons -->
+          <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
+            <ul class="nav nav-pills nav-pills-custom gap-2 mb-0 flex-grow-1" role="tablist" id="formatPartsTab">
+              <% (formatData.parts_detail || []).forEach((part, idx) => { %>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link <%= idx === 0 ? 'active' : '' %>" id="edit-part-<%= part.id %>-tab" data-bs-toggle="pill" data-bs-target="#edit-part-<%= part.id %>-pane" type="button" role="tab">Part <%= part.id %></button>
+                </li>
+              <% }); %>
+            </ul>
+            <button type="button" class="btn btn-sm btn-primary rounded-pill fw-bold" onclick="addNewPart()"><i class="bi bi-plus-circle me-1"></i>Thêm Part mới</button>
+          </div>
+          
+          <!-- Tab Contents -->
+          <div class="tab-content" id="formatPartsTabContent">
+            <% (formatData.parts_detail || []).forEach((part, idx) => { %>
+              <div class="tab-pane fade <%= idx === 0 ? 'show active' : '' %> edit-part-pane" id="edit-part-<%= part.id %>-pane" role="tabpanel" data-part-id="<%= part.id %>">
+                <div class="part-tab-content">
+                  
+                  <div class="d-flex align-items-center mb-3 border-bottom pb-2 flex-wrap gap-2">
+                    <input type="text" class="form-control part-title-input seamless-input fw-bold text-dark m-0 fs-4 p-1" style="flex: 1; min-width: 200px;" value="<%= part.title %>" required />
+                    <input type="text" class="form-control part-count-badge-input seamless-input fw-bold text-primary bg-primary-subtle rounded-pill px-4 py-2 text-center" style="width: auto; min-width: 160px; font-size: 1.05rem;" value="<%= part.count %>" required />
+                    <button type="button" class="btn btn-sm btn-outline-danger ms-auto rounded-pill" onclick="deletePart(this, <%= part.id %>)"><i class="bi bi-trash me-1"></i>Xóa Part này</button>
+                  </div>
+                  
+                  <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+                    <h5 class="fw-bold text-primary-emphasis mb-0"><i class="bi bi-info-circle-fill me-2"></i>1. Cấu trúc bài thi</h5>
+                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" onclick="clearSection(this, '.part-desc-textarea', 'mô tả cấu trúc bài thi')"><i class="bi bi-x-circle me-1"></i>Xóa mô tả</button>
+                  </div>
+                  <textarea class="form-control part-desc-textarea seamless-input p-3" rows="3" style="border-radius: 12px; background: #f8fafc;" required><%= part.desc %></textarea>
+                  
+                  <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+                    <h5 class="fw-bold text-primary-emphasis mb-0"><i class="bi bi-clock-history me-2"></i>2. Phân bổ thời gian thực chiến</h5>
+                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill fw-bold" onclick="addStep(<%= part.id %>)"><i class="bi bi-plus-circle me-1"></i>Thêm bước mới</button>
+                  </div>
+                  <div class="row g-3 steps-list-wrap" id="steps-container-<%= part.id %>">
+                    <% (part.steps || []).forEach(step => { %>
+                      <div class="col-md-4 step-item-node">
+                        <div class="step-card h-100 position-relative">
+                          <button type="button" class="btn-close position-absolute top-0 end-0 m-2 p-1" style="font-size: 0.75rem;" onclick="deleteStep(this)"></button>
+                          <div class="d-flex align-items-center mb-2">
+                            <input type="text" class="form-control form-control-sm step-num-input timeline-badge border-0 text-center fw-bold p-0" style="width: 28px; height: 28px;" value="<%= step.num %>" required />
+                            <input type="text" class="form-control form-control-sm step-name-input seamless-input fw-bold text-dark p-1 ms-1 w-75" value="<%= step.name %>" required />
+                          </div>
+                          <textarea class="form-control form-control-sm step-desc-input seamless-input p-2 small text-secondary" rows="3" style="font-size: 0.85rem;" required><%= step.desc %></textarea>
+                        </div>
+                      </div>
+                    <% }); %>
+                  </div>
+
+                  <!-- Custom visual layouts per part (deletable sections) -->
+                  <% if (part.id === 1) { %>
+                    <div class="custom-section-wrap mt-4">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="fw-bold text-primary-emphasis mb-0"><i class="bi bi-tags-fill me-2"></i>3. Các loại tranh thường gặp</h5>
+                        <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" onclick="removeCustomSection(this)"><i class="bi bi-x-circle me-1"></i>Xóa mục này</button>
+                      </div>
+                      <div class="row g-3">
+                        <div class="col-md-6 removable-card-wrap">
+                          <div class="card border-light-subtle h-100 position-relative">
+                            <button type="button" class="btn-close position-absolute top-0 end-0 m-2" style="font-size: 0.7rem; z-index: 2;" onclick="confirmDeleteCard(this)"></button>
+                            <div class="card-body">
+                              <h6 class="fw-bold text-dark"><i class="bi bi-people-fill me-2 text-warning"></i>Tranh tả người (Chiếm đa số)</h6>
+                              <p class="small text-secondary">Tập trung vào hành động của con người (tay, mắt, tư thế). Các cấu trúc câu thường gặp:</p>
+                              <div class="formula-card mb-2">S + is/are + V-ing + O</div>
+                              <div class="formula-card">S + is/are + being V-pII (bị tác động)</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 removable-card-wrap">
+                          <div class="card border-light-subtle h-100 position-relative">
+                            <button type="button" class="btn-close position-absolute top-0 end-0 m-2" style="font-size: 0.7rem; z-index: 2;" onclick="confirmDeleteCard(this)"></button>
+                            <div class="card-body">
+                              <h6 class="fw-bold text-dark"><i class="bi bi-box-seam-fill me-2 text-warning"></i>Tranh tả vật &amp; phong cảnh</h6>
+                              <p class="small text-secondary">Tập trung vào vị trí, trạng thái của đồ vật xung quanh. Các cấu trúc thường gặp:</p>
+                              <div class="formula-card mb-2">S + is/are + V-pII + Preposition</div>
+                              <div class="formula-card">There is/are + N + Preposition</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% } else if (part.id === 2) { %>
+                    <div class="custom-section-wrap mt-4">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="fw-bold text-primary-emphasis mb-0"><i class="bi bi-question-circle-fill me-2"></i>3. Các dạng câu hỏi chính &amp; Mẫu trả lời</h5>
+                        <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" onclick="removeCustomSection(this)"><i class="bi bi-x-circle me-1"></i>Xóa mục này</button>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-bordered table-striped small align-middle">
+                          <thead class="table-light">
+                            <tr>
+                              <th>Dạng câu hỏi</th>
+                              <th>Đặc điểm chính</th>
+                              <th>Ví dụ thực tế</th>
+                              <th style="width: 40px;" class="text-center">Xóa</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="fw-bold">Wh- Questions</td>
+                              <td>Bắt đầu bằng Who, Where, When, Why, How, What. Thường không trả lời bằng Yes/No.</td>
+                              <td><em>Q: Who has the copy of the report?</em><br><span class="text-success">A: John does, in his office.</span></td>
+                              <td class="text-center"><button type="button" class="btn btn-sm btn-outline-danger border-0" onclick="confirmDeleteRow(this)"><i class="bi bi-trash-fill"></i></button></td>
+                            </tr>
+                            <tr>
+                              <td class="fw-bold">Yes/No Questions</td>
+                              <td>Hỏi đảo trợ động từ (Is, Do, Can, Have...). Có thể trả lời gián tiếp không cần Yes/No.</td>
+                              <td><em>Q: Haven't you had lunch yet?</em><br><span class="text-success">A: No, I didn't have time.</span></td>
+                              <td class="text-center"><button type="button" class="btn btn-sm btn-outline-danger border-0" onclick="confirmDeleteRow(this)"><i class="bi bi-trash-fill"></i></button></td>
+                            </tr>
+                            <tr>
+                              <td class="fw-bold">Tag Questions</td>
+                              <td>Câu hỏi đuôi ở cuối nhằm xác nhận thông tin.</td>
+                              <td><em>Q: The report is hard, isn't it?</em><br><span class="text-success">A: Yes, it's very confusing.</span></td>
+                              <td class="text-center"><button type="button" class="btn btn-sm btn-outline-danger border-0" onclick="confirmDeleteRow(this)"><i class="bi bi-trash-fill"></i></button></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  <% } %>
+
+                  <!-- Tactics edit textarea -->
+                  <div class="tip-box mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <h6 class="fw-bold text-warning-emphasis mb-0"><i class="bi bi-lightbulb-fill me-2"></i>Chiến thuật ghi điểm Part <%= part.id %> (Mỗi dòng là một gạch đầu dòng)</h6>
+                      <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" onclick="clearSection(this, '.part-tactics-textarea', 'chiến thuật ghi điểm')"><i class="bi bi-x-circle me-1"></i>Xóa chiến thuật</button>
+                    </div>
+                    <textarea class="form-control part-tactics-textarea seamless-input p-2 text-dark" rows="5" placeholder="Nhập mỗi chiến thuật trên một dòng..."><%= part.tactics ? part.tactics.join('\n') : '' %></textarea>
+                  </div>
+                  
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function confirmDeleteRow(btn) {
+    Swal.fire({
+      title: 'Xác nhận xóa?',
+      text: 'Bạn có chắc chắn muốn xóa dòng này không?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        btn.closest('tr').remove();
+      }
+    });
+  }
+
+  function confirmDeleteCard(btn) {
+    Swal.fire({
+      title: 'Xác nhận xóa?',
+      text: 'Bạn có chắc chắn muốn xóa thẻ thông tin này không?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const wrap = btn.closest('.removable-card-wrap') || btn.closest('.step-item-node');
+        if (wrap) wrap.remove();
+      }
+    });
+  }
+
+  function clearSection(btn, selector, sectionName) {
+    Swal.fire({
+      title: 'Xác nhận xóa?',
+      text: `Bạn có chắc chắn muốn xóa nội dung ${sectionName} này không?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const container = btn.closest('.part-tab-content') || btn.closest('.tab-pane');
+        const textarea = container.querySelector(selector);
+        if (textarea) textarea.value = '';
+      }
+    });
+  }
+
+  function clearAllSteps(partId) {
+    Swal.fire({
+      title: 'Xóa tất cả các bước?',
+      text: 'Bạn có chắc chắn muốn xóa TẤT CẢ các bước thời gian thực chiến không?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Xóa hết',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const container = document.getElementById(`steps-container-${partId}`);
+        container.innerHTML = '';
+      }
+    });
+  }
+
+  function removeCustomSection(btn) {
+    Swal.fire({
+      title: 'Xóa toàn bộ mục?',
+      text: 'Bạn có chắc chắn muốn xóa toàn bộ mục này không?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        btn.closest('.custom-section-wrap').remove();
+      }
+    });
+  }
+
+  function deleteStep(btn) {
+    confirmDeleteCard(btn);
+  }
+
+  function addStep(partId) {
+    const container = document.getElementById(`steps-container-${partId}`);
+    const nextNum = container.querySelectorAll('.step-item-node').length + 1;
+    const html = `
+      <div class="col-md-4 step-item-node">
+        <div class="step-card h-100 position-relative">
+          <button type="button" class="btn-close position-absolute top-0 end-0 m-2 p-1" style="font-size: 0.75rem;" onclick="deleteStep(this)"></button>
+          <div class="d-flex align-items-center mb-2">
+            <span class="timeline-badge">${nextNum}</span>
+            <input type="hidden" class="step-num-input" value="${nextNum}" />
+            <input type="text" class="form-control form-control-sm step-name-input seamless-input fw-bold text-dark p-1 ms-1 w-75" placeholder="Tên bước..." required />
+          </div>
+          <textarea class="form-control form-control-sm step-desc-input seamless-input p-2 small text-secondary" rows="3" style="font-size: 0.85rem;" placeholder="Mô tả chi tiết..." required></textarea>
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+  }
+
+  function deletePart(btn, partId) {
+    Swal.fire({
+      title: 'Xóa toàn bộ Part ' + partId + '?',
+      text: 'Hành động này không thể hoàn tác! Bạn có chắc chắn không?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Xóa Part',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Remove tab button
+        const tab = document.getElementById(`edit-part-${partId}-tab`);
+        if (tab) tab.closest('li').remove();
+        // Remove tab pane
+        const pane = document.getElementById(`edit-part-${partId}-pane`);
+        if (pane) pane.remove();
+        // Activate first remaining tab
+        const firstTab = document.querySelector('#formatPartsTab .nav-link');
+        if (firstTab) { firstTab.click(); }
+      }
+    });
+  }
+
+  function addNewPart() {
+    const tabList = document.querySelector('#formatPartsTab');
+    const tabContent = document.getElementById('formatPartsTabContent');
+    const existingPanes = tabContent.querySelectorAll('.edit-part-pane');
+    const nextId = existingPanes.length + 1;
+
+    // Add tab button
+    const li = document.createElement('li');
+    li.className = 'nav-item';
+    li.setAttribute('role', 'presentation');
+    li.innerHTML = `<button class="nav-link" id="edit-part-${nextId}-tab" data-bs-toggle="pill" data-bs-target="#edit-part-${nextId}-pane" type="button" role="tab">Part ${nextId} (Mới)</button>`;
+    tabList.appendChild(li);
+
+    // Add tab pane
+    const pane = document.createElement('div');
+    pane.className = 'tab-pane fade edit-part-pane';
+    pane.id = `edit-part-${nextId}-pane`;
+    pane.setAttribute('role', 'tabpanel');
+    pane.setAttribute('data-part-id', nextId);
+    pane.innerHTML = `
+      <div class="part-tab-content">
+        <div class="d-flex align-items-center mb-3 border-bottom pb-2 flex-wrap gap-2">
+          <input type="text" class="form-control part-title-input seamless-input fw-bold text-dark m-0 fs-4 p-1" style="flex: 1; min-width: 200px;" value="Part ${nextId}: " required />
+          <input type="text" class="form-control part-count-badge-input seamless-input fw-bold text-primary bg-primary-subtle rounded-pill px-4 py-2 text-center" style="width: auto; min-width: 160px; font-size: 1.05rem;" value="" placeholder="VD: 30 câu hỏi" required />
+          <button type="button" class="btn btn-sm btn-outline-danger ms-auto rounded-pill" onclick="deletePart(this, ${nextId})"><i class="bi bi-trash me-1"></i>Xóa Part này</button>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+          <h5 class="fw-bold text-primary-emphasis mb-0"><i class="bi bi-info-circle-fill me-2"></i>1. Cấu trúc bài thi</h5>
+          <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" onclick="clearSection(this, '.part-desc-textarea', 'mô tả cấu trúc bài thi')"><i class="bi bi-x-circle me-1"></i>Xóa mô tả</button>
+        </div>
+        <textarea class="form-control part-desc-textarea seamless-input p-3" rows="3" style="border-radius: 12px; background: #f8fafc;" placeholder="Mô tả cấu trúc Part..." required></textarea>
+        <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+          <h5 class="fw-bold text-primary-emphasis mb-0"><i class="bi bi-clock-history me-2"></i>2. Phân bổ thời gian thực chiến</h5>
+          <button type="button" class="btn btn-sm btn-outline-primary rounded-pill fw-bold" onclick="addStep(${nextId})"><i class="bi bi-plus-circle me-1"></i>Thêm bước mới</button>
+        </div>
+        <div class="row g-3 steps-list-wrap" id="steps-container-${nextId}"></div>
+        <div class="tip-box mt-4">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="fw-bold text-warning-emphasis mb-0"><i class="bi bi-lightbulb-fill me-2"></i>Chiến thuật ghi điểm Part ${nextId} (Mỗi dòng là một gạch đầu dòng)</h6>
+            <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" onclick="clearSection(this, '.part-tactics-textarea', 'chiến thuật ghi điểm')"><i class="bi bi-x-circle me-1"></i>Xóa chiến thuật</button>
+          </div>
+          <textarea class="form-control part-tactics-textarea seamless-input p-2 text-dark" rows="5" placeholder="Nhập mỗi chiến thuật trên một dòng..."></textarea>
+        </div>
+      </div>
+    `;
+    tabContent.appendChild(pane);
+
+    // Activate the new tab
+    li.querySelector('.nav-link').click();
+  }
+
+  function addOverviewRow(tableId, colorClass) {
+    const tbody = document.querySelector(`#${tableId} tbody`);
+    const nextNum = tbody.querySelectorAll('tr').length + 1;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="fw-bold ps-3"><input type="text" class="form-control form-control-sm seamless-input fw-bold p-1 part-id-input" value="Part ${nextNum}" style="width: 80px;" required /></td>
+      <td><input type="text" class="form-control form-control-sm part-count-input seamless-input fw-semibold text-${colorClass} p-1" value="" placeholder="VD: 6 câu" required /></td>
+      <td><input type="text" class="form-control form-control-sm part-desc-input seamless-input p-1" value="" placeholder="Mô tả nội dung..." required /></td>
+      <td class="text-center"><button type="button" class="btn btn-sm btn-outline-danger border-0" onclick="confirmDeleteRow(this)"><i class="bi bi-trash-fill"></i></button></td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  async function saveFormatData() {
+    Swal.fire({
+      title: 'Lưu thay đổi?',
+      text: 'Bạn có chắc chắn muốn lưu tất cả các thay đổi cho cấu trúc format TOEIC này không?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#2ecc71',
+      cancelButtonColor: '#95a5a6',
+      confirmButtonText: 'Lưu lại',
+      cancelButtonText: 'Hủy'
+    }).then(async (resConfirm) => {
+      if (!resConfirm.isConfirmed) return;
+
+      const payload = {};
+      
+      // 1. Save Intro
+      payload.intro = document.getElementById('format-intro').value.trim();
+      
+      // 2. Save Overview
+      payload.overview = {
+        listening: {
+          title: document.getElementById('overview-listening-title').value.trim(),
+          parts: []
+        },
+        reading: {
+          title: document.getElementById('overview-reading-title').value.trim(),
+          parts: []
+        }
+      };
+
+      // Parse listening table rows
+      const listRows = document.querySelectorAll('#overview-listening-table tbody tr');
+      listRows.forEach(row => {
+        payload.overview.listening.parts.push({
+          id: row.querySelector('.part-id-input') ? row.querySelector('.part-id-input').value.trim() : (row.getAttribute('data-part-id') || ''),
+          count: row.querySelector('.part-count-input').value.trim(),
+          desc: row.querySelector('.part-desc-input').value.trim()
+        });
+      });
+
+      // Parse reading table rows
+      const readRows = document.querySelectorAll('#overview-reading-table tbody tr');
+      readRows.forEach(row => {
+        payload.overview.reading.parts.push({
+          id: row.querySelector('.part-id-input') ? row.querySelector('.part-id-input').value.trim() : (row.getAttribute('data-part-id') || ''),
+          count: row.querySelector('.part-count-input').value.trim(),
+          desc: row.querySelector('.part-desc-input').value.trim()
+        });
+      });
+
+      // 3. Save Parts Detail
+      payload.parts_detail = [];
+      const partPanes = document.querySelectorAll('.edit-part-pane');
+      partPanes.forEach(pane => {
+        const pId = parseInt(pane.getAttribute('data-part-id'));
+        const pTitle = pane.querySelector('.part-title-input').value.trim();
+        const pCount = pane.querySelector('.part-count-badge-input').value.trim();
+        const pDesc = pane.querySelector('.part-desc-textarea').value.trim();
+        
+        const partObj = {
+          id: pId,
+          title: pTitle,
+          count: pCount,
+          desc: pDesc,
+          steps: [],
+          tactics: []
+        };
+
+        // Steps
+        const stepNodes = pane.querySelectorAll('.step-item-node');
+        stepNodes.forEach(sNode => {
+          partObj.steps.push({
+            num: sNode.querySelector('.step-num-input').value.trim(),
+            name: sNode.querySelector('.step-name-input').value.trim(),
+            desc: sNode.querySelector('.step-desc-input').value.trim()
+          });
+        });
+
+        // Tactics
+        const tacticsRaw = pane.querySelector('.part-tactics-textarea').value.trim();
+        if (tacticsRaw) {
+          partObj.tactics = tacticsRaw.split('\n').map(x => x.trim()).filter(Boolean);
+        }
+
+        payload.parts_detail.push(partObj);
+      });
+
+      try {
+        const res = await fetch('/admin/news/save-format', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ data: payload })
+        });
+        const result = await res.json();
+        if (result.success) {
+          window.location.href = '/admin/dashboard?tab=content&success=' + encodeURIComponent('Cập nhật cấu trúc format TOEIC thành công!');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: 'Lỗi khi lưu dữ liệu: ' + result.error,
+            confirmButtonText: 'Đồng ý',
+            confirmButtonColor: '#e74c3c'
+          });
+        }
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi kết nối',
+          text: 'Lỗi kết nối máy chủ: ' + err.message,
+          confirmButtonText: 'Đồng ý',
+          confirmButtonColor: '#e74c3c'
+        });
+      }
+    });
+  }
+</script>
+
+<%- include('../layouts/footer') %>

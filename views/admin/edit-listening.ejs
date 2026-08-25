@@ -1,0 +1,490 @@
+<%- include('../layouts/header') %>
+
+<style>
+  .article-container {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid #eef2f5;
+  }
+
+  .tactic-card {
+    background: #f8fafc;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 1.5px solid #eaedf0;
+    transition: all 0.3s ease;
+  }
+
+  .tactic-card:hover {
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+    border-color: #cbd5e1;
+  }
+
+  .tactic-badge {
+    background: var(--accent-gradient);
+    color: white;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .subtactic-box {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #eaedf0;
+    padding: 22px;
+    transition: all 0.2s;
+  }
+
+  .subtactic-box:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
+  }
+
+  .tip-box {
+    background: rgba(241, 196, 15, 0.08);
+    border-left: 4px solid #f1c40f;
+    border-radius: 12px;
+    padding: 14px 18px;
+  }
+
+  .example-box {
+    background: rgba(52, 152, 219, 0.06);
+    border-left: 4px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 14px 18px;
+  }
+
+  .sticky-action-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 25px;
+    border-radius: 0 0 16px 16px;
+  }
+
+  /* Seamless Form inputs */
+  .seamless-input {
+    border: 1px solid transparent;
+    background: transparent;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .seamless-input:hover {
+    background: rgba(0,0,0,0.02);
+    border-color: #cbd5e1;
+  }
+  .seamless-input:focus {
+    background: #ffffff;
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+  }
+</style>
+
+<!-- Sticky Admin Actions Header -->
+<div class="sticky-action-bar py-3 px-4 shadow-sm mb-4">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <a href="/admin/dashboard?tab=content" class="btn btn-outline-secondary me-3"><i class="bi bi-arrow-left me-1"></i>Quay lại</a>
+      <h4 class="fw-bold mb-0 text-dark"><i class="bi bi-headphones text-primary me-2"></i>Quản lý Mẹo thi TOEIC Listening</h4>
+    </div>
+    <div>
+      <button class="btn btn-success fw-bold px-4 shadow" onclick="saveListeningData()"><i class="bi bi-cloud-arrow-up-fill me-2"></i>Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
+
+<div class="container py-2 mb-5">
+  <!-- Breadcrumbs -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/admin/dashboard?tab=content" class="text-decoration-none text-muted"><i class="bi bi-house-door-fill me-1"></i>Quản trị</a></li>
+      <li class="breadcrumb-item active text-primary fw-medium" aria-current="page">Sửa chi tiết: Mẹo thi Listening</li>
+    </ol>
+  </nav>
+
+  <div class="row g-4 mt-2">
+    <div class="col-12">
+      <div class="article-container p-4 p-md-5">
+        
+        <!-- Intro edit section -->
+        <div class="mb-4">
+          <label class="form-label fw-bold text-secondary small"><i class="bi bi-card-text me-2"></i>Đoạn giới thiệu mở đầu (Introduction)</label>
+          <textarea id="listening-intro" class="form-control lead fw-semibold text-secondary seamless-input p-3" rows="3" style="line-height: 1.7; font-size: 1.15rem; background: #f8fafc;"><%= meoData.intro %></textarea>
+        </div>
+
+        <div class="border-top pt-4 mt-4">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h3 class="fw-bold mb-0 text-dark d-flex align-items-center">
+              <span class="badge bg-primary me-2.5" style="padding: 6px 12px; font-size: 0.9rem;">#</span>
+              Danh sách chiến thuật làm bài Listening
+            </h3>
+            <button type="button" class="btn btn-primary rounded-pill fw-bold" onclick="addTactic()">
+              <i class="bi bi-plus-circle me-1"></i>Thêm chiến thuật mới
+            </button>
+          </div>
+
+          <!-- TACTICS LOOP -->
+          <div id="tactics-list-container">
+            <% (meoData.tactics || []).forEach((tactic, idx) => { %>
+              <div class="tactic-card tactic-item" data-id="<%= tactic.id %>">
+                
+                <!-- Tactic Header Form -->
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3 pb-2 border-bottom">
+                  <div class="d-flex align-items-center gap-2 flex-grow-1">
+                    <span class="tactic-badge">Chiến thuật <%= idx + 1 %></span>
+                    <input type="text" class="form-control form-control-lg tactic-title-input seamless-input fw-bold text-dark m-0 p-1 w-70" value="<%= tactic.title %>" required />
+                  </div>
+                  <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" onclick="deleteTactic(this)">
+                    <i class="bi bi-trash me-1"></i>Xóa chiến thuật này
+                  </button>
+                </div>
+
+                <!-- Tactic Main Description -->
+                <div class="mb-4">
+                  <label class="form-label small fw-bold text-secondary">Mô tả tổng quát chiến thuật:</label>
+                  <textarea class="form-control tactic-desc-input seamless-input p-2 bg-light" rows="2" style="font-size: 0.95rem;" placeholder="Nhập mô tả tổng quát..."><%= tactic.desc %></textarea>
+                </div>
+
+                <!-- Sections Container (Sub-tactics) -->
+                <div class="mt-2">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold text-primary-emphasis mb-0"><i class="bi bi-grid-fill me-2"></i>Các phần chi tiết (Sub-sections)</h6>
+                    <button type="button" class="btn btn-sm btn-outline-primary rounded-pill fw-bold" onclick="addSection(<%= idx %>)"><i class="bi bi-plus-circle me-1"></i>Thêm phần chi tiết mới</button>
+                  </div>
+
+                  <div class="row g-3 sections-container" id="sections-container-<%= idx %>">
+                    <% (tactic.sections || []).forEach((sec, sIdx) => { %>
+                      <div class="col-md-6 section-card-wrap">
+                        <div class="subtactic-box h-100 position-relative sec-item">
+                          
+                          <!-- Delete Section Button -->
+                          <button type="button" class="btn-close position-absolute top-0 end-0 m-2 p-1" style="font-size: 0.75rem;" onclick="deleteSection(this)"></button>
+                          
+                          <!-- Section Title, Icon & Theme Inputs -->
+                          <div class="row g-2 mb-2 align-items-center">
+                            <div class="col-md-6">
+                              <input type="text" class="form-control form-control-sm sec-name-input seamless-input fw-bold text-dark p-1" style="font-size: 1rem;" value="<%= sec.name %>" placeholder="Tên phần chi tiết..." required />
+                            </div>
+                            <div class="col-md-3">
+                              <select class="form-select form-select-sm sec-theme-input border-0 bg-light py-1" style="font-size: 0.8rem;">
+                                <option value="primary" <%= sec.theme === 'primary' ? 'selected' : '' %>>Màu xanh</option>
+                                <option value="success" <%= sec.theme === 'success' ? 'selected' : '' %>>Màu lá</option>
+                                <option value="warning" <%= sec.theme === 'warning' ? 'selected' : '' %>>Màu vàng</option>
+                                <option value="danger" <%= sec.theme === 'danger' ? 'selected' : '' %>>Màu đỏ</option>
+                                <option value="info" <%= sec.theme === 'info' ? 'selected' : '' %>>Màu ngọc</option>
+                                <option value="dark" <%= sec.theme === 'dark' ? 'selected' : '' %>>Màu đen</option>
+                              </select>
+                            </div>
+                            <div class="col-md-3">
+                              <input type="text" class="form-control form-control-sm sec-icon-input seamless-input p-1" style="font-size: 0.8rem;" value="<%= sec.icon %>" placeholder="bi-chat-dots" />
+                            </div>
+                          </div>
+
+                          <!-- Description input -->
+                          <div class="mb-2">
+                            <textarea class="form-control form-control-sm sec-desc-input seamless-input p-1 small text-secondary" rows="2" placeholder="Mô tả nội dung phần..."><%= sec.desc %></textarea>
+                          </div>
+
+                          <!-- Items/Keywords/Note/Example inputs -->
+                          <div class="row g-2 mt-1">
+                            <div class="col-12">
+                              <label class="form-label small fw-bold text-muted mb-0"><i class="bi bi-list-check me-1"></i>Các gạch đầu dòng chi tiết (Mỗi dòng một ý):</label>
+                              <textarea class="form-control form-control-sm sec-items-input seamless-input p-2 bg-light small" rows="3" placeholder="Gõ mỗi dòng một ý..."><%= sec.items ? sec.items.join('\n') : '' %></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                              <div class="tip-box py-1 px-2 mt-1">
+                                <label class="form-label small fw-bold text-warning-emphasis mb-0"><i class="bi bi-lightbulb me-1"></i>Lưu ý:</label>
+                                <textarea class="form-control form-control-sm sec-note-input border-0 bg-transparent p-0 small" rows="2" placeholder="Mẹo/Lưu ý..."><%= sec.note || sec.tip || '' %></textarea>
+                              </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                              <div class="example-box py-1 px-2 mt-1">
+                                <label class="form-label small fw-bold text-primary-emphasis mb-0"><i class="bi bi-patch-question me-1"></i>Ví dụ:</label>
+                                <textarea class="form-control form-control-sm sec-example-input border-0 bg-transparent p-0 small" rows="2" placeholder="Ví dụ thực tế..."><%= sec.example || '' %></textarea>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <label class="form-label small fw-bold text-muted mb-0">Từ khóa chuyển hướng:</label>
+                              <input type="text" class="form-control form-control-sm sec-keywords-input seamless-input p-1 bg-light small" value="<%= sec.keywords || '' %>" placeholder="But, However..." />
+                            </div>
+
+                            <div class="col-md-6">
+                              <label class="form-label small fw-bold text-muted mb-0">Lựa chọn nhanh (Cắt bởi dấu phẩy):</label>
+                              <input type="text" class="form-control form-control-sm sec-choices-input seamless-input p-1 bg-light small" value="<%= sec.choices ? sec.choices.join(', ') : '' %>" placeholder="A, B, C..." />
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    <% }); %>
+                  </div>
+                </div>
+
+              </div>
+            <% }); %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function deleteTactic(btn) {
+    Swal.fire({
+      title: 'Xóa chiến thuật?',
+      text: 'Bạn có chắc chắn muốn xóa toàn bộ chiến thuật này không? Hành động này không thể hoàn tác!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        btn.closest('.tactic-item').remove();
+        // Re-number remaining tactic badges
+        const tacticItems = document.querySelectorAll('.tactic-item');
+        tacticItems.forEach((item, idx) => {
+          const badge = item.querySelector('.tactic-badge');
+          if (badge) badge.textContent = `Chiến thuật ${idx + 1}`;
+        });
+      }
+    });
+  }
+
+  function addTactic() {
+    const container = document.getElementById('tactics-list-container');
+    const existingTactics = container.querySelectorAll('.tactic-item');
+    const nextIdx = existingTactics.length;
+    const nextId = nextIdx + 1;
+
+    const html = `
+      <div class="tactic-card tactic-item" data-id="${nextId}">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3 pb-2 border-bottom">
+          <div class="d-flex align-items-center gap-2 flex-grow-1">
+            <span class="tactic-badge">Chiến thuật ${nextId}</span>
+            <input type="text" class="form-control form-control-lg tactic-title-input seamless-input fw-bold text-dark m-0 p-1 w-70" placeholder="Nhập tên chiến thuật mới..." required />
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" onclick="deleteTactic(this)">
+            <i class="bi bi-trash me-1"></i>Xóa chiến thuật này
+          </button>
+        </div>
+        <div class="mb-4">
+          <label class="form-label small fw-bold text-secondary">Mô tả tổng quát chiến thuật:</label>
+          <textarea class="form-control tactic-desc-input seamless-input p-2 bg-light" rows="2" style="font-size: 0.95rem;" placeholder="Nhập mô tả tổng quát..."></textarea>
+        </div>
+        <div class="mt-2">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold text-primary-emphasis mb-0"><i class="bi bi-grid-fill me-2"></i>Các phần chi tiết (Sub-sections)</h6>
+            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill fw-bold" onclick="addSection(${nextIdx})">
+              <i class="bi bi-plus-circle me-1"></i>Thêm phần chi tiết mới
+            </button>
+          </div>
+          <div class="row g-3 sections-container" id="sections-container-${nextIdx}"></div>
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+
+    // Scroll to the new tactic
+    const newTactic = container.lastElementChild;
+    newTactic.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function deleteSection(btn) {
+    Swal.fire({
+      title: 'Xóa phần chi tiết?',
+      text: 'Bạn có chắc chắn muốn xóa phần chi tiết này không?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        btn.closest('.section-card-wrap').remove();
+      }
+    });
+  }
+
+  function addSection(tacticIdx) {
+    const container = document.getElementById(`sections-container-${tacticIdx}`);
+    const count = container.querySelectorAll('.sec-item').length + 1;
+    const html = `
+      <div class="col-md-6 section-card-wrap">
+        <div class="subtactic-box h-100 position-relative sec-item">
+          <button type="button" class="btn-close position-absolute top-0 end-0 m-2 p-1" style="font-size: 0.75rem;" onclick="deleteSection(this)"></button>
+          
+          <div class="row g-2 mb-2 align-items-center">
+            <div class="col-md-6">
+              <input type="text" class="form-control form-control-sm sec-name-input seamless-input fw-bold text-dark p-1" style="font-size: 1rem;" placeholder="Phần mới #${count}..." required />
+            </div>
+            <div class="col-md-3">
+              <select class="form-select form-select-sm sec-theme-input border-0 bg-light py-1" style="font-size: 0.8rem;">
+                <option value="primary" selected>Màu xanh</option>
+                <option value="success">Màu lá</option>
+                <option value="warning">Màu vàng</option>
+                <option value="danger">Màu đỏ</option>
+                <option value="info">Màu ngọc</option>
+                <option value="dark">Màu đen</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <input type="text" class="form-control form-control-sm sec-icon-input seamless-input p-1" style="font-size: 0.8rem;" value="bi-info-circle" placeholder="bi-chat-dots" />
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <textarea class="form-control form-control-sm sec-desc-input seamless-input p-1 small text-secondary" rows="2" placeholder="Mô tả nội dung phần..."></textarea>
+          </div>
+
+          <div class="row g-2 mt-1">
+            <div class="col-12">
+              <label class="form-label small fw-bold text-muted mb-0"><i class="bi bi-list-check me-1"></i>Các gạch đầu dòng chi tiết (Mỗi dòng một ý):</label>
+              <textarea class="form-control form-control-sm sec-items-input seamless-input p-2 bg-light small" rows="3" placeholder="Gõ mỗi dòng một ý..."></textarea>
+            </div>
+
+            <div class="col-md-6">
+              <div class="tip-box py-1 px-2 mt-1">
+                <label class="form-label small fw-bold text-warning-emphasis mb-0"><i class="bi bi-lightbulb me-1"></i>Lưu ý:</label>
+                <textarea class="form-control form-control-sm sec-note-input border-0 bg-transparent p-0 small" rows="2" placeholder="Mẹo/Lưu ý..."></textarea>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="example-box py-1 px-2 mt-1">
+                <label class="form-label small fw-bold text-primary-emphasis mb-0"><i class="bi bi-patch-question me-1"></i>Ví dụ:</label>
+                <textarea class="form-control form-control-sm sec-example-input border-0 bg-transparent p-0 small" rows="2" placeholder="Ví dụ thực tế..."></textarea>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted mb-0">Từ khóa chuyển hướng:</label>
+              <input type="text" class="form-control form-control-sm sec-keywords-input seamless-input p-1 bg-light small" placeholder="But, However..." />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-muted mb-0">Lựa chọn nhanh (Cắt bởi dấu phẩy):</label>
+              <input type="text" class="form-control form-control-sm sec-choices-input seamless-input p-1 bg-light small" placeholder="A, B, C..." />
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+  }
+
+  async function saveListeningData() {
+    Swal.fire({
+      title: 'Lưu thay đổi?',
+      text: 'Bạn có chắc chắn muốn lưu tất cả các thay đổi cho mẹo làm bài Listening này không?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#2ecc71',
+      cancelButtonColor: '#95a5a6',
+      confirmButtonText: 'Lưu lại',
+      cancelButtonText: 'Hủy'
+    }).then(async (resConfirm) => {
+      if (!resConfirm.isConfirmed) return;
+
+      const payload = {};
+      payload.intro = document.getElementById('listening-intro').value.trim();
+      payload.tactics = [];
+
+      const tacticDivs = document.querySelectorAll('.tactic-item');
+      tacticDivs.forEach(tDiv => {
+        const tId = parseInt(tDiv.getAttribute('data-id'));
+        const tTitle = tDiv.querySelector('.tactic-title-input').value.trim();
+        const tDesc = tDiv.querySelector('.tactic-desc-input').value.trim();
+        
+        const tacticObj = {
+          id: tId,
+          title: tTitle,
+          desc: tDesc,
+          sections: []
+        };
+
+        const secCards = tDiv.querySelectorAll('.sec-item');
+        secCards.forEach(sCard => {
+          const name = sCard.querySelector('.sec-name-input').value.trim();
+          const theme = sCard.querySelector('.sec-theme-input').value;
+          const icon = sCard.querySelector('.sec-icon-input').value.trim() || 'bi-info-circle';
+          const desc = sCard.querySelector('.sec-desc-input').value.trim();
+          
+          // Optional parameters
+          const example = sCard.querySelector('.sec-example-input').value.trim();
+          const note = sCard.querySelector('.sec-note-input').value.trim();
+          const keywords = sCard.querySelector('.sec-keywords-input').value.trim();
+          
+          const choicesRaw = sCard.querySelector('.sec-choices-input').value.trim();
+          const choices = choicesRaw ? choicesRaw.split(',').map(x => x.trim()).filter(Boolean) : undefined;
+
+          const itemsRaw = sCard.querySelector('.sec-items-input').value.trim();
+          const items = itemsRaw ? itemsRaw.split('\n').map(x => x.trim()).filter(Boolean) : undefined;
+
+          const secObj = { name, theme, icon, desc };
+          if (example) secObj.example = example;
+          if (note) secObj.note = note;
+          if (keywords) secObj.keywords = keywords;
+          if (choices && choices.length > 0) secObj.choices = choices;
+          if (items && items.length > 0) secObj.items = items;
+
+          tacticObj.sections.push(secObj);
+        });
+
+        payload.tactics.push(tacticObj);
+      });
+
+      try {
+        const res = await fetch('/admin/news/save-listening', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ data: payload })
+        });
+        const result = await res.json();
+        if (result.success) {
+          window.location.href = '/admin/dashboard?tab=content&success=' + encodeURIComponent('Cập nhật mẹo thi Listening thành công!');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Lỗi',
+            text: 'Lỗi khi lưu dữ liệu: ' + result.error,
+            confirmButtonText: 'Đồng ý',
+            confirmButtonColor: '#e74c3c'
+          });
+        }
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Lỗi kết nối',
+          text: 'Lỗi kết nối máy chủ: ' + err.message,
+          confirmButtonText: 'Đồng ý',
+          confirmButtonColor: '#e74c3c'
+        });
+      }
+    });
+  }
+</script>
+
+<%- include('../layouts/footer') %>

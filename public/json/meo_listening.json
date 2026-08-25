@@ -1,0 +1,110 @@
+{
+  "intro": "Phần thi Listening của TOEIC (gồm 100 câu nghe trong 45 phút) thường tạo áp lực thời gian cực lớn cho thí sinh. Để bứt phá điểm số tối đa, bạn không chỉ cần nghe tốt mà còn cần trang bị những chiến thuật phân bổ thời gian và nhận diện bẫy thực chiến dưới đây từ Anh ngữ Y&V.",
+  "tactics": [
+    {
+      "id": 1,
+      "title": "Tận dụng \"thời gian vàng\" (Golden Time) để phán đoán trước",
+      "desc": "Trong bài thi TOEIC, khoảng thời gian máy đọc hướng dẫn (Direction) là lúc bạn phải \"chạy nước rút\" bằng mắt. Tuyệt đối không ngồi chờ audio đọc xong mới bắt đầu nhìn vào đề.",
+      "sections": [
+        {
+          "name": "Đối với Part 1 (Mô tả tranh)",
+          "icon": "bi-image",
+          "theme": "primary",
+          "desc": "Ngay khi băng đọc hướng dẫn, hãy lướt nhanh các bức tranh:",
+          "items": [
+            "Tranh có người: Tập trung vào hành động đang diễn ra (V-ing), trang phục, vị trí của họ so với đồ vật.",
+            "Tranh phong cảnh/đồ vật: Tập trung vào trạng thái của đồ vật (bị đóng/mở, rỗng/đầy), số lượng (ít/nhiều) và vị trí không gian. Tự nhẩm nhanh các danh từ và động từ tiếng Anh có thể xuất hiện."
+          ]
+        },
+        {
+          "name": "Đối với Part 3 & 4 (Hội thoại & Bài nói)",
+          "icon": "bi-chat-dots",
+          "theme": "success",
+          "desc": "Đọc trước ít nhất 3 câu hỏi và các đáp án của đoạn tiếp theo. Việc biết trước câu hỏi đang hỏi về cái gì (Hỏi về Nghề nghiệp? Thời gian? Địa điểm? hay Vấn đề đang xảy ra?) sẽ giúp não bộ tự động \"bắt\" đúng thông tin đó khi audio vang lên.",
+          "note": "Lưu ý: Đừng bỏ qua các bảng biểu, biểu đồ đính kèm."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Nhận diện và né các \"bẫy kinh điển\" trong Part 1 & Part 2",
+      "desc": "Part 1 và Part 2 là phần ăn điểm, nhưng cũng là nơi bẫy giăng nhiều nhất để đánh lừa những ai nghe không rõ.",
+      "sections": [
+        {
+          "name": "1. Bẫy đồng âm / Lặp từ (Part 2)",
+          "icon": "bi-exclamation-triangle-fill",
+          "theme": "danger",
+          "desc": "Nếu bạn nghe thấy một từ trong đáp án lặp lại y hệt hoặc có âm thanh gần giống với một từ trong câu hỏi, thì 90% đó là bẫy. Đáp án đúng thường sử dụng từ đồng nghĩa chứ hiếm khi lặp lại y chang từ của câu hỏi.",
+          "example": "Ví dụ: Nghe thấy \"copy\" (bản sao) trong câu hỏi mà đáp án chứa \"coffee\" (cà phê) hoặc \"work\" trong câu hỏi và đáp án chứa \"walk\" -> loại ngay."
+        },
+        {
+          "name": "2. Bẫy sai \"Thì\" (Tense)",
+          "icon": "bi-clock-history",
+          "theme": "danger",
+          "desc": "Hai đáp án có vẻ đều hợp lý về mặt ngữ nghĩa, nhưng hãy nghe kỹ từ để hỏi. Nếu câu hỏi là \"When will you...\" (Tương lai) mà đáp án lại là \"I went to...\" (Quá khứ) -> Loại ngay lập tức."
+        },
+        {
+          "name": "3. Bẫy chủ động/bị động (Part 1)",
+          "icon": "bi-people-fill",
+          "theme": "danger",
+          "desc": "Cẩn thận với những bức tranh không có người nhưng âm thanh lại đọc câu bị động có dạng being + V-pII (thể hiện hành động đang có người tác động vào đồ vật) hoặc ngược lại."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Nắm lòng các \"Câu trả lời quốc dân\" và Từ khóa bẻ lái",
+      "desc": "",
+      "sections": [
+        {
+          "name": "Tuyệt chiêu cho Part 2 (Các câu luôn đúng)",
+          "icon": "bi-check2-circle",
+          "theme": "success",
+          "desc": "Khi đối mặt với một câu hỏi khó mà bạn không nghe rõ, hãy ưu tiên các đáp án thể hiện sự không chắc chắn, chưa quyết định hoặc đẩy trách nhiệm:",
+          "choices": [
+            "I don’t know / I have no idea.",
+            "It hasn’t been decided yet.",
+            "Let me check the schedule / ask the manager.",
+            "I haven't heard anything about it."
+          ]
+        },
+        {
+          "name": "Tuyệt chiêu bắt \"từ khóa bẻ lái\" (Part 3 & 4)",
+          "icon": "bi-arrow-right-short",
+          "theme": "danger",
+          "desc": "Thông tin quan trọng chứa đáp án thường nằm ngay sau các từ chuyển hướng. Hãy cực kỳ tập trung khi nghe thấy:",
+          "keywords": "But, However, Actually no, To be honest, I'm afraid that, I used to...",
+          "example": "Ví dụ: \"Tôi định mua cái áo này, NHƯNG nó hết size rồi.\" -> Đáp án đúng là cửa hàng hết size chứ không phải hành động mua áo."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Phương pháp \"3 ngón tay\" (3-Finger Technique) thần thánh",
+      "desc": "Đây là chiến thuật kinh điển dành riêng cho Part 3 và Part 4 để tránh quên đáp án và bị rối nhịp nghe.",
+      "sections": [
+        {
+          "name": "Cách thực hiện:",
+          "icon": "bi-hand-index-thumb",
+          "theme": "primary",
+          "desc": "Đặt 3 ngón tay của bàn tay không cầm bút lên đề thi/tờ nháp tương ứng với 3 câu hỏi của đoạn hội thoại đang nghe. Khi nghe thấy thông tin trả lời cho câu nào, lập tức di chuyển ngón tay chỉ vào đáp án đó (A, B, C, hoặc D) trên đề. Đợi audio đọc xong toàn bộ đoạn hội thoại mới cầm bút tô liền lúc 3 câu trả lời vào Answer Sheet.",
+          "benefit": "Lợi ích: Giúp bạn tập trung 100% mắt và tai vào việc nghe, không bị xao nhãng hoặc mất dấu dòng audio vì cúi xuống tô từng câu."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Nguyên tắc \"Quá khứ ngủ yên\" - Quyết định buông bỏ đúng lúc",
+      "desc": "Kẻ thù lớn nhất trong phòng thi TOEIC không phải từ vựng khó, mà là sự tiếc nuối.",
+      "sections": [
+        {
+          "name": "Chiến thuật tâm lý:",
+          "icon": "bi-heart-break",
+          "theme": "warning",
+          "desc": "Nếu audio đã chuyển sang câu tiếp theo nhưng bạn vẫn phân vân câu trước đó: Hãy chọn bừa ngay lập tức và quên nó đi. Nếu bạn cố suy nghĩ thêm 5 giây, bạn sẽ bỏ lỡ phần hướng dẫn và từ khóa của câu tiếp theo, dẫn đến hiệu ứng domino làm hỏng cả chuỗi câu sau.",
+          "tip": "Quy tắc: Băng đọc đến đâu, mắt và tâm trí phải ở đó. Câu nào đã qua hãy cho nó đi vào quá khứ."
+        }
+      ]
+    }
+  ]
+}

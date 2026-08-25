@@ -1,0 +1,26 @@
+{
+  "title": "tets 9",
+  "type": "Luyện đề chính thức",
+  "duration": 120,
+  "audio": null,
+  "questions": [
+    {
+      "id": 1,
+      "part": 1,
+      "question": "Look at the picture and select the best statement.",
+      "options": [
+        "A.",
+        "B.",
+        "C.",
+        "D."
+      ],
+      "answer": "A",
+      "audio": null,
+      "image": null,
+      "passage": null,
+      "explanation": null,
+      "script": null,
+      "recommendation": null
+    }
+  ]
+}

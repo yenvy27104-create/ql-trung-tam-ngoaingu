@@ -1,0 +1,1197 @@
+{
+  "positions": [
+    {
+      "w": "Chairman",
+      "p": "ˈʧeəmən",
+      "m": "Chủ tịch (nam)"
+    },
+    {
+      "w": "Chairwoman",
+      "p": "ˈʧeəˌwʊmən",
+      "m": "Chủ tịch (nữ)"
+    },
+    {
+      "w": "The board of directors",
+      "p": "ðə bɔːd əv dɪˈrɛktəz",
+      "m": "Hội đồng quản trị"
+    },
+    {
+      "w": "Chief executive officer (CEO)",
+      "p": "/ʧiːf ɪgˈzɛkjʊtɪv ˈɒfɪsə/",
+      "m": "Giám đốc điều hành, tổng giám đốc"
+    },
+    {
+      "w": "Chief financial officer (CFO)",
+      "p": "/ʧiːf faɪˈnænʃəl ˈɒfɪsər/",
+      "m": "Giám đốc tài chính"
+    },
+    {
+      "w": "Chief marketing officer (CMO)",
+      "p": "/ʧiːf ˈmɑːkɪtɪŋ ˈɒfɪsə/",
+      "m": "Giám đốc tiếp thị"
+    },
+    {
+      "w": "Chief operating officer (COO)",
+      "p": "/ʧiːf ˈɒpəreɪtɪŋ ˈɒfɪsə/",
+      "m": "Giám đốc vận hành"
+    },
+    {
+      "w": "Chief technology officer (CTO)",
+      "p": "/ʧiːf tɛkˈnɒləʤi ˈɒfɪsə/",
+      "m": "Giám đốc công nghệ"
+    },
+    {
+      "w": "Director",
+      "p": "/dɪˈrɛktə/",
+      "m": "Giám đốc"
+    },
+    {
+      "w": "Deputy/vice director",
+      "p": "/ˈdepjuti/ vaɪs dɪˈrɛktə/",
+      "m": "Phó giám đốc"
+    },
+    {
+      "w": "Shareholder",
+      "p": "/ˈʃeəhəʊldə(r)/",
+      "m": "Cổ đông"
+    },
+    {
+      "w": "Head of department",
+      "p": "/hed əv dɪˈpɑːrtmənt/",
+      "m": "Trưởng phòng"
+    },
+    {
+      "w": "Headhunter",
+      "p": "/hɛdˈhʌntə/",
+      "m": "Chuyên viên tuyển dụng cấp cao"
+    },
+    {
+      "w": "Human resources Manager",
+      "p": "/ˈhjuːmən rɪˈsɔːsɪz ˈmænɪʤə/",
+      "m": "Quản lý nhân sự"
+    },
+    {
+      "w": "Information technology Manager",
+      "p": "/ˌɪnfəˈmeɪʃən tɛkˈnɒləʤi ˈmænɪʤə/",
+      "m": "Quản lý công nghệ thông tin"
+    },
+    {
+      "w": "Manager",
+      "p": "/ˈmænɪdʒər/",
+      "m": "Quản lý"
+    },
+    {
+      "w": "Leader",
+      "p": "/ˈliːdə/",
+      "m": "Trưởng nhóm"
+    },
+    {
+      "w": "Office staff",
+      "p": "/ˈɒfɪs stɑːf/",
+      "m": "Nhân viên văn phòng"
+    },
+    {
+      "w": "Intern",
+      "p": "/ˈɪntɜːn/",
+      "m": "Thực tập sinh"
+    },
+    {
+      "w": "Trainee",
+      "p": "/ˌtreɪˈniː/",
+      "m": "Nhân viên tập sự"
+    },
+    {
+      "w": "Sales Representative",
+      "p": "/seɪlz ˌrɛprɪˈzɛntətɪv/",
+      "m": "Đại diện bán hàng"
+    },
+    {
+      "w": "Software Engineer",
+      "p": "/ˈsɒftweər ˌɛnʤɪˈnɪə/",
+      "m": "Kỹ sư phần mềm"
+    },
+    {
+      "w": "Supervisor",
+      "p": "/ˈsjuːpəvaɪzə/",
+      "m": "Giám sát viên"
+    },
+    {
+      "w": "Technicians",
+      "p": "tɛkˈnɪʃənz",
+      "m": "Kỹ thuật viên"
+    },
+    {
+      "w": "Administrative Assistant",
+      "p": "/ədˈmɪnɪstrətɪv əˈsɪstənt/",
+      "m": "Trợ lý hành chính"
+    },
+    {
+      "w": "Senior Manager",
+      "p": "/ˈsinjər ˈmænɪdʒər/",
+      "m": "Quản lý cấp cao"
+    },
+    {
+      "w": "Entry-level / Junior",
+      "p": "/ˈɛntriˌlɛvəl / ˈdʒuːniər/",
+      "m": "Nhân viên mới"
+    },
+    {
+      "w": "Assistant Manager",
+      "p": "/əˈsɪstənt ˈmænɪdʒər/",
+      "m": "Trợ lý giám đốc"
+    },
+    {
+      "w": "Bookkeeper",
+      "p": "/ˈbʊkˌkiːpə/",
+      "m": "Kiểm toán, kế toán"
+    },
+    {
+      "w": "Founder",
+      "p": "/ˈfaʊndər/",
+      "m": "Người sáng lập"
+    },
+    {
+      "w": "Collaborator",
+      "p": "/kəˈlæbəreɪtə(r)/",
+      "m": "Đối tác"
+    }
+  ],
+  "departments": [
+    {
+      "w": "Department",
+      "p": "/dɪˈpɑːrtmənt/",
+      "m": "Phòng, ban"
+    },
+    {
+      "w": "Representative office",
+      "p": "/ˌreprɪˈzentətɪv ˈɒfɪs/",
+      "m": "Văn phòng đại diện"
+    },
+    {
+      "w": "Accounting Department",
+      "p": "/ə’kauntiη dɪˈpɑːrt.mənt/",
+      "m": "Phòng Kế toán"
+    },
+    {
+      "w": "Administration Department",
+      "p": "/ədˌmɪnɪsˈtreɪʃ(ə)n dɪˈpɑːtmənt/",
+      "m": "Phòng Hành chính"
+    },
+    {
+      "w": "Audit Department",
+      "p": "/‘ɔdit dɪˈpɑːrt.mənt/",
+      "m": "Phòng Kiểm toán"
+    },
+    {
+      "w": "Customer Service Department",
+      "p": "/ˈkʌstəmə ˈsɜːvɪs dɪˈpɑːrt.mənt/",
+      "m": "Phòng Dịch vụ khách hàng"
+    },
+    {
+      "w": "Operations Department",
+      "p": "/ˌɑːpəˈreɪʃnz dɪˈpɑːtmənt/",
+      "m": "Phòng Vận hành"
+    },
+    {
+      "w": "Finance / Accounting Department",
+      "p": "/faɪˈnæns / əˈkaʊntɪŋ dɪˈpɑːtmənt/",
+      "m": "Phòng Tài chính / Kế toán"
+    },
+    {
+      "w": "Human Resources Department (HR)",
+      "p": "/ˈhjuːmən rɪˈsɔːsɪz dɪˈpɑːtmənt/",
+      "m": "Phòng Nhân sự"
+    },
+    {
+      "w": "Information Technology Department (IT)",
+      "p": "/,infə’mei∫n tek’nɔlədʒi dɪˈpɑːrt.mənt/",
+      "m": "Phòng Công nghệ thông tin"
+    },
+    {
+      "w": "International Relations Department",
+      "p": "/,intə’næ∫ənl ri’lei∫n dɪˈpɑːrt.mənt/",
+      "m": "Phòng Quan hệ quốc tế"
+    },
+    {
+      "w": "Maintenance Department",
+      "p": "/ˈmeɪntənəns dɪˈpɑːrt.mənt/",
+      "m": "Ban bảo trì"
+    },
+    {
+      "w": "Marketing Department",
+      "p": "/‘makitiη dɪˈpɑːrt.mənt/",
+      "m": "Phòng tiếp thị"
+    },
+    {
+      "w": "Production Department / Manufacturing Department",
+      "p": "prəˈdʌkʃən / ˌmænjʊˈfækʧərɪŋ dɪˈpɑːtmənt",
+      "m": "Bộ phận sản xuất / chế tạo"
+    },
+    {
+      "w": "Public Relations Department (PR)",
+      "p": "/ˈpʌblɪk rɪˈleɪʃənz dɪˈpɑːtmənt/",
+      "m": "Phòng quan hệ công chúng"
+    },
+    {
+      "w": "Research and Development Department (R&D)",
+      "p": "/rɪˈsɜːʧ ænd dɪˈvɛləpmənt dɪˈpɑːtmənt/",
+      "m": "Phòng Nghiên cứu và Phát triển"
+    },
+    {
+      "w": "Sales Department",
+      "p": "/seil dɪˈpɑːrt.mənt/",
+      "m": "Phòng Kinh doanh"
+    },
+    {
+      "w": "Shipping Department",
+      "p": "/ˈʃɪpɪŋ dɪˈpɑːtmənt/",
+      "m": "Bộ phận Vận chuyển"
+    },
+    {
+      "w": "Procurement Department",
+      "p": "/prəˈkjʊəmənt dɪˈpɑːtmənt/",
+      "m": "Phòng Tiếp nhận hàng hóa, mua sắm"
+    },
+    {
+      "w": "Treasury Department",
+      "p": "/‘treʒəri dɪˈpɑːrt.mənt/",
+      "m": "Phòng Ngân quỹ"
+    },
+    {
+      "w": "Legal Department",
+      "p": "/ˈliːɡl dɪˈpɑːrt.mənt/",
+      "m": "Phòng Pháp lý"
+    },
+    {
+      "w": "Engineering Department",
+      "p": "/ˌendʒɪˈnɪərɪŋ dɪˈpɑːrt.mənt/",
+      "m": "Phòng Kỹ thuật"
+    },
+    {
+      "w": "Branch office",
+      "p": "/bræntʃ ˈɒfɪs/",
+      "m": "Chi nhánh"
+    },
+    {
+      "w": "Labor union",
+      "p": "/ˈleɪbə(r) ˈjuːniən/",
+      "m": "Công đoàn"
+    }
+  ],
+  "welfare": [
+    {
+      "w": "Annual leave",
+      "p": "/ˈænjʊəl liːv/",
+      "m": "Nghỉ phép hàng năm"
+    },
+    {
+      "w": "Holiday entitlement",
+      "p": "/ˈhɑləˌdeɪ ɛnˈtaɪtəlmənt/",
+      "m": "Chế độ ngày nghỉ được hưởng"
+    },
+    {
+      "w": "Maternity leave",
+      "p": "/məˈtɝː.nə.t̬i ˌliːv/",
+      "m": "Nghỉ thai sản"
+    },
+    {
+      "w": "Full-time",
+      "p": "/fʊl- taɪm/",
+      "m": "Làm toàn thời gian"
+    },
+    {
+      "w": "Health insurance",
+      "p": "/hɛlθ ɪnˈʃʊərəns/",
+      "m": "Bảo hiểm y tế"
+    },
+    {
+      "w": "Sick leave",
+      "p": "/ˈsɪk ˌliːv/",
+      "m": "Nghỉ ốm"
+    },
+    {
+      "w": "Holiday leave",
+      "p": "/ˈhɒlədeɪ liːv/",
+      "m": "Nghỉ lễ"
+    },
+    {
+      "w": "Holiday pay",
+      "p": "/ˈhɒlədeɪ peɪ/",
+      "m": "Tiền lương ngày nghỉ"
+    },
+    {
+      "w": "Parental leave",
+      "p": "/pəˈrɛntl liːv/",
+      "m": "Chế độ nghỉ sinh cho cha mẹ"
+    },
+    {
+      "w": "Travel expenses",
+      "p": "/ˈtræv.əl ɪkˌspen.sɪz/",
+      "m": "Chi phí đi lại"
+    },
+    {
+      "w": "Gross salary",
+      "p": "/ɡrəʊ ˈsæləri/",
+      "m": "Lương cơ bản hàng tháng (chưa trừ bảo hiểm & thuế)"
+    },
+    {
+      "w": "Net salary",
+      "p": "/net ˈsæləri/",
+      "m": "Tiền lương thực nhận hàng tháng (sau khi trừ các chi phí)"
+    },
+    {
+      "w": "Part-time",
+      "p": "/pɑːt – taɪm/",
+      "m": "Làm bán thời gian"
+    },
+    {
+      "w": "Pension scheme",
+      "p": "/pen.ʃən ˌskiːm/",
+      "m": "Chế độ lương hưu"
+    },
+    {
+      "w": "Life insurance",
+      "p": "/laɪf ɪnˈʃʊərəns/",
+      "m": "Bảo hiểm nhân thọ"
+    },
+    {
+      "w": "Apprenticeship",
+      "p": "/əˈprentɪʃɪp/",
+      "m": "Học nghề"
+    },
+    {
+      "w": "Lunch break",
+      "p": "/lʌntʃ breɪk/",
+      "m": "Giờ nghỉ trưa"
+    },
+    {
+      "w": "Hazard pay",
+      "p": "/ˈhæzəd peɪ/",
+      "m": "Trợ cấp nguy hiểm"
+    },
+    {
+      "w": "Labour contract",
+      "p": "/ˈleɪbə(r) ˈkɑːntrækt/",
+      "m": "Hợp đồng lao động"
+    },
+    {
+      "w": "Job description",
+      "p": "/dʒɒb dɪˈskrɪpʃn/",
+      "m": "Mô tả công việc"
+    },
+    {
+      "w": "Perk",
+      "p": "/pɜːk/",
+      "m": "Thù lao thêm, đặc quyền phúc lợi"
+    },
+    {
+      "w": "Promotion",
+      "p": "/prəˈməʊʃən/",
+      "m": "Sự thăng chức"
+    },
+    {
+      "w": "Training scheme",
+      "p": "/ˈtreɪnɪŋ skiːm/",
+      "m": "Chế độ tập huấn"
+    },
+    {
+      "w": "Resign",
+      "p": "/rɪˈzaɪn/",
+      "m": "Từ chức"
+    },
+    {
+      "w": "Salary increase",
+      "p": "/ˈsæləri ˈɪnkriːs/",
+      "m": "Tăng lương"
+    },
+    {
+      "w": "Unemployment benefit",
+      "p": "/ˌʌnɪmˈplɔɪmənt ˈbɛnɪfɪt/",
+      "m": "Trợ cấp thất nghiệp"
+    },
+    {
+      "w": "Wage",
+      "p": "/weɪʤ/",
+      "m": "Tiền công (trả theo ngày, giờ)"
+    },
+    {
+      "w": "Workers’ compensation",
+      "p": "/ˈwɜːkəz ˌkɒmpɛnˈseɪʃən/",
+      "m": "Bồi thường lao động"
+    },
+    {
+      "w": "Working hours",
+      "p": "/ˈwɜːkɪŋ ˈaʊəz/",
+      "m": "Giờ làm việc"
+    }
+  ],
+  "stationery": [
+    {
+      "w": "Stationery",
+      "p": "/ˈsteɪʃəneri/",
+      "m": "Văn phòng phẩm"
+    },
+    {
+      "w": "File cabinet",
+      "p": "/faɪl ˈkæbɪnɪt/",
+      "m": "Tủ đựng hồ sơ"
+    },
+    {
+      "w": "Coffee machine",
+      "p": "ˈkɒfi məˈʃiːn",
+      "m": "Máy pha cà phê"
+    },
+    {
+      "w": "Drawing pin",
+      "p": "/ˈdrɑː.ɪŋ ˌpɪn/",
+      "m": "Ghim giấy nhỏ"
+    },
+    {
+      "w": "Staple",
+      "p": "/ˈsteɪ.pəl/",
+      "m": "Cái dập ghim / kim bấm"
+    },
+    {
+      "w": "Dossier",
+      "p": "/ˈdɒsɪeɪ/",
+      "m": "Hồ sơ chi tiết"
+    },
+    {
+      "w": "Duct tape",
+      "p": "/dʌkt teɪp/",
+      "m": "Băng keo"
+    },
+    {
+      "w": "Fax machine",
+      "p": "fæks məˈʃiːn",
+      "m": "Máy fax"
+    },
+    {
+      "w": "ID holder",
+      "p": "/ɪd ˈhoʊldər/",
+      "m": "Miếng nhựa đựng thẻ nhân viên"
+    },
+    {
+      "w": "Projector",
+      "p": "/prəˈdʒektər/",
+      "m": "Máy chiếu"
+    },
+    {
+      "w": "Binder",
+      "p": "/ˈbaɪndə(r)/",
+      "m": "Bìa đựng hồ sơ"
+    },
+    {
+      "w": "Office drawer",
+      "p": "/ˈɒfɪs ˈdrɔːə/",
+      "m": "Ngăn kéo văn phòng"
+    },
+    {
+      "w": "Cover profile",
+      "p": "/ˈkʌvə ˈprəʊfaɪl/",
+      "m": "Bìa hồ sơ"
+    },
+    {
+      "w": "Paperclip",
+      "p": "ˈpeɪpəklɪp",
+      "m": "Cái kẹp giấy"
+    },
+    {
+      "w": "Pen holder",
+      "p": "pɛn ˈhəʊldə",
+      "m": "Ống đựng bút"
+    },
+    {
+      "w": "Air-conditioner",
+      "p": "/ˈeəkənˌdɪʃᵊnə:/",
+      "m": "Máy lạnh"
+    },
+    {
+      "w": "Pencil sharpener",
+      "p": "ˈpɛnsl ˈʃɑːpənə",
+      "m": "Cái gọt bút chì"
+    },
+    {
+      "w": "Post-it notes",
+      "p": "pəʊst-ɪt nəʊts",
+      "m": "Giấy ghi chú"
+    },
+    {
+      "w": "Index card",
+      "p": "/ˈɪndɛks kɑrd/",
+      "m": "Thẻ chỉ mục thông tin"
+    },
+    {
+      "w": "Printer",
+      "p": "ˈprɪntə",
+      "m": "Máy in"
+    },
+    {
+      "w": "Card visit",
+      "p": "/kɑrd ˈvɪzət/",
+      "m": "Danh thiếp"
+    },
+    {
+      "w": "Scissors",
+      "p": "ˈsɪzəz",
+      "m": "Cây kéo"
+    },
+    {
+      "w": "Photocopier",
+      "p": "/ˈfəʊtəʊkɑːpiər/",
+      "m": "Máy photocopy"
+    },
+    {
+      "w": "Tape measure",
+      "p": "/teɪp ˈmɛʒə/",
+      "m": "Thước dây"
+    },
+    {
+      "w": "Whiteboard",
+      "p": "/ˈwaɪtbɔːd/",
+      "m": "Bảng trắng"
+    },
+    {
+      "w": "Rubber stamp",
+      "p": "/ˈrʌbə(r) stæmp/",
+      "m": "Con dấu cao su"
+    },
+    {
+      "w": "Adapter",
+      "p": "/əˈdæptə(r)/",
+      "m": "Cổng chuyển đổi, củ sạc"
+    },
+    {
+      "w": "Correction pen",
+      "p": "kəˈrek.ʃən.ˈpen",
+      "m": "Bút xóa"
+    },
+    {
+      "w": "Ink cartridge",
+      "p": "/ɪŋk ˈkærɪtrɪdʒ/",
+      "m": "Hộp mực máy in"
+    },
+    {
+      "w": "Fountain pen",
+      "p": "ˈfaʊntɪn pɛn",
+      "m": "Bút máy"
+    },
+    {
+      "w": "Gel pen",
+      "p": "ʤɛl pɛn",
+      "m": "Bút gel"
+    },
+    {
+      "w": "Highlighter",
+      "p": "/ˈhaɪˌlaɪtə/",
+      "m": "Bút dạ quang"
+    },
+    {
+      "w": "Bulletin board",
+      "p": "/ˈbʊlɪtɪn bɔːrd/",
+      "m": "Bảng thông báo"
+    },
+    {
+      "w": "Marker",
+      "p": "ˈmɑːkə",
+      "m": "Bút lông (viết bảng)"
+    },
+    {
+      "w": "Power strip",
+      "p": "/ˈpaʊər strɪp/",
+      "m": "Ổ cắm điện kéo dài"
+    },
+    {
+      "w": "Carbon paper",
+      "p": "/ˈkɑːbən ˈpeɪpə/",
+      "m": "Giấy than"
+    },
+    {
+      "w": "Envelope",
+      "p": "/ˈɛnvələʊp/",
+      "m": "Bao thư"
+    },
+    {
+      "w": "Notebook",
+      "p": "/ˈnəʊtbʊk/",
+      "m": "Sổ ghi chú"
+    },
+    {
+      "w": "Self-stick note (pad)",
+      "p": "/sɛlf-stɪk nəʊt (pæd)/",
+      "m": "Tập giấy ghi chú dán"
+    },
+    {
+      "w": "3D Printers",
+      "p": "/3diː ˈprɪntəz/",
+      "m": "Máy in 3D"
+    },
+    {
+      "w": "LED Printers",
+      "p": "/lɛd ˈprɪntəz/",
+      "m": "Máy in LED"
+    },
+    {
+      "w": "Paper shredder",
+      "p": "/ˈpeɪpə ˈʃrɛdə/",
+      "m": "Máy hủy tài liệu, máy hủy giấy"
+    },
+    {
+      "w": "Bulldog clip",
+      "p": "/ˈbʊldɒg klɪp/",
+      "m": "Kẹp lò xo để kẹp giấy"
+    },
+    {
+      "w": "Expandable file",
+      "p": "/ɪksˈpændəbl faɪl/",
+      "m": "Cặp có nhiều ngăn"
+    },
+    {
+      "w": "Wastebasket",
+      "p": "/ˈweɪstˌbɑːskɪt/",
+      "m": "Thùng rác văn phòng"
+    },
+    {
+      "w": "Sellotape",
+      "p": "/ˈseləteɪp/",
+      "m": "Cuộn băng dính"
+    },
+    {
+      "w": "Binder clip",
+      "p": "/ˈbaɪndə(r) klɪp/",
+      "m": "Kẹp bướm văn phòng"
+    },
+    {
+      "w": "Glue stick",
+      "p": "/ɡluː stɪk/",
+      "m": "Hồ dán khô"
+    }
+  ],
+  "workplace": [
+    {
+      "w": "Spacious",
+      "p": "/ˈspeɪʃəs/",
+      "m": "Rộng rãi"
+    },
+    {
+      "w": "Cramped",
+      "p": "/kræmpt/",
+      "m": "Chật chội"
+    },
+    {
+      "w": "Modern",
+      "p": "/ˈmɑ:dərn/",
+      "m": "Hiện đại"
+    },
+    {
+      "w": "Professional",
+      "p": "/prəˈfeʃ.ən.əl/",
+      "m": "Chuyên nghiệp"
+    },
+    {
+      "w": "Old-fashioned",
+      "p": "/ˌəʊld ˈfæʃnd/",
+      "m": "Lạc hậu, cũ kỹ"
+    },
+    {
+      "w": "Motivating",
+      "p": "/ˈməʊtɪveɪtɪŋ/",
+      "m": "Tạo động lực"
+    },
+    {
+      "w": "Uncomfortable",
+      "p": "/ʌnˈkʌmftəbl/",
+      "m": "Không thoải mái"
+    },
+    {
+      "w": "Airy",
+      "p": "/ˈeəri/",
+      "m": "Thoáng mát"
+    },
+    {
+      "w": "Stuffy",
+      "p": "ˈstʌfi/",
+      "m": "Ngột ngạt"
+    }
+  ],
+  "personalities": [
+    {
+      "w": "Friendly",
+      "p": "/ˈfrendli/",
+      "m": "Thân thiện"
+    },
+    {
+      "w": "Helpful",
+      "p": "/ˈhelpfl/",
+      "m": "Có tinh thần giúp đỡ"
+    },
+    {
+      "w": "Supportive",
+      "p": "/səˈpɔːtɪv/",
+      "m": "Có tinh thần hỗ trợ, ủng hộ"
+    },
+    {
+      "w": "Dynamic",
+      "p": "/daɪˈnæmɪk/",
+      "m": "Năng nổ, năng động"
+    },
+    {
+      "w": "Energetic",
+      "p": "/ˌenəˈdʒetɪk/",
+      "m": "Nhiều năng lượng, tích cực"
+    },
+    {
+      "w": "Hard-working",
+      "p": "/ˌhɑːrd ˈwɜːrkɪŋ/",
+      "m": "Chăm chỉ"
+    },
+    {
+      "w": "Irresponsible",
+      "p": "/ˌɪrɪˈspɒnsəbl/",
+      "m": "Không có, thiếu trách nhiệm"
+    },
+    {
+      "w": "Nosy",
+      "p": "/ˈnəʊzi/",
+      "m": "Nhiều chuyện, tọc mạch"
+    },
+    {
+      "w": "Admirable",
+      "p": "/ˈædmərəbl/",
+      "m": "Đáng khâm phục, đáng ngưỡng mộ"
+    },
+    {
+      "w": "Decisive",
+      "p": "/dɪˈsaɪsɪv/",
+      "m": "Quyết đoán"
+    },
+    {
+      "w": "Thoughtful",
+      "p": "/ˈθɔːtfl/",
+      "m": "Sâu sắc, chín chắn"
+    },
+    {
+      "w": "Easy-going",
+      "p": "/ˌiːzi ˈɡəʊɪŋ/",
+      "m": "Thoải mái, dễ tính"
+    },
+    {
+      "w": "Generous",
+      "p": "/ˈdʒenərəs/",
+      "m": "Hào phóng, phóng khoáng"
+    },
+    {
+      "w": "Stingy",
+      "p": "/ˈstɪndʒi/",
+      "m": "Keo kiệt, bủn xỉn"
+    },
+    {
+      "w": "Arrogant",
+      "p": "/ˈærəɡənt/",
+      "m": "Kiêu ngạo, tự phụ"
+    }
+  ],
+  "skills": [
+    {
+      "w": "Leadership skill",
+      "p": "/ˈliːdərʃɪp skɪl/",
+      "m": "Kỹ năng lãnh đạo"
+    },
+    {
+      "w": "Time management skill",
+      "p": "/taɪm ˈmænɪdʒmənt skɪl/",
+      "m": "Kỹ năng quản lý thời gian"
+    },
+    {
+      "w": "Communication skill",
+      "p": "/kəˌmjuːnɪˈkeɪʃn skɪl/",
+      "m": "Kỹ năng giao tiếp"
+    },
+    {
+      "w": "Analytical skill",
+      "p": "/ˌænəˈlɪtɪkl skɪl/",
+      "m": "Kỹ năng phân tích"
+    },
+    {
+      "w": "Critical thinking skill",
+      "p": "/ˈkrɪtɪkl ˈθɪŋkɪŋ skɪl/",
+      "m": "Kỹ năng tư duy phản biện"
+    },
+    {
+      "w": "Teamwork skill",
+      "p": "/ˈtiːmwɜːrk skɪl/",
+      "m": "Kỹ năng làm việc nhóm"
+    },
+    {
+      "w": "Presentation skill",
+      "p": "/ˌpreznˈteɪʃn skɪl/",
+      "m": "Kỹ năng thuyết trình"
+    },
+    {
+      "w": "Organizational skill",
+      "p": "/ˌɔːɡənaɪˈzeɪʃənl skɪl/",
+      "m": "Kỹ năng tổ chức"
+    },
+    {
+      "w": "Decision-making skill",
+      "p": "/dɪˈsɪʒn-ˈmeɪkɪŋ skɪl/",
+      "m": "Kỹ năng đưa ra quyết định"
+    },
+    {
+      "w": "Adaptability skill",
+      "p": "/əˌdæptəˈbɪləti skɪl/",
+      "m": "Kỹ năng thích ứng"
+    },
+    {
+      "w": "Interpersonal skill",
+      "p": "/ˌɪntəˈpɜːsənl skɪl/",
+      "m": "Kỹ năng giao tiếp và quan hệ cá nhân"
+    }
+  ],
+  "otherBusiness": [
+    {
+      "w": "Get along with + N / Be on good terms with + N",
+      "p": "/ɡɛt əˈlɒŋ wɪð = biː ɒn ɡʊd tɜːmz wɪð/",
+      "m": "Hoà hợp, có quan hệ tốt với ai"
+    },
+    {
+      "w": "To get the sack",
+      "p": "/tuː ɡɛt ðə sæk/",
+      "m": "Bị sa thải"
+    },
+    {
+      "w": "To fire sb",
+      "p": "/tuː faɪə ˈsʌmbədi/",
+      "m": "Sa thải ai"
+    },
+    {
+      "w": "Notice period",
+      "p": "/ˈnəʊtɪs ˈpɪəriəd/",
+      "m": "Thời gian thông báo nghỉ việc"
+    },
+    {
+      "w": "Resume CV/curriculum vitae",
+      "p": "/kəˌrɪk.jə.ləm ˈviː.taɪ/",
+      "m": "Sơ yếu lý lịch, CV"
+    },
+    {
+      "w": "Copyright",
+      "p": "/ˈkɑpiraɪt/",
+      "m": "Bản quyền, bản quyền tác giả"
+    },
+    {
+      "w": "Facility",
+      "p": "/fəˈsɪləti/",
+      "m": "Tiện nghi, trang thiết bị cơ sở vật chất"
+    },
+    {
+      "w": "Bill of lading",
+      "p": "/bɪl ɒv ˈleɪdɪŋ/",
+      "m": "Vận đơn đường biển"
+    },
+    {
+      "w": "Deadline",
+      "p": "/ˈdedlaɪn/",
+      "m": "Hạn chót công việc"
+    },
+    {
+      "w": "To reach an agreement",
+      "p": "/tuː riːʧ ən əˈɡriːmənt/",
+      "m": "Đạt được sự đồng thuận"
+    },
+    {
+      "w": "Check in",
+      "p": "/ʧɛk ɪn/",
+      "m": "Chấm công vào làm, điểm danh"
+    },
+    {
+      "w": "Check out",
+      "p": "/ʧɛk aʊt/",
+      "m": "Chấm công tan làm"
+    },
+    {
+      "w": "Break even",
+      "p": "/breɪk ˈiːvən/",
+      "m": "Hòa vốn"
+    },
+    {
+      "w": "Budget",
+      "p": "/ˈbʌʤɪt/",
+      "m": "Ngân sách"
+    },
+    {
+      "w": "Document",
+      "p": "/ˈdɒkjumənt/",
+      "m": "Tài liệu"
+    },
+    {
+      "w": "Database",
+      "p": "/ˈdætəbeɪs/",
+      "m": "Cơ sở dữ liệu"
+    },
+    {
+      "w": "Education",
+      "p": "/ˌedʒuˈkeɪʃn/",
+      "m": "Trình độ học vấn"
+    },
+    {
+      "w": "Memo",
+      "p": "/ˈmem.əʊ/",
+      "m": "Thông báo nội bộ doanh nghiệp"
+    },
+    {
+      "w": "Project",
+      "p": "/ˈprɒdʒ.ekt/",
+      "m": "Dự án"
+    },
+    {
+      "w": "Efficiency",
+      "p": "/ɪˈfɪʃ.ən.si/",
+      "m": "Hiệu suất, hiệu quả làm việc"
+    },
+    {
+      "w": "Cargo",
+      "p": "/ˈkɑːgəʊ/",
+      "m": "Hàng hóa vận chuyển"
+    },
+    {
+      "w": "Client",
+      "p": "/ˈklaɪənt/",
+      "m": "Khách hàng sử dụng dịch vụ"
+    },
+    {
+      "w": "Schedule",
+      "p": "/ˈʃedʒ.uːl/",
+      "m": "Lịch trình, thời gian biểu"
+    },
+    {
+      "w": "Collateral",
+      "p": "/kɒˈlætərəl/",
+      "m": "Tài sản thế chấp"
+    },
+    {
+      "w": "Commercial",
+      "p": "/kəˈmɜːʃəl/",
+      "m": "Quảng cáo thương mại"
+    },
+    {
+      "w": "Commodity",
+      "p": "/kəˈmɒdɪti/",
+      "m": "Hàng hóa, vật phẩm"
+    },
+    {
+      "w": "Corporation",
+      "p": "/kɔːpəˈreɪʃən/",
+      "m": "Tập đoàn lớn"
+    },
+    {
+      "w": "Deflation",
+      "p": "/dɪˈfleɪʃən/",
+      "m": "Giảm phát"
+    },
+    {
+      "w": "Economy of scale",
+      "p": "/i(ː)ˈkɒnəmi ɒv skeɪl/",
+      "m": "Quy mô nền kinh tế"
+    },
+    {
+      "w": "Executive",
+      "p": "/ɪgˈzɛkjʊtɪv/",
+      "m": "Thành viên ban điều hành, quản lý"
+    },
+    {
+      "w": "Freight",
+      "p": "/freɪt/",
+      "m": "Cước phí vận chuyển hàng hóa"
+    },
+    {
+      "w": "Income tax",
+      "p": "/ˈɪnkʌm tæks/",
+      "m": "Thuế thu nhập cá nhân"
+    },
+    {
+      "w": "Inventory",
+      "p": "/ˈɪnvəntri/",
+      "m": "Hàng hóa tồn kho, kiểm kho"
+    },
+    {
+      "w": "To compile a report",
+      "p": "/kəmˈpaɪl ə rɪˈpɔrt/",
+      "m": "Biên soạn báo cáo công việc"
+    },
+    {
+      "w": "Merchandise",
+      "p": "/ˈmɜːʧəndaɪz/",
+      "m": "Hàng hóa mua bán"
+    },
+    {
+      "w": "Net worth",
+      "p": "/nɛt wɜːθ/",
+      "m": "Giá trị tài sản ròng"
+    },
+    {
+      "w": "To attend a meeting",
+      "p": "/əˈtɛnd ə ˈmitɪŋ/",
+      "m": "Tham gia cuộc họp"
+    },
+    {
+      "w": "Portfolio",
+      "p": "/pɔːtˈfəʊliəʊ/",
+      "m": "Danh mục hồ sơ năng lực, đầu tư"
+    },
+    {
+      "w": "Stock",
+      "p": "/stɒk/",
+      "m": "Cổ phần, cổ phiếu"
+    },
+    {
+      "w": "Trade-off",
+      "p": "/treɪd-ɒf/",
+      "m": "Sự đánh đổi thương lượng"
+    },
+    {
+      "w": "Transaction",
+      "p": "/trænˈzækʃən/",
+      "m": "Giao dịch kinh tế"
+    },
+    {
+      "w": "Vacancy",
+      "p": "/ˈveɪkənsi/",
+      "m": "Vị trí tuyển dụng đang trống"
+    }
+  ],
+  "phrases": [
+    {
+      "e": "May I have a word with you?",
+      "v": "Bạn có ít thời gian để tôi nói chuyện với bạn một chút được không?"
+    },
+    {
+      "e": "I need your help.",
+      "v": "Em cần sự trợ giúp của anh/chị."
+    },
+    {
+      "e": "Could you please give me with further details?",
+      "v": "Bạn có thể cung cấp thêm thông tin không?"
+    },
+    {
+      "e": "I’ll get back to you soon.",
+      "v": "Em sẽ liên lạc lại với anh/chị ngay khi có thể."
+    },
+    {
+      "e": "Let’s schedule a meeting to discuss this further.",
+      "v": "Hãy lên lịch một cuộc họp để bàn thêm vấn đề này."
+    },
+    {
+      "e": "I appreciate your prompt response.",
+      "v": "Tôi rất biết ơn về sự phản hồi nhanh chóng của anh/chị."
+    },
+    {
+      "e": "We need to address this issue urgently.",
+      "v": "Chúng ta cần giải quyết vấn đề này ngay."
+    },
+    {
+      "e": "Please find attached the report for your review.",
+      "v": "Xin vui lòng kiểm tra bản báo cáo có đính kèm."
+    },
+    {
+      "e": "I apologize for any inconvenience.",
+      "v": "Tôi xin lỗi vì bất kì sự bất tiện nào."
+    },
+    {
+      "e": "Please inform me if there are any questions or concerns.",
+      "v": "Nếu bạn có bất kỳ câu hỏi hoặc lo lắng nào, vui lòng thông báo cho tôi."
+    },
+    {
+      "e": "I’m in the middle of another task, can I get back to you later?",
+      "v": "Hiện tôi đang bận với một công việc khác, liệu có thể tôi liên lạc lại với bạn sau được không?"
+    },
+    {
+      "e": "It would be better if we could collaborate on this project.",
+      "v": "Sẽ tốt hơn nếu chúng ta cùng hợp tác trong dự án này."
+    },
+    {
+      "e": "It’s crucial that we meet the deadline.",
+      "v": "Việc đáp ứng đúng hạn là rất quan trọng."
+    },
+    {
+      "e": "I propose we implement a new strategy.",
+      "v": "Tôi xin phép đề xuất triển khai một chiến lược mới."
+    },
+    {
+      "e": "Let’s arrange a conference call for the team.",
+      "v": "Chúng ta hãy sắp xếp một cuộc họp qua điện thoại cho đội."
+    },
+    {
+      "e": "I’ll make a note of that for future reference.",
+      "v": "Tôi sẽ ghi chú lại cho tham khảo trong tương lai."
+    },
+    {
+      "e": "This issue requires immediate attention.",
+      "v": "Vấn đề này cần được chú ý ngay lập tức."
+    },
+    {
+      "e": "Feel free to reach out if you need any further clarification.",
+      "v": "Hãy liên hệ nếu bạn cần thêm thông tin."
+    },
+    {
+      "e": "Let’s streamline the process to improve efficiency.",
+      "v": "Chúng ta hãy tối ưu hóa quy trình để nâng cao hiệu suất."
+    },
+    {
+      "e": "I suggest we reevaluate our approach.",
+      "v": "Tôi đề xuất chúng ta nên đánh giá lại cách tiếp cận."
+    },
+    {
+      "e": "I’ll make sure to keep you in the loop.",
+      "v": "Tôi sẽ đảm bảo thông tin liên tục đến bạn."
+    },
+    {
+      "e": "We need to address these issues proactively.",
+      "v": "Chúng ta cần phải tiếp cận các vấn đề này một cách tích cực."
+    },
+    {
+      "e": "Let’s set up a system for better communication.",
+      "v": "Chúng ta hãy thiết lập một hệ thống để giao tiếp tốt hơn."
+    },
+    {
+      "e": "I'll work with the team to complete this task.",
+      "v": "Tôi sẽ làm việc với đội để hoàn thành công việc này."
+    },
+    {
+      "e": "I’d like your input on this matter.",
+      "v": "Tôi muốn biết ý kiến của bạn về vấn đề này."
+    },
+    {
+      "e": "I’m open to suggestions for improvement.",
+      "v": "Tôi mở lòng để tiếp nhận các đề xuất."
+    },
+    {
+      "e": "Let’s explore alternative solutions.",
+      "v": "Chúng ta hãy tìm hiểu các giải pháp thế chỗ."
+    },
+    {
+      "e": "I look forward to your feedback.",
+      "v": "Tôi rất mong chờ sự phản hồi của bạn."
+    },
+    {
+      "e": "I want to take a day off tomorrow.",
+      "v": "Tôi muốn xin phép nghỉ phép vào ngày mai."
+    },
+    {
+      "e": "It is a privilege for us to have the opportunity to collaborate with your company.",
+      "v": "Rất vinh dự khi có cơ hội hợp tác với công ty của bạn."
+    },
+    {
+      "e": "How can I help you, sir/madam?",
+      "v": "Tôi có thể giúp gì được cho ông/bà ạ?"
+    },
+    {
+      "e": "If you have any additional concerns, please feel free to contact us via email or our hotline.",
+      "v": "Nếu bạn còn bất kỳ thắc mắc nào, vui lòng liên hệ qua email hoặc số hotline."
+    },
+    {
+      "e": "Here’s my business card.",
+      "v": "Đây là danh thiếp của tôi."
+    }
+  ]
+}

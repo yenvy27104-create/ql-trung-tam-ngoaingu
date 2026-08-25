@@ -1,0 +1,168 @@
+<%- include('../layouts/header') %>
+
+<style>
+  .article-container {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid #eef2f5;
+  }
+
+  .sidebar-card {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #eef2f5;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+  }
+
+  .sidebar-card:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+
+  .article-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #34495e;
+    margin-bottom: 1.5rem;
+  }
+
+  .article-content h3 {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="container py-5 mt-4">
+  <!-- Breadcrumb Navigation -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted">Trang chủ</a></li>
+      <li class="breadcrumb-item"><a href="/#TinTuc" class="text-decoration-none text-muted">Tin tức</a></li>
+      <li class="breadcrumb-item active text-primary fw-semibold" aria-current="page"><%= article.TieuDe %></li>
+    </ol>
+  </nav>
+
+  <!-- Main Article Body -->
+  <div class="article-container p-4 p-md-5 mb-5">
+    
+    <!-- Big Header Card -->
+    <div class="text-center mb-5">
+      <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-bold text-uppercase mb-3 small">
+        <i class="bi bi-newspaper me-1"></i> Tin Tức & Sự Kiện
+      </span>
+      <h1 class="fw-extrabold text-dark tracking-tight mb-4" style="font-size: 2.5rem; line-height: 1.3;">
+        <%= article.TieuDe %>
+      </h1>
+      
+      <!-- Meta info row -->
+      <div class="d-flex align-items-center justify-content-center flex-wrap gap-3 text-muted small mt-2">
+        <span class="d-flex align-items-center"><i class="bi bi-calendar3 me-2 text-primary"></i>Đăng ngày: <%= new Date(article.NgayDang).toLocaleDateString('vi-VN') %></span>
+        <span class="text-secondary">|</span>
+        <span class="d-flex align-items-center"><i class="bi bi-person-circle me-2 text-success"></i>Người đăng: <%= article.NguoiDang || 'Ban quản trị Y&V' %></span>
+      </div>
+    </div>
+
+    <!-- Article Cover Image -->
+    <% if (article.HinhAnh) { %>
+      <div class="rounded-4 overflow-hidden mb-5 shadow-sm text-center">
+        <img src="<%= article.HinhAnh %>" class="img-fluid w-100 object-fit-cover" style="max-height: 450px;" alt="<%= article.TieuDe %>" />
+      </div>
+    <% } %>
+
+    <!-- Summary Box -->
+    <% if (article.TomTat) { %>
+      <div class="p-4 rounded-3 mb-4" style="background-color: #f8fafc; border-left: 5px solid #0d6efd;">
+        <p class="lead mb-0 fw-medium text-dark-emphasis" style="font-size: 1.15rem; line-height: 1.6;">
+          <strong>Tóm tắt:</strong> <%= article.TomTat %>
+        </p>
+      </div>
+    <% } %>
+
+    <!-- Article Rich Content -->
+    <div class="article-content mt-4">
+      <%- article.NoiDung %>
+    </div>
+
+  </div>
+
+  <!-- Bottom Related Cards Section -->
+  <div class="row g-4 mt-4">
+    <!-- Card 1: Placement Test -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 text-center border-0 h-100 d-flex flex-column justify-content-between" style="background: linear-gradient(135deg, #1a252f, #2c3e50); color: white;">
+        <div>
+          <h5 class="fw-bold mb-3"><i class="bi bi-pencil-square me-2 text-warning"></i>Đánh giá năng lực</h5>
+          <p class="small text-white-50 mb-4">Làm bài kiểm tra đầu vào TOEIC (100 câu) hoàn toàn miễn phí để biết chính xác trình độ hiện tại của bạn.</p>
+        </div>
+        <a href="/exams/placement" 
+           onclick="checkPlacementTest(event, <%= user ? 'true' : 'false' %>)" 
+           class="btn btn-warning fw-bold w-100 py-2.5 rounded-3 shadow">
+          Thi thử đầu vào
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 2: Practice Exams -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 text-center h-100 d-flex flex-column justify-content-between">
+        <div>
+          <h5 class="fw-bold text-dark mb-3"><i class="bi bi-journal-check me-2 text-primary"></i>Luyện đề thi thử</h5>
+          <p class="small text-secondary mb-4">Kho đề thi thử TOEIC chuẩn cấu trúc IIG kèm giải thích chi tiết đáp án giúp bạn rèn luyện phản xạ.</p>
+        </div>
+        <a href="/exams/free" class="btn btn-primary fw-bold w-100 py-2.5 rounded-3 shadow-sm">
+          Luyện đề miễn phí
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 3: Related News -->
+    <div class="col-md-4">
+      <div class="sidebar-card p-4 h-100">
+        <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">Tin tức liên quan</h5>
+        <div class="d-flex flex-column gap-3 text-start">
+          
+          <a href="/format-toeic" class="text-decoration-none text-dark d-flex gap-2">
+            <div class="rounded overflow-hidden" style="width: 70px; height: 50px; flex-shrink: 0;">
+              <img src="/images/Cap_Nhat_Fomat.png" class="w-100 h-100 object-fit-cover" alt="Format" />
+            </div>
+            <div>
+              <h6 class="small fw-bold mb-1 line-clamp-2" style="font-size: 0.85rem; line-height: 1.3;">Cấu trúc đề thi TOEIC mới nhất năm 2026</h6>
+              <span class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Mới nhất</span>
+            </div>
+          </a>
+
+          <a href="/meo-toeic-listening" class="text-decoration-none text-dark d-flex gap-2">
+            <div class="rounded overflow-hidden" style="width: 70px; height: 50px; flex-shrink: 0;">
+              <img src="/images/Meo copy.png" class="w-100 h-100 object-fit-cover" alt="Mẹo nghe" />
+            </div>
+            <div>
+              <h6 class="small fw-bold mb-1 line-clamp-2" style="font-size: 0.85rem; line-height: 1.3;">Mẹo làm bài Toeic Listening bứt phá điểm số</h6>
+              <span class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>Hot</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

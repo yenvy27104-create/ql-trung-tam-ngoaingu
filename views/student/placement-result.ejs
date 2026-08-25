@@ -1,0 +1,1052 @@
+<%- include('../layouts/header') %>
+
+  <style>
+    .result-card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+      border: 1px solid #eef2f5;
+      padding: 35px;
+    }
+
+    .score-badge-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3498db, #1a252f);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 25px rgba(52, 152, 219, 0.2);
+    }
+
+    .score-badge-circle .score-num {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .score-badge-circle .score-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 5px;
+      opacity: 0.9;
+    }
+
+    .recommendation-box {
+      background: rgba(52, 152, 219, 0.04);
+      border: 1.5px dashed var(--accent-color);
+      border-radius: 12px;
+      padding: 25px;
+    }
+
+    .grading-list {
+      max-height: 600px;
+      overflow-y: auto;
+      border: 1px solid #eef2f5;
+      border-radius: 8px;
+      padding: 15px;
+      background: #f8f9fa;
+    }
+
+    .grading-item {
+      border-bottom: 1px solid #eaeef2;
+      padding: 12px 5px;
+    }
+
+    .grading-item:last-child {
+      border-bottom: none;
+    }
+
+    .weakness-card {
+      background: #fff;
+      border: 1px solid #eef2f5;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .part-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: #eef2f5;
+      overflow: hidden;
+    }
+
+    .part-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .suggestion-item {
+      border-left: 4px solid #3498db;
+      background: #f8fbff;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+
+    .suggestion-item.priority-high {
+      border-left-color: #e74c3c;
+      background: #fef5f5;
+    }
+
+    .suggestion-item.priority-medium {
+      border-left-color: #f39c12;
+      background: #fffbf0;
+    }
+
+    .suggestion-item.priority-low {
+      border-left-color: #27ae60;
+      background: #f0faf4;
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(52, 152, 219, 0.08) !important;
+    }
+  </style>
+
+  <div class="row g-4 my-3 justify-content-center">
+    <div class="col-lg-10">
+      <div class="result-card">
+        <div class="text-center mb-5">
+          <% if (exam.LoaiDe==='Đầu vào' && typeof alreadyTaken !=='undefined' && alreadyTaken) { %>
+            <div class="alert alert-warning d-flex align-items-center justify-content-center gap-2 mb-4" role="alert">
+              <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+              <div>
+                <strong>Bạn đã làm bài test đầu vào rồi!</strong>
+                Mỗi người chỉ được làm bài test đầu vào <strong>1 lần</strong> duy nhất.
+                <% if (typeof takenDate !=='undefined' && takenDate) { %>
+                  <br><small class="text-muted">Ngày thi: <%= new Date(takenDate).toLocaleDateString('vi-VN', {
+                      day: '2-digit' , month: '2-digit' , year: 'numeric' , hour: '2-digit' , minute: '2-digit' }) %>
+                      </small>
+                  <% } %>
+              </div>
+            </div>
+            <% } %>
+              <span class="badge bg-success-subtle text-success px-3 py-1.5 fw-semibold mb-2">Hoàn thành</span>
+              <h2 class="fw-bold mb-1">
+                <%= exam.LoaiDe==='Đầu vào' ? 'Kết Quả Bài Test Đầu Vào' : 'Kết Quả Luyện Thi TOEIC' %>
+              </h2>
+              <% if (exam.LoaiDe !=='Đầu vào' ) { %>
+                <p class="text-muted">
+                  <%= exam.TenDeThi %>
+                </p>
+                <% } %>
+        </div>
+
+        <div class="row g-4 align-items-center justify-content-center mb-5">
+          <!-- Score Circles -->
+          <div class="col-md-8 mx-auto">
+            <div class="card border-0 bg-light p-4 rounded-3 text-center">
+              <div class="score-badge-circle">
+                <div class="score-num">
+                  <%= totalScore %>
+                </div>
+                <div class="score-label">TOEIC Điểm</div>
+              </div>
+              <div class="d-flex justify-content-around mt-3 border-top pt-3">
+                <div>
+                  <span class="text-muted small d-block">Listening</span>
+                  <strong class="text-dark fs-5">
+                    <%= diemNghe %>
+                  </strong>
+                </div>
+                <div>
+                  <span class="text-muted small d-block">Reading</span>
+                  <strong class="text-dark fs-5">
+                    <%= diemDoc %>
+                  </strong>
+                </div>
+                <% if (correctCount !==null && totalQuestions !==null) { %>
+                  <div>
+                    <span class="text-muted small d-block">Đúng</span>
+                    <strong class="text-success fs-5">
+                      <%= correctCount %>/<%= totalQuestions %>
+                    </strong>
+                  </div>
+                  <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <% if (exam.LoaiDe==='Đầu vào' ) { %>
+          <!-- Lộ trình khóa học đề xuất -->
+          <div class="border-top pt-5 mb-5">
+            <div class="text-center mb-4">
+              <div
+                class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle mb-3"
+                style="width: 60px; height: 60px; box-shadow: 0 10px 20px rgba(52, 152, 219, 0.15);">
+                <i class="bi bi-compass-fill fs-3"></i>
+              </div>
+              <h3 class="fw-bold text-dark mb-2">Lộ Trình Khóa Học Phù Hợp</h3>
+              <p class="text-muted mx-auto" style="max-width: 600px;">
+                Dựa trên số điểm test đầu vào đạt được là <strong class="text-primary">
+                  <%= totalScore %> điểm
+                </strong>, trung tâm TOEIC Y&V đề xuất lộ trình học tập tối ưu dành riêng cho bạn dưới đây:
+              </p>
+            </div>
+
+            <% if (typeof recommendations !=='undefined' && recommendations && recommendations.length> 0) { %>
+              <div class="position-relative mt-5">
+                <!-- Desktop horizontal timeline indicator connector (only on md and up) -->
+                <div class="d-none d-md-block position-absolute top-50 start-0 w-100 translate-middle-y"
+                  style="height: 4px; background: linear-gradient(90deg, #3498db, #2ecc71); z-index: 1; opacity: 0.2; margin-top: -60px;">
+                </div>
+
+                <div class="row g-4 position-relative" style="z-index: 2;">
+                  <% recommendations.forEach((r, idx)=> { %>
+                    <div class="col-md-4">
+                      <div class="card h-100 border-0 shadow-sm hover-lift"
+                        style="border-radius: 20px; overflow: hidden; transition: all 0.3s ease; box-shadow: 0 15px 35px rgba(0,0,0,0.04) !important;">
+                        <!-- Step Indicator Header -->
+                        <div class="p-3 text-white text-center fw-bold small text-uppercase tracking-wider"
+                          style="background: linear-gradient(135deg, #3498db, #1a252f);">
+                          BƯỚC <%= idx + 1 %>: <%= r.TenKhoaHoc.includes('Foundation') ? 'XÂY NỀN TẢNG'
+                              : 'CHINH PHỤC MỤC TIÊU' %>
+                        </div>
+
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                          <div>
+                            <!-- Badge Level -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                              <span
+                                class="badge bg-success-subtle text-success px-3 py-1.5 fw-semibold rounded-pill">TOEIC
+                                <%= r.DiemTu %> - <%= r.DiemDen %></span>
+                              <span class="text-secondary small fw-bold"><i class="bi bi-award text-warning me-1"></i>Đề
+                                xuất</span>
+                            </div>
+
+                            <!-- Course Title -->
+                            <h5 class="fw-bold text-dark mb-3" style="font-size: 1.25rem;">
+                              <%= r.TenKhoaHoc %>
+                            </h5>
+
+                            <!-- Course Description -->
+                            <p class="text-secondary small mb-4" style="line-height: 1.6; min-height: 60px;">
+                              <%= r.MoTa
+                                || 'Khóa học cung cấp kiến thức nền tảng và phương pháp ôn luyện TOEIC chuẩn xác.' %>
+                            </p>
+                          </div>
+
+                          <div>
+                            <!-- Attributes -->
+                            <div class="bg-light p-3 rounded-3 mb-4">
+                              <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
+                                <span><i class="bi bi-clock-fill text-primary me-2"></i>Thời lượng:</span>
+                                <strong class="text-dark">
+                                  <%= r.ThoiLuong %> buổi
+                                </strong>
+                              </div>
+                              <div class="d-flex justify-content-between align-items-center small text-muted">
+                                <span><i class="bi bi-cash-stack text-success me-2"></i>Học phí:</span>
+                                <strong class="text-success">
+                                  <%= Number(r.HocPhi).toLocaleString('vi-VN') %> đ
+                                </strong>
+                              </div>
+                            </div>
+
+                            <!-- Action Button -->
+                            <button type="button" onclick="openClassDetailForIndex(<%= idx %>)"
+                              class="btn btn-outline-primary w-100 py-2.5 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2"
+                              style="border-radius: 12px; transition: all 0.2s;">
+                              <span>Đăng ký lớp học</span>
+                              <i class="bi bi-arrow-right-circle-fill"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <% }) %>
+                </div>
+              </div>
+
+              <div class="text-center mt-5">
+                <p class="small text-muted mb-0">
+                  <i class="bi bi-info-circle-fill text-info me-1"></i> Bạn hãy click <strong>"Đăng ký lớp học"</strong>
+                  ở khóa học mong muốn để xem danh sách lịch khai giảng chi tiết và đăng ký.
+                </p>
+              </div>
+              <% } else if (typeof isGap !=='undefined' && isGap) { %>
+                <div class="card border-0 bg-light p-5 text-center rounded-4 shadow-sm">
+                  <div
+                    class="d-inline-flex align-items-center justify-content-center bg-info-subtle text-info rounded-circle mb-3"
+                    style="width: 70px; height: 70px;">
+                    <i class="bi bi-info-circle-fill fs-2"></i>
+                  </div>
+                  <h4 class="fw-bold text-dark mb-2">Kết Quả Điểm Số: <%= totalScore %> Điểm</h4>
+                  <p class="text-secondary small mx-auto mb-4" style="max-width: 550px; line-height: 1.6;">
+                    Chúc mừng bạn đã hoàn thành bài thi test đầu vào đạt <strong class="text-primary fs-5">
+                      <%= totalScore %> điểm
+                    </strong>! Hiện tại số điểm của bạn nằm ở mốc ranh giới chưa có khung lớp cố định sẵn. Vui lòng nhắn
+                    tin tư vấn trực tiếp để chuyên viên TOEIC Y&V thiết kế lộ trình ôn luyện tối ưu riêng biệt cho bạn.
+                  </p>
+                  <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="https://zalo.me/0994796334" target="_blank"
+                      class="btn btn-primary px-4 py-2.5 fw-bold shadow-sm rounded-3"><i
+                        class="bi bi-chat-left-dots me-2"></i>Nhận tư vấn lộ trình riêng</a>
+                    <a href="/classes/available-classes"
+                      class="btn btn-outline-secondary px-4 py-2.5 fw-semibold rounded-3">Xem tất cả lớp học</a>
+                  </div>
+                </div>
+                <% } else { %>
+                  <div class="card border-0 bg-light p-5 text-center rounded-4 shadow-sm">
+                    <div
+                      class="d-inline-flex align-items-center justify-content-center bg-warning-subtle text-warning rounded-circle mb-3"
+                      style="width: 70px; height: 70px;">
+                      <i class="bi bi-star-fill fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold text-dark mb-2">Trình Độ Rất Xuất Sắc!</h4>
+                    <p class="text-secondary small mx-auto mb-4" style="max-width: 550px; line-height: 1.6;">
+                      Chúc mừng bạn đã đạt số điểm ấn tượng <strong class="text-primary fs-5">
+                        <%= totalScore %> điểm
+                      </strong> trong bài test đầu vào.
+                      Trình độ của bạn đã vượt qua các lớp học nền tảng hiện tại của trung tâm. Chúng tôi đề xuất bạn
+                      nên tự tin tham gia luyện đề thi thử VIP trực tiếp hoặc liên hệ với trung tâm để được thiết kế lộ
+                      trình ôn luyện chuyên sâu riêng biệt.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                      <a href="/classes/my-classes?tab=luyenthi"
+                        class="btn btn-primary px-4 py-2.5 fw-bold shadow-sm rounded-3">Luyện thi thử VIP ngay</a>
+                      <a href="https://zalo.me/0994796334" target="_blank"
+                        class="btn btn-outline-secondary px-4 py-2.5 fw-semibold rounded-3"><i
+                          class="bi bi-chat-left-dots me-2"></i>Tư vấn trực tiếp</a>
+                    </div>
+                  </div>
+                  <% } %>
+
+                    <!-- CÔNG CỤ TÍNH TOÁN LỘ TRÌNH VÀ THỜI GIAN HỌC LÊN ĐIỂM MỤC TIÊU -->
+                    <div class="card border-0 shadow-lg rounded-4 mt-5 overflow-hidden"
+                      style="background: linear-gradient(135deg, #ffffff, #f8fafc);">
+                      <div class="card-header bg-gradient text-white p-4 border-0"
+                        style="background: linear-gradient(135deg, #1e3c72, #2a5298);">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                          <div>
+                            <h4 class="fw-bold text-white mb-1"><i
+                                class="bi bi-calculator-fill text-warning me-2"></i>Công Cụ Tính Lộ Trình & Thời Gian
+                              Học Mục Tiêu</h4>
+                            <p class="text-white-50 small mb-0">Tùy chọn điểm mục tiêu và tần suất học để biết chính xác
+                              số ngày cần thiết để đạt mục tiêu!</p>
+                          </div>
+                          <span class="badge bg-warning text-dark px-3 py-2 fw-bold rounded-pill"><i
+                              class="bi bi-lightning-charge-fill me-1"></i>Tính tự động</span>
+                        </div>
+                      </div>
+                      <div class="card-body p-4">
+                        <div class="row g-4 mb-4">
+                          <div class="col-md-4">
+                            <label class="form-label fw-bold text-dark small">1. Điểm test hiện tại</label>
+                            <div class="input-group">
+                              <span class="input-group-text bg-light text-primary"><i
+                                  class="bi bi-speedometer2"></i></span>
+                              <input type="number" id="calcCurrentScore" class="form-control fw-bold"
+                                value="<%= totalScore %>" onchange="calculateTargetRoadmap()"
+                                onkeyup="calculateTargetRoadmap()">
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label fw-bold text-dark small">2. Loại lộ trình mong muốn</label>
+                            <select id="calcRoadmapType" class="form-select fw-bold text-primary"
+                              onchange="calculateTargetRoadmap()">
+                              <option value="Tiêu chuẩn" selected>📘 Tiêu chuẩn (Thong thả & Vững)</option>
+                              <option value="Cấp tốc">🚀 Cấp tốc (Tăng tốc đạt nhanh)</option>
+                              <% if (typeof hideMatGoc==='undefined' || !hideMatGoc) { %>
+                                <option value="Mất gốc">🌱 Mất gốc (Khôi phục nền)</option>
+                                <% } %>
+                            </select>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label fw-bold text-dark small">3. Điểm mục tiêu mong muốn</label>
+                            <select id="calcTargetScore" class="form-select fw-bold text-success"
+                              onchange="calculateTargetRoadmap()">
+                              <option value="450" <%=totalScore < 450 ? 'selected' : '' %>>TOEIC 450+ (IELTS ~4.5)
+                              </option>
+                              <option value="650" <%=(totalScore>= 450 && totalScore < 650) || totalScore < 450
+                                  ? 'selected' : '' %>>TOEIC 650+ (IELTS ~6.0)</option>
+                              <option value="850">TOEIC 850+ (IELTS ~7.0+)</option>
+                            </select>
+                          </div>
+                          <div class="col-md-3">
+                            <label class="form-label fw-bold text-dark small">4. Tần suất học hàng tuần</label>
+                            <select id="calcFrequency" class="form-select fw-bold text-primary"
+                              onchange="calculateTargetRoadmap()">
+                              <option value="2">2 buổi / tuần (Thong thả)</option>
+                              <option value="3" selected>3 buổi / tuần (Lịch chuẩn)</option>
+                              <option value="5">5 buổi / tuần (Cấp tốc)</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <!-- Ket qua tinh toán -->
+                        <div class="p-4 rounded-4 bg-white border border-primary-subtle shadow-sm mb-4">
+                          <div class="row g-3 text-center">
+                            <div class="col-md-3 col-6 border-end">
+                              <div class="text-secondary small fw-bold mb-1">CẦN HỌC</div>
+                              <div class="fs-4 fw-bold text-dark" id="resTotalCourses">--</div>
+                            </div>
+                            <div class="col-md-3 col-6 border-end">
+                              <div class="text-secondary small fw-bold mb-1">TỔNG SỐ BUỔI</div>
+                              <div class="fs-4 fw-bold text-primary" id="resTotalSessions">--</div>
+                            </div>
+                            <div class="col-md-3 col-6 border-end">
+                              <div class="text-secondary small fw-bold mb-1">THỜI GIAN DỰ KIẾN</div>
+                              <div class="fs-3 fw-bold text-danger" id="resTotalDays">--</div>
+                              <div class="text-muted small" id="resDurationText">--</div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                              <div class="text-secondary small fw-bold mb-1">TỔNG HỌC PHÍ DỰ KIẾN</div>
+                              <div class="fs-4 fw-bold text-success" id="resTotalFee">--</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Chi tiet lo trinh -->
+                        <h6 class="fw-bold text-dark mb-3"><i class="bi bi-list-check text-primary me-2"></i>Chi tiết
+                          các khóa học nằm trong lộ trình:</h6>
+                        <div id="calcCourseList"></div>
+                      </div>
+                    </div>
+
+                    <script>
+                      const allRoadmapsData = <% - JSON.stringify(typeof allRoadmaps !== 'undefined' ? allRoadmaps : []) %>;
+
+                      function calculateTargetRoadmap() {
+                        const currentScore = parseInt(document.getElementById('calcCurrentScore').value) || 0;
+                        const targetScore = parseInt(document.getElementById('calcTargetScore').value) || 650;
+                        const freq = parseInt(document.getElementById('calcFrequency').value) || 3;
+                        const selectedType = document.getElementById('calcRoadmapType').value || 'Tiêu chuẩn';
+
+                        // Group roadmaps by selected LoaiLoTrinh
+                        let matchedRoadmaps = allRoadmapsData.filter(r => {
+                          const rType = r.LoaiLoTrinh || 'Tiêu chuẩn';
+                          return (rType === selectedType || allRoadmapsData.filter(x => (x.LoaiLoTrinh || 'Tiêu chuẩn') === selectedType).length === 0)
+                            && r.DiemDen > currentScore && r.DiemTu < targetScore;
+                        });
+
+                        // Nếu điểm hiện tại < 300 (học viên mất gốc / 0 điểm) và danh sách chưa có khóa Pre-TOEIC -> Tự động bổ sung Pre-TOEIC làm Bước 1 Nền tảng
+                        if (currentScore < 300 && !matchedRoadmaps.some(r => (r.TenKhoaHoc || '').toLowerCase().includes('pre'))) {
+                          const preRoadmap = allRoadmapsData.find(r => (r.TenKhoaHoc || '').toLowerCase().includes('pre') || (r.LoaiLoTrinh === 'Mất gốc' && r.DiemTu === 0));
+                          if (preRoadmap) {
+                            matchedRoadmaps.unshift(preRoadmap);
+                          }
+                        }
+
+                        let totalSessions = 0;
+                        let totalFee = 0;
+                        matchedRoadmaps.forEach(r => {
+                          totalSessions += Number(r.ThoiLuong || 0);
+                          totalFee += Number(r.HocPhi || 0);
+                        });
+
+                        const totalWeeks = Math.ceil(totalSessions / freq);
+                        const totalDays = Math.ceil(totalWeeks * 7);
+                        const totalMonths = (totalDays / 30).toFixed(1);
+
+                        document.getElementById('resTotalCourses').innerText = matchedRoadmaps.length + ' khóa học';
+                        document.getElementById('resTotalSessions').innerText = totalSessions + ' buổi';
+                        document.getElementById('resTotalDays').innerText = totalDays + ' ngày';
+                        document.getElementById('resDurationText').innerText = `(~ ${totalWeeks} tuần / ${totalMonths} tháng)`;
+                        document.getElementById('resTotalFee').innerText = totalFee.toLocaleString('vi-VN') + ' đ';
+
+                        const container = document.getElementById('calcCourseList');
+                        if (matchedRoadmaps.length === 0) {
+                          container.innerHTML = `<div class="alert alert-info text-center py-3"><i class="bi bi-check-circle-fill me-2"></i>Điểm hiện tại của bạn (${currentScore}) đã đạt hoặc vượt mục tiêu (${targetScore})!</div>`;
+                        } else {
+                          container.innerHTML = matchedRoadmaps.map((r, idx) => `
+                <div class="card border-0 bg-light p-3 mb-2 rounded-3">
+                  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                      <span class="badge bg-primary me-2">Bước ${idx + 1}</span>
+                      <strong class="text-dark fs-6">${r.TenKhoaHoc}</strong>
+                      <span class="badge bg-success-subtle text-success ms-2">Mục tiêu: ${r.DiemTu} - ${r.DiemDen} điểm</span>
+                    </div>
+                    <div class="text-end">
+                      <span class="fw-bold text-dark me-3"><i class="bi bi-clock me-1 text-primary"></i>${r.ThoiLuong} buổi</span>
+                      <span class="fw-bold text-success"><i class="bi bi-tag me-1"></i>${Number(r.HocPhi).toLocaleString('vi-VN')} đ</span>
+                    </div>
+                  </div>
+                  <p class="text-secondary small mt-2 mb-0">${r.MoTa || ''}</p>
+                </div>
+              `).join('');
+                        }
+                      }
+
+                      document.addEventListener('DOMContentLoaded', () => {
+                        calculateTargetRoadmap();
+                      });
+                    </script>
+          </div>
+          <% } %>
+
+            <% if (exam.LoaiDe==='Đầu vào' && typeof gradingDetails !=='undefined' && gradingDetails &&
+              gradingDetails.length> 0) { %>
+              <!-- Tóm tắt kết quả Đúng / Sai cho Test Đầu Vào (Không xem đáp án chi tiết/giải thích) -->
+              <div class="border-top pt-4 mb-4">
+                <h4 class="fw-bold mb-3"><i class="bi bi-list-check text-primary me-2"></i>Tóm tắt kết quả bài Test đầu
+                  vào</h4>
+                <p class="text-muted small mb-3">Dưới đây là kết quả kiểm tra từng câu hỏi (Bài test đầu vào chỉ hiển
+                  thị kết quả Đúng / Sai):</p>
+                <div class="row g-2">
+                  <% gradingDetails.forEach((detail)=> { %>
+                    <div class="col-6 col-md-3 col-lg-2">
+                      <div
+                        class="p-2.5 rounded border text-center <%= detail.isCorrect ? 'bg-success-subtle border-success text-success' : 'bg-danger-subtle border-danger text-danger' %>">
+                        <span class="fw-bold d-block small">Câu <%= detail.id %></span>
+                        <span class="fw-bold fs-6">
+                          <%= detail.isCorrect ? 'ĐÚNG ✓' : 'SAI ✗' %>
+                        </span>
+                      </div>
+                    </div>
+                    <% }) %>
+                </div>
+              </div>
+              <% } %>
+
+                <% if (exam.LoaiDe !=='Đầu vào' && typeof weaknessAnalysis !=='undefined' && weaknessAnalysis) { %>
+                  <% if (isActiveStudent) { %>
+                    <!-- Phân tích điểm yếu & Gợi ý ôn luyện (Học viên VIP) -->
+                    <div class="border-top pt-4 mb-4">
+                      <h4 class="fw-bold mb-4"><i class="bi bi-graph-down-arrow text-danger me-2"></i>Phân tích điểm yếu
+                        & Gợi ý ôn luyện VIP</h4>
+
+                      <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                          <div class="weakness-card h-100">
+                            <h6 class="fw-bold text-primary mb-3"><i class="bi bi-headphones me-2"></i>Kỹ năng Nghe
+                              (Listening)</h6>
+                            <div class="d-flex justify-content-between align-items-end mb-2">
+                              <span class="fs-4 fw-bold text-dark">
+                                <%= weaknessAnalysis.listeningAccuracy %>%
+                              </span>
+                              <span class="small text-muted">
+                                <%= weaknessAnalysis.listeningCorrect %>/<%= weaknessAnalysis.listeningTotal %> câu đúng
+                              </span>
+                            </div>
+                            <div class="part-bar mb-3">
+                              <div
+                                class="part-bar-fill <%= weaknessAnalysis.listeningAccuracy >= 70 ? 'bg-success' : 'bg-danger' %>"
+                                style="width: <%= weaknessAnalysis.listeningAccuracy %>%"></div>
+                            </div>
+                            <% weaknessAnalysis.partResults.filter(p=> p.skill === 'Listening').forEach(p => { %>
+                              <div class="d-flex justify-content-between align-items-center small mb-1">
+                                <span class="text-secondary">
+                                  <%= p.name %>
+                                </span>
+                                <span class="fw-semibold <%= p.percentage >= 70 ? 'text-success' : 'text-danger' %>">
+                                  <%= p.correct %>/<%= p.total %> (<%= p.percentage %>%)
+                                </span>
+                              </div>
+                              <% }) %>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="weakness-card h-100">
+                            <h6 class="fw-bold text-success mb-3"><i class="bi bi-book me-2"></i>Kỹ năng Đọc (Reading)
+                            </h6>
+                            <div class="d-flex justify-content-between align-items-end mb-2">
+                              <span class="fs-4 fw-bold text-dark">
+                                <%= weaknessAnalysis.readingAccuracy %>%
+                              </span>
+                              <span class="small text-muted">
+                                <%= weaknessAnalysis.readingCorrect %>/<%= weaknessAnalysis.readingTotal %> câu đúng
+                              </span>
+                            </div>
+                            <div class="part-bar mb-3">
+                              <div
+                                class="part-bar-fill <%= weaknessAnalysis.readingAccuracy >= 70 ? 'bg-success' : 'bg-danger' %>"
+                                style="width: <%= weaknessAnalysis.readingAccuracy %>%"></div>
+                            </div>
+                            <% weaknessAnalysis.partResults.filter(p=> p.skill === 'Reading').forEach(p => { %>
+                              <div class="d-flex justify-content-between align-items-center small mb-1">
+                                <span class="text-secondary">
+                                  <%= p.name %>
+                                </span>
+                                <span class="fw-semibold <%= p.percentage >= 70 ? 'text-success' : 'text-danger' %>">
+                                  <%= p.correct %>/<%= p.total %> (<%= p.percentage %>%)
+                                </span>
+                              </div>
+                              <% }) %>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="weakness-card">
+                        <h6 class="fw-bold mb-3"><i class="bi bi-lightbulb-fill text-warning me-2"></i>Gợi ý ôn luyện
+                          cho bạn</h6>
+                        <% weaknessAnalysis.studySuggestions.forEach(sug=> { %>
+                          <div class="suggestion-item priority-<%= sug.priority %>">
+                            <div class="d-flex align-items-start gap-2">
+                              <i class="bi <%= sug.icon %> fs-5 mt-1"></i>
+                              <div>
+                                <strong class="d-block mb-1">
+                                  <%= sug.title %>
+                                </strong>
+                                <span class="small text-secondary">
+                                  <%= sug.description %>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <% }) %>
+                      </div>
+                    </div>
+                    <% } else { %>
+                      <!-- Banner gợi ý kích hoạt VIP để xem phân tích điểm yếu -->
+                      <div class="card border border-warning bg-warning-subtle p-4 mb-4 rounded-4">
+                        <div class="d-flex align-items-start gap-3">
+                          <i class="bi bi-star-fill text-warning fs-3 mt-1"></i>
+                          <div>
+                            <h6 class="fw-bold text-dark mb-1">Mở khóa Phân tích điểm yếu & Gợi ý ôn luyện chuyên sâu
+                            </h6>
+                            <p class="small text-secondary mb-2">Tài khoản của bạn đã có thể xem chi tiết đáp án bên
+                              dưới. Đăng ký khóa học và thanh toán học phí để trở thành <strong>Học viên VIP</strong> —
+                              mở khóa phân tích điểm yếu chi tiết từng Part và gợi ý bài tập nâng điểm cá nhân hóa.</p>
+                            <a href="/classes/my-classes?tab=registration"
+                              class="btn btn-sm btn-warning fw-bold px-3 py-1.5 rounded-3">Đăng ký khóa học ngay</a>
+                          </div>
+                        </div>
+                      </div>
+                      <% } %>
+                        <% } %>
+
+                          <!-- Chi Tiết Bài Làm & Đáp Án Đúng / Sai -->
+                          <div class="border-top pt-4">
+                            <h4 class="fw-bold mb-3"><i class="bi bi-check-circle-fill text-success me-2"></i>Chi Tiết
+                              Bài Làm & Đáp Án (Đúng / Sai)</h4>
+                            <p class="text-muted small mb-3">Danh sách câu hỏi kèm đáp án bạn đã chọn và đáp án đúng
+                              (Hiển thị trạng thái <strong>Đúng</strong> hoặc <strong>Sai</strong>):</p>
+                            <div class="grading-list">
+                              <% let currentSkill='' ; %>
+                                <% (gradingDetails || []).forEach(detail=> { %>
+                                  <% const skill=detail.part <=4 ? 'Listening' : 'Reading' ; %>
+                                    <% if (skill !==currentSkill) { %>
+                                      <% currentSkill=skill; %>
+                                        <div
+                                          class="py-2 px-3 mb-2 mt-2 rounded d-flex justify-content-between align-items-center <%= skill === 'Listening' ? 'bg-primary-subtle' : 'bg-success-subtle' %>">
+                                          <strong
+                                            class="small <%= skill === 'Listening' ? 'text-primary' : 'text-success' %>">
+                                            <i
+                                              class="bi <%= skill === 'Listening' ? 'bi-headphones' : 'bi-book' %> me-1"></i>
+                                            <%= skill==='Listening' ? 'Phần Nghe (Part 1–4)' : 'Phần Đọc (Part 5–7)' %>
+                                          </strong>
+                                        </div>
+                                        <% } %>
+                                          <% const isPart67=detail.part===6 || detail.part===7; %>
+                                            <% const isPart5=detail.part===5; %>
+                                              <% const isListening=detail.part <=4; %>
+                                                <div class="grading-item py-3 border-bottom">
+                                                  <div
+                                                    class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                                                    <div>
+                                                      <span class="badge bg-primary-subtle text-primary mb-1">Part <%=
+                                                          detail.part %></span>
+                                                      <strong class="text-dark d-block">Câu <%= detail.id %>:</strong>
+                                                    </div>
+                                                    <div class="d-flex gap-3 align-items-center">
+                                                      <span class="small">Chọn: <strong
+                                                          class="<%= detail.isCorrect ? 'text-success fw-bold' : (detail.studentAnswer ? 'text-danger fw-bold' : 'text-muted') %>">
+                                                          <%= detail.studentAnswer || 'Chưa chọn' %>
+                                                        </strong></span>
+                                                      <span class="small text-muted">Đáp án đúng: <strong
+                                                          class="text-success fw-bold">
+                                                          <%= detail.correctAnswer %>
+                                                            <% if (detail.correctAnswerText) { %> — <%=
+                                                                detail.correctAnswerText %>
+                                                                <% } %>
+                                                        </strong></span>
+                                                      <% if (detail.isCorrect) { %>
+                                                        <span
+                                                          class="badge bg-success-subtle text-success px-2.5 py-1.5 fw-bold rounded-pill"><i
+                                                            class="bi bi-check-circle-fill me-1"></i>Đúng</span>
+                                                        <% } else { %>
+                                                          <span
+                                                            class="badge bg-danger-subtle text-danger px-2.5 py-1.5 fw-bold rounded-pill"><i
+                                                              class="bi bi-x-circle-fill me-1"></i>Sai</span>
+                                                          <% } %>
+                                                    </div>
+                                                  </div>
+
+                                                  <% if (!isPart67 && detail.question) { %>
+                                                    <div class="text-secondary small mb-2"
+                                                      style="white-space: pre-wrap;">
+                                                      <%= detail.question %>
+                                                    </div>
+
+                                                    <% if (detail.image) { %>
+                                                      <div class="my-2">
+                                                        <img src="<%= detail.image %>"
+                                                          class="img-fluid rounded border shadow-sm"
+                                                          style="max-height: 250px; object-fit: contain;"
+                                                          alt="Hình ảnh câu hỏi" />
+                                                      </div>
+                                                      <% } %>
+
+                                                        <% if (detail.audio) { %>
+                                                          <div class="my-2">
+                                                            <audio controls src="<%= detail.audio %>"
+                                                              style="max-width: 100%; height: 35px;"></audio>
+                                                          </div>
+                                                          <% } %>
+                                                            <% } %>
+
+                                                              <% if (isPart5 && detail.explanation) { %>
+                                                                <div class="mt-2 p-3 rounded border-start border-4"
+                                                                  style="background-color: #fff8e6; border-color: #f39c12 !important;">
+                                                                  <div class="fw-bold mb-1" style="color: #d68910;"><i
+                                                                      class="bi bi-book me-1"></i> Giải thích ngữ pháp:
+                                                                  </div>
+                                                                  <div class="small text-dark"
+                                                                    style="white-space: pre-wrap; line-height: 1.5;">
+                                                                    <%= detail.explanation %>
+                                                                  </div>
+                                                                </div>
+                                                                <% } %>
+
+                                                                  <% if (isListening && detail.script) { %>
+                                                                    <div class="mt-2 p-3 rounded border-start border-4"
+                                                                      style="background-color: #f0f7fc; border-color: #3498db !important;">
+                                                                      <div class="fw-bold text-primary mb-1"><i
+                                                                          class="bi bi-chat-left-text-fill me-1"></i>
+                                                                        Script nghe (Transcript):</div>
+                                                                        <div class="small text-dark" style="white-space: pre-wrap; font-family: inherit; line-height: 1.5;"><%= (detail.script || '').trim() %></div>
+                                                                    </div>
+                                                                    <% } %>
+                                                </div>
+                                                <% }) %>
+                            </div>
+                          </div>
+                          <div class="mt-4 pt-3 d-flex gap-2 flex-wrap">
+                            <a href="/" class="btn btn-outline-secondary px-4 py-2">Quay lại trang chủ</a>
+                            <% if (exam.LoaiDe !=='Đầu vào' ) { %>
+                              <a href="/exams/free" class="btn btn-primary px-4 py-2"><i
+                                  class="bi bi-arrow-repeat me-1"></i>Luyện đề khác</a>
+                              <% } %>
+                                <% if (typeof alreadyTaken==='undefined' || !alreadyTaken) { %>
+                                  <!-- Không cho phép làm lại test đầu vào -->
+                                  <% } %>
+                          </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function promptUpdatePhoneResult() {
+      Swal.fire({
+        title: 'Cập nhật số điện thoại',
+        text: 'Vui lòng bổ sung số điện thoại liên lạc để mở khóa đáp án & giải thích:',
+        input: 'text',
+        inputPlaceholder: 'Nhập số điện thoại (10 chữ số)...',
+        showCancelButton: true,
+        confirmButtonText: 'Xác nhận',
+        cancelButtonText: 'Hủy',
+        confirmButtonColor: '#3498db',
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Bạn cần nhập số điện thoại!';
+          }
+          if (!/^[0-9]{10}$/.test(value.trim())) {
+            return 'Số điện thoại không hợp lệ (yêu cầu 10 chữ số)!';
+          }
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const sdt = result.value.trim();
+          fetch('/classes/update-phone', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ SoDienThoai: sdt })
+          })
+            .then(res => res.json())
+            .then(updateData => {
+              if (updateData.success) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Cập nhật thành công!',
+                  text: 'Đang làm mới trang...',
+                  timer: 1500,
+                  showConfirmButton: false
+                }).then(() => {
+                  window.location.reload();
+                });
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Lỗi',
+                  text: updateData.message || 'Cập nhật số điện thoại thất bại.'
+                });
+              }
+            })
+            .catch(err => {
+              console.error(err);
+              Swal.fire({
+                icon: 'error',
+                title: 'Lỗi',
+                text: 'Lỗi kết nối máy chủ khi cập nhật.'
+              });
+            });
+        }
+      });
+    }
+
+    function openRegisterModalFromResult() {
+      const registerEmail = document.getElementById('registerEmail');
+      if (registerEmail) {
+        registerEmail.value = '<%= user ? user.Email : "" %>';
+      }
+      const regModalEl = document.getElementById('registerModal');
+      if (regModalEl) {
+        const modal = new bootstrap.Modal(regModalEl);
+        modal.show();
+      }
+    }
+
+    const recommendationsData = <%- JSON.stringify(recommendations || []) %>;
+    const availableClassesData = <%- JSON.stringify(availableClasses || []) %>;
+
+    function openClassDetailForIndex(idx) {
+      const rec = recommendationsData[idx] || {};
+      const courseName = rec.TenKhoaHoc || 'Khóa học TOEIC';
+      const defaultDesc = rec.MoTa || 'Lộ trình đào tạo giúp học viên củng cố kiến thức và làm chủ đề thi TOEIC.';
+      openClassDetailForCourse(courseName, defaultDesc);
+    }
+
+    function openClassDetailForCourse(courseName, defaultDesc) {
+    const filterLower = courseName.replace(/\(.*\)/g, '').split('–')[0].trim().toLowerCase();
+    
+    // Find matching class from availableClassesData
+    let cls = availableClassesData.find(c =>
+      (c.TenLop && c.TenLop.toLowerCase().includes(filterLower)) ||
+      (c.TenKhoaHoc && c.TenKhoaHoc.toLowerCase().includes(filterLower)) ||
+      (c.CapDo && c.CapDo.toLowerCase().includes(filterLower))
+    );
+
+    if (!cls) {
+      // Fallback matching if exact string differs
+      cls = availableClassesData[0] || {
+        MaLopHoc: null,
+        TenLop: courseName,
+        TenKhoaHoc: courseName,
+        CapDo: 'Foundation',
+        HocPhi: 2500000,
+        ThoiLuong: 26,
+        NgayKhaiGiang: '2026-08-15',
+        NgayKetThuc: '2026-10-25',
+        LichHoc: 'Thứ 2, Thứ 4, Thứ Sáu (18:00 - 20:00)',
+        SiSoHienTai: 0,
+        SiSoToiDa: 20,
+        MoTa: defaultDesc || 'Lộ trình đào tạo giúp học viên củng cố kiến thức và làm chủ đề thi TOEIC.'
+      };
+    }
+
+    const spotsLeft = (cls.SiSoToiDa || 20) - (cls.SiSoHienTai || 0);
+    const isFull = spotsLeft <= 0;
+    const startDate = cls.NgayKhaiGiang ? new Date(cls.NgayKhaiGiang).toLocaleDateString('vi-VN') : 'Đang cập nhật';
+    const endDate = cls.NgayKetThuc ? new Date(cls.NgayKetThuc).toLocaleDateString('vi-VN') : 'Đang cập nhật';
+    const feeFormatted = Number(cls.HocPhi || 0).toLocaleString('vi-VN') + ' đ';
+
+    const cartSearchTerm = encodeURIComponent(courseName.replace(/\(.*\)/g, '').split('–')[0].trim());
+    
+    // Xử lý an toàn chuỗi tên lớp
+    const safeClassName = cls.TenLop ? cls.TenLop.replace(/'/g, "\\'") : 'Khóa học TOEIC';
+
+    Swal.fire({
+      title: `<span class="fs-4 fw-bold text-dark"><i class="bi bi-journal-text text-primary me-2"></i>Chi Tiết Lớp Học Đề Xuất</span>`,
+      html: `
+        <div class="text-start p-1">
+          <div class="card border-0 bg-light p-3 rounded-4 mb-3 shadow-sm">
+            <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
+              <h5 class="fw-bold text-primary mb-0">${cls.TenLop}</h5>
+              <span class="badge bg-primary-subtle text-primary px-3 py-1.5 rounded-pill fw-bold">TOEIC ${cls.CapDo || 'Mọi cấp độ'}</span>
+            </div>
+            <p class="text-secondary small mb-0"><i class="bi bi-journal-bookmark-fill me-1 text-info"></i>Khóa học: <strong>${cls.TenKhoaHoc}</strong></p>
+          </div>
+
+          <div class="row g-2 mb-3 small">
+            <!-- (Giữ nguyên phần giao diện chi tiết lớp học của bạn) -->
+            <div class="col-6"><div class="p-2.5 bg-white border rounded-3 h-100"><span class="text-muted d-block small"><i class="bi bi-calendar-range text-primary me-1"></i>Khai giảng</span><strong class="text-dark">${startDate}</strong></div></div>
+            <div class="col-6"><div class="p-2.5 bg-white border rounded-3 h-100"><span class="text-muted d-block small"><i class="bi bi-calendar-x text-secondary me-1"></i>Kết thúc</span><strong class="text-dark">${endDate}</strong></div></div>
+            <div class="col-6"><div class="p-2.5 bg-white border rounded-3 h-100"><span class="text-muted d-block small"><i class="bi bi-alarm-fill text-warning me-1"></i>Lịch học</span><strong class="text-dark">${cls.LichHoc || 'Chưa xếp lịch'}</strong></div></div>
+            <div class="col-6"><div class="p-2.5 bg-white border rounded-3 h-100"><span class="text-muted d-block small"><i class="bi bi-clock text-info me-1"></i>Thời lượng</span><strong class="text-dark">${cls.ThoiLuong || 0} buổi</strong></div></div>
+            <div class="col-6"><div class="p-2.5 bg-white border rounded-3 h-100"><span class="text-muted d-block small"><i class="bi bi-people text-success me-1"></i>Sĩ số còn lại</span><strong class="${isFull ? 'text-danger' : 'text-success'}">${cls.SiSoHienTai || 0} / ${cls.SiSoToiDa || 20} (Còn ${spotsLeft > 0 ? spotsLeft : 0} chỗ)</strong></div></div>
+            <div class="col-6"><div class="p-2.5 bg-white border rounded-3 h-100"><span class="text-muted d-block small"><i class="bi bi-cash-stack text-success me-1"></i>Học phí trọn khóa</span><strong class="text-success fs-6">${feeFormatted}</strong></div></div>
+          </div>
+
+          <div class="p-3 bg-white border rounded-3 mb-3">
+            <h6 class="fw-bold text-dark small mb-1"><i class="bi bi-info-circle me-1 text-primary"></i>Mô tả & Nội dung đào tạo:</h6>
+            <p class="text-secondary small mb-0" style="line-height: 1.5;">${cls.MoTa || defaultDesc || 'Chi tiết nội dung giảng dạy đang được trung tâm cập nhật.'}</p>
+          </div>
+
+          <div class="mt-3 pt-2 d-flex gap-2 w-100 flex-wrap justify-content-center">
+            ${cls.MaLopHoc ? `
+              <!-- SỬ DỤNG setTimeout để tránh xung đột popup -->
+              <button class="btn btn-outline-primary py-2.5 px-3 fw-bold shadow-sm rounded-3 flex-fill" onclick="Swal.close(); setTimeout(() => addCourseToCartFromResult(${cls.MaLopHoc}, '${safeClassName}'), 300)">
+                <i class="bi bi-cart-plus-fill me-2"></i>Thêm vào giỏ hàng
+              </button>
+              <button class="btn btn-primary py-2.5 px-3 fw-bold shadow-sm rounded-3 flex-fill text-white text-center" onclick="Swal.close(); setTimeout(() => registerNowFromResult(${cls.MaLopHoc}, '${safeClassName}'), 300)">
+                <i class="bi bi-lightning-charge-fill me-2"></i>Đăng ký học ngay
+              </button>
+            ` : `
+              <a href="/classes/my-classes?tab=registration&search=${cartSearchTerm}&autoOpen=true" class="btn btn-primary py-2.5 px-3 fw-bold shadow-sm rounded-3 flex-fill text-white text-decoration-none text-center">
+                <i class="bi bi-search me-2"></i>Tìm lớp để đăng ký
+              </a>
+            `}
+          </div>
+        </div>
+      `,
+      showConfirmButton: false,
+      showCloseButton: true,
+      customClass: { popup: 'rounded-4 shadow-lg p-3', closeButton: 'btn-close' },
+      width: '560px'
+    });
+  }
+
+    function addCourseToCartFromResult(classId, className) {
+    // 1. Thêm popup CÂU HỎI XÁC NHẬN TRƯỚC KHI GỌI API
+    Swal.fire({
+      title: 'Xác nhận thêm',
+      text: `Bạn có chắc chắn muốn thêm lớp "${className}" vào giỏ hàng không?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3498db',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Hủy bỏ'
+    }).then((result) => {
+      // Nếu người dùng chọn "Đồng ý" thì mới thực hiện fetch API
+      if (result.isConfirmed) {
+        
+        // Hiện loading
+        Swal.fire({
+            title: 'Đang xử lý...',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+        });
+
+        fetch('/courses/cart/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ MaLopHoc: classId, confirmedInputWarning: true })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.requireLogin) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Yêu cầu đăng nhập',
+              text: data.message || 'Vui lòng đăng nhập để thêm lớp học vào giỏ hàng.',
+              confirmButtonText: 'Đăng nhập ngay',
+              confirmButtonColor: '#3498db'
+            }).then(() => {
+              window.location.href = '/auth/login?redirect=' + encodeURIComponent(window.location.pathname);
+            });
+            return;
+          }
+
+          if (data.success) {
+            // Update cart badge if exists
+            const badge = document.getElementById('header-cart-badge');
+            if (badge && data.cartCount !== undefined) {
+              badge.innerText = data.cartCount;
+              badge.classList.remove('d-none');
+            }
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Thêm thành công!',
+              text: `Lớp học đã nằm trong giỏ hàng. Đi tới giỏ hàng ngay?`,
+              showCancelButton: true,
+              confirmButtonText: 'Đến giỏ hàng',
+              cancelButtonText: 'Ở lại',
+              confirmButtonColor: '#28a745'
+            }).then((navRes) => {
+              if (navRes.isConfirmed) window.location.href = '/courses/cart';
+            });
+          } else {
+            Swal.fire({
+              icon: 'info',
+              title: 'Thông báo',
+              text: data.message || `Lớp học này không thể thêm vào giỏ hàng.`,
+              showCancelButton: true,
+              confirmButtonText: 'Đến giỏ hàng',
+              cancelButtonText: 'Đóng',
+              confirmButtonColor: '#3498db'
+            }).then((navRes) => {
+              if (navRes.isConfirmed) window.location.href = '/courses/cart';
+            });
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Có lỗi xảy ra khi thêm vào giỏ hàng.' });
+        });
+      }
+    });
+  }
+
+  function registerNowFromResult(classId, className) {
+    if (!classId) return;
+
+    Swal.fire({
+      title: 'Xác nhận đăng ký',
+      text: `Bạn có chắc chắn muốn đăng ký học ngay lớp "${className || 'học'}" không?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3498db',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Đồng ý đăng ký',
+      cancelButtonText: 'Hủy bỏ'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Đang xử lý...',
+          text: 'Vui lòng chờ trong giây lát',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+        fetch('/courses/cart/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ MaLopHoc: classId, confirmedInputWarning: true })
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.requireLogin) {
+              Swal.fire({
+                icon: 'warning',
+                title: 'Yêu cầu đăng nhập',
+                text: data.message || 'Vui lòng đăng nhập để đăng ký lớp học.',
+                confirmButtonText: 'Đăng nhập ngay',
+                confirmButtonColor: '#3498db'
+              }).then(() => {
+                window.location.href = '/auth/login?redirect=' + encodeURIComponent(window.location.pathname);
+              });
+              return;
+            }
+
+            if (data.success || (data.message && typeof data.message === 'string' && data.message.includes('đã có trong giỏ hàng'))) {
+              window.location.href = '/courses/cart';
+            } else {
+              Swal.fire({ icon: 'error', title: 'Thông báo', text: data.message || 'Không thể thêm vào giỏ hàng.' });
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            Swal.fire({ icon: 'error', title: 'Lỗi', text: 'Có lỗi xảy ra kết nối máy chủ.' });
+          });
+      }
+    });
+  }
+  </script>
+
+  <%- include('../layouts/footer') %>
