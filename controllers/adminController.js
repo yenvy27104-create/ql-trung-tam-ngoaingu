@@ -528,8 +528,8 @@ class AdminController {
         JOIN buoihoc b ON t.MaBuoiHoc = b.MaBuoiHoc
         LEFT JOIN hosonhansu n ON l.MaGiangVien = n.MaNhanSu
         LEFT JOIN nguoidung u ON n.MaNguoiDung = u.MaNguoiDung
-        GROUP BY t.MaLopHoc, t.MaPhongHoc, t.MaBuoiHoc, l.TenLop, k.TenKhoaHoc, u.HoTen, p.TenPhong, b.TenBuoi, b.GioBatDau, b.GioKetThuc
-        ORDER BY l.MaLopHoc DESC
+        GROUP BY t.MaLopHoc, l.MaLopHoc, t.MaPhongHoc, t.MaBuoiHoc, l.TenLop, k.TenKhoaHoc, u.HoTen, p.TenPhong, b.TenBuoi, b.GioBatDau, b.GioKetThuc
+        ORDER BY t.MaLopHoc DESC
       `);
 
       // Lấy danh sách Tin tức
