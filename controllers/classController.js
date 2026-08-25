@@ -1461,7 +1461,7 @@ class ClassController {
            JOIN phonghoc ph ON tkb.MaPhongHoc = ph.MaPhongHoc
            JOIN buoihoc bh ON tkb.MaBuoiHoc = bh.MaBuoiHoc
            WHERE tkb.MaLopHoc IN (?)
-           GROUP BY tkb.MaLopHoc, tkb.MaPhongHoc, tkb.MaBuoiHoc
+           GROUP BY tkb.MaLopHoc, tkb.MaPhongHoc, tkb.MaBuoiHoc, lh.TenLop, k.TenKhoaHoc, ph.TenPhong, ph.ViTri, bh.TenBuoi, bh.GioBatDau, bh.GioKetThuc
            ORDER BY lh.MaLopHoc DESC`,
           [myClassIds.length > 0 ? myClassIds : [0]]
         );

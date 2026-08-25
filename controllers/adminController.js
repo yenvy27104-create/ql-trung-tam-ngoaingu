@@ -342,9 +342,9 @@ class AdminController {
 
       // 1. Lớp chưa tới ngày khai giảng: Đầy thì gán "Đã đầy", chưa đầy thì "Sắp mở"
       await pool.query(`
-        UPDATE lophoc l
+        UPDATE lophoc
         SET TrangThaiLop = CASE 
-            WHEN l.SiSoToiDa <= (SELECT COUNT(*) FROM dangkyhoc d WHERE d.MaLopHoc = l.MaLopHoc AND d.TrangThai IN ('Thành công', 'Đang học', 'Chờ duyệt')) THEN 'Đã đầy'
+            WHEN lophoc.SiSoToiDa <= (SELECT COUNT(*) FROM dangkyhoc d WHERE d.MaLopHoc = lophoc.MaLopHoc AND d.TrangThai IN ('Thành công', 'Đang học', 'Chờ duyệt')) THEN 'Đã đầy'
             ELSE 'Sắp mở' 
         END
         WHERE DATE(NgayKhaiGiang) > CURDATE()
@@ -528,7 +528,7 @@ class AdminController {
         JOIN buoihoc b ON t.MaBuoiHoc = b.MaBuoiHoc
         LEFT JOIN hosonhansu n ON l.MaGiangVien = n.MaNhanSu
         LEFT JOIN nguoidung u ON n.MaNguoiDung = u.MaNguoiDung
-        GROUP BY t.MaLopHoc, t.MaPhongHoc, t.MaBuoiHoc
+        GROUP BY t.MaLopHoc, t.MaPhongHoc, t.MaBuoiHoc, l.TenLop, k.TenKhoaHoc, u.HoTen, p.TenPhong, b.TenBuoi, b.GioBatDau, b.GioKetThuc
         ORDER BY l.MaLopHoc DESC
       `);
 

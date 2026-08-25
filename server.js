@@ -26,6 +26,7 @@ const User = require('./models/User');
 // 1. CẤU HÌNH VÀ KHỞI TẠO ỨNG DỤNG (EXPRESS APP)
 // ==========================================
 const app = express();
+app.set('trust proxy', 1); // Cần thiết khi deploy lên Render / Reverse Proxy để bảo mật session & HTTPS
 const PORT = process.env.PORT || 3000;
 
 // Helper đọc dữ liệu tĩnh từ các file JSON trong public/json
