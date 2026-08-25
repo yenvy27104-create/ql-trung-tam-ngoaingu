@@ -15,7 +15,7 @@ const pool = mysql.createPool({
   port: process.env.DB_PORT || 4000, // Thêm dòng này để nhận cổng 4000 của TiDB
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'quanly_trungtam_ngoaingu',
+  database: process.env.DB_NAME || 'ql-trung-tam',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
