@@ -143,6 +143,7 @@
     justify-content: space-between;
     transition: all 0.3s ease;
     min-height: 380px;
+    cursor: pointer;
   }
   .teacher-poster-card:hover {
     transform: translateY(-5px);
@@ -212,6 +213,7 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
+    flex-shrink: 0;
   }
   .poster-avatar-ring img {
     width: 100%;
@@ -252,6 +254,7 @@
     justify-content: center;
     padding-right: 75px;
     padding-top: 10px;
+    min-width: 0;
   }
   .poster-teacher-name {
     font-size: 1.55rem;
@@ -259,7 +262,8 @@
     color: #1abc9c;
     line-height: 1.2;
     margin-bottom: 12px;
-    word-break: break-word;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
   .poster-bullets-list {
     list-style: none;
@@ -287,6 +291,102 @@
     color: #3498db;
     font-weight: bold;
     text-decoration: none;
+  }
+
+  /* Responsive Media Queries for Teacher Poster Card */
+  @media (max-width: 991.98px) {
+    .teacher-poster-card {
+      min-height: auto;
+      padding: 24px 18px;
+    }
+    .poster-content-layout {
+      grid-template-columns: 140px 1fr;
+      gap: 16px;
+    }
+    .poster-avatar-ring {
+      width: 130px;
+      height: 130px;
+      margin-bottom: 12px;
+    }
+    .poster-right-col {
+      padding-right: 45px;
+      padding-top: 12px;
+    }
+    .poster-teacher-name {
+      font-size: 1.35rem;
+      margin-bottom: 10px;
+    }
+    .teacher-poster-card::before {
+      width: 170px;
+      height: 170px;
+      top: -70px;
+      right: -70px;
+    }
+    .teacher-poster-card::after {
+      top: 90px;
+      right: 90px;
+    }
+    .poster-logo {
+      font-size: 1.4rem;
+      top: 12px;
+      right: 15px;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .teacher-poster-card {
+      padding: 18px 14px;
+      border-radius: 16px;
+    }
+    .poster-content-layout {
+      grid-template-columns: 110px 1fr;
+      gap: 12px;
+    }
+    .poster-avatar-ring {
+      width: 100px;
+      height: 100px;
+      border-width: 4px;
+      margin-bottom: 8px;
+    }
+    .poster-badge-yellow, .poster-badge-red {
+      font-size: 0.65rem;
+      padding: 4px 8px;
+      margin-bottom: 4px;
+      white-space: nowrap;
+    }
+    .poster-right-col {
+      padding-right: 0 !important;
+      padding-top: 24px;
+    }
+    .poster-teacher-name {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      word-break: normal !important;
+      overflow-wrap: break-word;
+    }
+    .poster-bullets-list {
+      margin-bottom: 8px;
+    }
+    .poster-bullets-list li {
+      font-size: 0.78rem;
+      margin-bottom: 5px;
+      line-height: 1.35;
+      padding-left: 10px;
+    }
+    .teacher-poster-card::before {
+      width: 130px;
+      height: 130px;
+      top: -50px;
+      right: -50px;
+    }
+    .teacher-poster-card::after {
+      display: none;
+    }
+    .poster-logo {
+      font-size: 1.15rem;
+      top: 10px;
+      right: 10px;
+    }
   }
 </style>
 
@@ -411,12 +511,14 @@
               <p class="text-secondary small line-clamp-3"><%= course.MoTa || 'Chương trình đào tạo ngoại ngữ chất lượng cao chuẩn quốc tế.' %></p>
             </div>
             
-            <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
-              <div>
+            <div class="mt-4 pt-3 border-top d-flex flex-wrap justify-content-between align-items-center gap-2">
+              <div class="text-nowrap">
                 <span class="text-muted d-block small">Học phí</span>
-                <strong class="text-success fs-5"><%= formattedFee %> <%= (course.HocPhi !== null && course.HocPhi !== undefined) ? 'đ' : '' %></strong>
+                <strong class="text-success fs-5 text-nowrap"><%= formattedFee %><% if (course.HocPhi !== null && course.HocPhi !== undefined) { %>&nbsp;đ<% } %></strong>
               </div>
-              <span class="text-primary fw-semibold small">Xem chi tiết & Lớp học <i class="bi bi-arrow-right"></i></span>
+              <div class="text-nowrap ms-auto">
+                <span class="text-primary fw-semibold small text-nowrap">Xem chi tiết &amp; Lớp học <i class="bi bi-arrow-right ms-1"></i></span>
+              </div>
             </div>
           </div>
         </div>
