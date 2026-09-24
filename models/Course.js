@@ -15,17 +15,8 @@ class Course {
    * Lấy tất cả danh sách khóa học từ CSDL
    */
   static async getAll() {
-    try {
-      const [rows] = await pool.query('SELECT * FROM KhoaHoc');
-      return rows;
-    } catch (err) {
-      try {
-        const [rows] = await pool.query('SELECT * FROM KHOAHOC');
-        return rows;
-      } catch (err2) {
-        return [];
-      }
-    }
+    const [rows] = await pool.query('SELECT * FROM khoahoc');
+    return rows;
   }
 
   /**
@@ -33,17 +24,8 @@ class Course {
    * @param {number} id - Mã khóa học
    */
   static async getById(id) {
-    try {
-      const [rows] = await pool.query('SELECT * FROM KhoaHoc WHERE MaKhoaHoc = ?', [id]);
-      return rows[0] || null;
-    } catch (err) {
-      try {
-        const [rows] = await pool.query('SELECT * FROM KHOAHOC WHERE MaKhoaHoc = ?', [id]);
-        return rows[0] || null;
-      } catch (err2) {
-        return null;
-      }
-    }
+    const [rows] = await pool.query('SELECT * FROM khoahoc WHERE MaKhoaHoc = ?', [id]);
+    return rows[0] || null;
   }
 
   /**
@@ -53,7 +35,7 @@ class Course {
   static async create(course) {
     const { TenKhoaHoc, MoTa, ThoiLuong, HocPhi, CapDo } = course;
     const [result] = await pool.query(
-      'INSERT INTO KhoaHoc (TenKhoaHoc, MoTa, ThoiLuong, HocPhi, CapDo) VALUES (?, ?, ?, ?, ?)',
+      'INSERT INTO khoahoc (TenKhoaHoc, MoTa, ThoiLuong, HocPhi, CapDo) VALUES (?, ?, ?, ?, ?)',
       [TenKhoaHoc, MoTa, ThoiLuong, HocPhi, CapDo]
     );
     return result.insertId;
@@ -67,7 +49,7 @@ class Course {
   static async update(id, course) {
     const { TenKhoaHoc, MoTa, ThoiLuong, HocPhi, CapDo } = course;
     await pool.query(
-      'UPDATE KhoaHoc SET TenKhoaHoc = ?, MoTa = ?, ThoiLuong = ?, HocPhi = ?, CapDo = ? WHERE MaKhoaHoc = ?',
+      'UPDATE khoahoc SET TenKhoaHoc = ?, MoTa = ?, ThoiLuong = ?, HocPhi = ?, CapDo = ? WHERE MaKhoaHoc = ?',
       [TenKhoaHoc, MoTa, ThoiLuong, HocPhi, CapDo, id]
     );
     return true;
@@ -78,7 +60,7 @@ class Course {
    * @param {number} id - Mã khóa học cần xóa
    */
   static async delete(id) {
-    await pool.query('DELETE FROM KhoaHoc WHERE MaKhoaHoc = ?', [id]);
+    await pool.query('DELETE FROM khoahoc WHERE MaKhoaHoc = ?', [id]);
     return true;
   }
 }

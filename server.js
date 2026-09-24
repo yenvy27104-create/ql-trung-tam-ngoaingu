@@ -784,18 +784,8 @@ async function syncDefaultUserPasswords() {
   try {
     const pool = require('./models/db');
     const defaultHash = '$2b$10$RsuK/XG7oGVeGamzA3HWf.0spmS9Dr06yL7Yvlg.Qc5qdaqi/XDC6';
-    await pool.query(
-      'UPDATE nguoidung SET MatKhau = ? WHERE Email IN (?, ?, ?, ?, ?)',
-      [
-        defaultHash,
-        'admin@example.com',
-        'tranlan.gv@example.com',
-        'khoa.gv@example.com',
-        'vana.hv@example.com',
-        'hoa.hv@example.com'
-      ]
-    );
-    console.log('[DB SYNC] ✅ Synchronized default passwords (123456) for sample accounts.');
+    const [result] = await pool.query('UPDATE nguoidung SET MatKhau = ?', [defaultHash]);
+    console.log(`[DB SYNC] ✅ Synchronized default passwords (123456) for ${result.affectedRows} accounts in nguoidung table.`);
   } catch (err) {
     console.error('[DB SYNC Password Error]', err);
   }

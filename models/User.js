@@ -20,8 +20,8 @@ class User {
   static async getById(id) {
     const [rows] = await pool.query(
       `SELECT u.*, r.TenVaiTro 
-       FROM NguoiDung u 
-       JOIN VaiTro r ON u.MaVaiTro = r.MaVaiTro 
+       FROM nguoidung u 
+       JOIN vaitro r ON u.MaVaiTro = r.MaVaiTro 
        WHERE u.MaNguoiDung = ?`,
       [id]
     );
@@ -35,8 +35,8 @@ class User {
   static async getByEmail(email) {
     const [rows] = await pool.query(
       `SELECT u.*, r.TenVaiTro 
-       FROM NguoiDung u 
-       JOIN VaiTro r ON u.MaVaiTro = r.MaVaiTro 
+       FROM nguoidung u 
+       JOIN vaitro r ON u.MaVaiTro = r.MaVaiTro 
        WHERE u.Email = ?`,
       [email]
     );
@@ -50,8 +50,8 @@ class User {
   static async getByPhone(phone) {
     const [rows] = await pool.query(
       `SELECT u.*, r.TenVaiTro 
-       FROM NguoiDung u 
-       JOIN VaiTro r ON u.MaVaiTro = r.MaVaiTro 
+       FROM nguoidung u 
+       JOIN vaitro r ON u.MaVaiTro = r.MaVaiTro 
        WHERE u.SoDienThoai = ?`,
       [phone]
     );
@@ -136,7 +136,7 @@ class User {
    */
   static async updatePassword(userId, newHashedPassword) {
     const [result] = await pool.query(
-      'UPDATE NguoiDung set MatKhau=? where MaNguoiDung=?',
+      'UPDATE nguoidung set MatKhau=? where MaNguoiDung=?',
       [newHashedPassword, userId]
     );
     return result.affectedRows > 0;
