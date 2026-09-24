@@ -1,9 +1,7 @@
-USE `quanly_trungtam_ngoaingu`;
--- phpMyAdmin SQL Dump
--- version 5.2.3
--- https://www.phpmyadmin.net/
--- Generation Time: Aug 25, 2026 at 02:56 PM
+USE `ql-trung-tam`;
 
+-- Tắt kiểm tra khóa ngoại để tránh lỗi Error 1452 khi Drop/Create Table
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -304,7 +302,7 @@ INSERT INTO `lotrinh_dexuat` (`MaLoTrinh`, `MaKhoaHoc`, `DiemTu`, `DiemDen`, `Mo
 (17, 4, 500, 900, 'Thực hành giải đề liên tục.', 'Cấp tốc', 1, 'LTR_CT_02');
 
 -- --------------------------------------------------------
--- Table structure for table `nguoidung` (DỮ LIỆU ĐÃ ĐƯỢC CHUẨN HÓA LẠI ID)
+-- Table structure for table `nguoidung` (ĐÃ RESET MẬT KHẨU ADMIN)
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `nguoidung`;
 CREATE TABLE IF NOT EXISTS `nguoidung` (
@@ -324,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `nguoidung` (
 ) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `nguoidung` (`MaNguoiDung`, `HoTen`, `Email`, `SoDienThoai`, `MatKhau`, `AnhDaiDien`, `MaVaiTro`, `TrangThai`, `NgayTao`) VALUES
-(1, 'Admin', 'admin@example.com', '0900000001', '$2b$10$y8p4Suwr5r7oBVegMC64u.IQW6J.zo5kL8hjwZZk7ND/JQ1YaMyBy', '/images/AVT/admin.jpg', 1, 'Hoạt động', '2026-06-16 15:29:27'),
+(1, 'Admin', 'admin@example.com', '0900000001', '$2b$10$X72.t9o.r6t4L/Y9Q4V3zOTbY1D4tM78w/Bv5U718r9J0X3F3z8P.', '/images/AVT/admin.jpg', 1, 'Hoạt động', '2026-06-16 15:29:27'),
 (2, 'Trần Thị Lan', 'tranlan.gv@example.com', '0900000002', '$2b$10$RsuK/XG7oGVeGamzA3HWf.0spmS9Dr06yL7Yvlg.Qc5qdaqi/XDC6', '/images/AVT/lan.png', 2, 'Hoạt động', '2026-06-16 15:29:27'),
 (71, 'Nguyễn Đăng Khoa', 'khoa.gv@example.com', '0900000071', '$2b$10$RsuK/XG7oGVeGamzA3HWf.0spmS9Dr06yL7Yvlg.Qc5qdaqi/XDC6', '/images/AVT/khoa.jpg', 2, 'Hoạt động', '2026-06-16 15:29:27'),
 (97, 'Trần Văn A', 'vana.hv@example.com', '0900000097', '$2b$10$iHtOzZS/ckWWSOU1ihItguJB3UCHObmimgcEp6uOogNMxvBKQFsD.', '/images/AVT/hoa.jpg', 3, 'Hoạt động', '2026-06-16 15:29:27'),
@@ -443,7 +441,7 @@ INSERT INTO `vaitro` (`MaVaiTro`, `TenVaiTro`, `MoTa`) VALUES
 (3, 'Học viên', 'Học viên đã đăng ký tài khoản');
 
 -- --------------------------------------------------------
--- CÁC RÀNG BUỘC KHÓA NGOẠI (CONSTRAINTS) ĐÃ ĐƯỢC CHUẨN HÓA
+-- Constraints for dumped tables
 -- --------------------------------------------------------
 
 ALTER TABLE `dangkyhoc`
@@ -491,6 +489,9 @@ ALTER TABLE `thoikhoabieu`
 
 ALTER TABLE `tintuc`
   ADD CONSTRAINT `fk_tt_nd` FOREIGN KEY (`MaNguoiDang`) REFERENCES `nguoidung` (`MaNguoiDung`);
+
+-- Bật lại kiểm tra khóa ngoại sau khi hoàn tất
+SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
