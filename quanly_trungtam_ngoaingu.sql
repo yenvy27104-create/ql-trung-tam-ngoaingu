@@ -302,7 +302,7 @@ INSERT INTO `lotrinh_dexuat` (`MaLoTrinh`, `MaKhoaHoc`, `DiemTu`, `DiemDen`, `Mo
 (17, 4, 500, 900, 'Thực hành giải đề liên tục.', 'Cấp tốc', 1, 'LTR_CT_02');
 
 -- --------------------------------------------------------
--- Table structure for table `nguoidung` (ĐÃ RESET MẬT KHẨU ADMIN)
+-- Table structure for table `nguoidung`
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `nguoidung`;
 CREATE TABLE IF NOT EXISTS `nguoidung` (
@@ -322,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `nguoidung` (
 ) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `nguoidung` (`MaNguoiDung`, `HoTen`, `Email`, `SoDienThoai`, `MatKhau`, `AnhDaiDien`, `MaVaiTro`, `TrangThai`, `NgayTao`) VALUES
-(1, 'Admin', 'admin@example.com', '0900000001', '$2b$10$X72.t9o.r6t4L/Y9Q4V3zOTbY1D4tM78w/Bv5U718r9J0X3F3z8P.', '/images/AVT/admin.jpg', 1, 'Hoạt động', '2026-06-16 15:29:27'),
+(1, 'Admin', 'admin@example.com', '0900000001', '$2b$10$RsuK/XG7oGVeGamzA3HWf.0spmS9Dr06yL7Yvlg.Qc5qdaqi/XDC6', '/images/AVT/admin.jpg', 1, 'Hoạt động', '2026-06-16 15:29:27'),
 (2, 'Trần Thị Lan', 'tranlan.gv@example.com', '0900000002', '$2b$10$RsuK/XG7oGVeGamzA3HWf.0spmS9Dr06yL7Yvlg.Qc5qdaqi/XDC6', '/images/AVT/lan.png', 2, 'Hoạt động', '2026-06-16 15:29:27'),
 (71, 'Nguyễn Đăng Khoa', 'khoa.gv@example.com', '0900000071', '$2b$10$RsuK/XG7oGVeGamzA3HWf.0spmS9Dr06yL7Yvlg.Qc5qdaqi/XDC6', '/images/AVT/khoa.jpg', 2, 'Hoạt động', '2026-06-16 15:29:27'),
 (97, 'Trần Văn A', 'vana.hv@example.com', '0900000097', '$2b$10$iHtOzZS/ckWWSOU1ihItguJB3UCHObmimgcEp6uOogNMxvBKQFsD.', '/images/AVT/hoa.jpg', 3, 'Hoạt động', '2026-06-16 15:29:27'),
