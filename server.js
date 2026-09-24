@@ -780,6 +780,27 @@ async function syncLopHocHocPhi() {
   }
 }
 
+async function syncDefaultUserPasswords() {
+  try {
+    const pool = require('./models/db');
+    const defaultHash = '$2b$10$RsuK/XG7oGVeGamzA3HWf.0spmS9Dr06yL7Yvlg.Qc5qdaqi/XDC6';
+    await pool.query(
+      'UPDATE nguoidung SET MatKhau = ? WHERE Email IN (?, ?, ?, ?, ?)',
+      [
+        defaultHash,
+        'admin@example.com',
+        'tranlan.gv@example.com',
+        'khoa.gv@example.com',
+        'vana.hv@example.com',
+        'hoa.hv@example.com'
+      ]
+    );
+    console.log('[DB SYNC] ✅ Synchronized default passwords (123456) for sample accounts.');
+  } catch (err) {
+    console.error('[DB SYNC Password Error]', err);
+  }
+}
+
 app.listen(PORT, () => {
   console.log(`[SERVER START] Máy chủ đang chạy tại: http://localhost:${PORT}`);
   updateClassStatuses();
@@ -787,6 +808,7 @@ app.listen(PORT, () => {
   syncMissingAttendance();
   fixClassDates();
   syncLopHocHocPhi();
+  syncDefaultUserPasswords();
   // Chạy cập nhật trạng thái lớp ngầm định kỳ mỗi 12 giờ
   setInterval(updateClassStatuses, 12 * 60 * 60 * 1000);
 });
