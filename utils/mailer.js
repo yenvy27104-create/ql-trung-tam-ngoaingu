@@ -54,7 +54,7 @@ const sendMail = async (to, subject, htmlContent) => {
 };
 
 const sendTeacherAlertMailToAdmin = async ({ teacherName, studentName, className, alertType, reason }) => {
-  const adminEmail = process.env.ADMIN_EMAIL || 'yenvy27104@gmail.com';
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
   const subject = `[CẢNH BÁO TỪ GIẢNG VIÊN] Yêu cầu xử lý học viên: ${studentName} (${className})`;
   const htmlContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; background: #ffffff;">
@@ -85,7 +85,7 @@ const sendTeacherAlertMailToAdmin = async ({ teacherName, studentName, className
 };
 
 const sendStudentTransferRequestMailToAdmin = async ({ studentName, studentPhone, oldClassName, newClassName, reason, feeDiff = 0, totalSessionsPassed = 0 }) => {
-  const adminEmail = process.env.ADMIN_EMAIL || 'yenvy27104@gmail.com';
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
   const subject = `[YÊU CẦU CHUYỂN LỚP] Học viên ${studentName} xin chuyển từ ${oldClassName} sang ${newClassName}`;
   const feeDiffStr = feeDiff > 0 ? `${Number(feeDiff).toLocaleString('vi-VN')} đ (Phát sinh chênh lệch cần đóng bổ sung)` : '0 đ (Không chênh lệch)';
   const htmlContent = `

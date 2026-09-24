@@ -2746,7 +2746,7 @@ class ClassController {
         [noteStr, MaDangKy]
       );
 
-      // 5. Gửi EMAIL THÔNG BÁO TỚI ADMIN (yenvy27104@gmail.com)
+      // 5. Gửi EMAIL THÔNG BÁO TỚI ADMIN
       try {
         const { sendStudentTransferRequestMailToAdmin } = require('../utils/mailer');
         sendStudentTransferRequestMailToAdmin({

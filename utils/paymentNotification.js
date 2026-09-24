@@ -10,7 +10,7 @@
 const pool = require('../models/db');
 const { sendMail } = require('./mailer');
 
-const ADMIN_NOTIFY_EMAIL = process.env.ADMIN_NOTIFY_EMAIL || 'yenvy27104@gmail.com';
+const ADMIN_NOTIFY_EMAIL = process.env.ADMIN_NOTIFY_EMAIL || 'admin@example.com';
 
 async function fetchEnrollmentDetails(maDangKyIds) {
   const ids = Array.isArray(maDangKyIds) ? maDangKyIds : [maDangKyIds];

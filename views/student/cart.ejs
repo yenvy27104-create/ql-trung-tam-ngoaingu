@@ -1081,7 +1081,7 @@
 
     // Update VietQR code source dynamically (Luôn nhúng số tiền & nội dung chuyển khoản động)
     const bankId = '<%= paymentConfig.bankId %>' || 'MBBank';
-    const accountNo = '<%= paymentConfig.accountNo %>' || '111180304111';
+    const accountNo = '<%= paymentConfig.accountNo %>' || '0000000000';
     const template = '<%= paymentConfig.template %>' || 'compact2';
     const accountName = encodeURIComponent('<%= paymentConfig.accountName %>' || 'ANH NGU Y V');
     const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-${template}.png?amount=${cartTotalAmount}&addInfo=${encodeURIComponent(activeCartQrContent)}&accountName=${accountName}`;

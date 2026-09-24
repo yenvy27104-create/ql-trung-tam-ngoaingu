@@ -70,7 +70,7 @@ router.get('/forgot-password', (req, res) => {
 });
 router.post('/forgot-password', AuthController.processForgotEmailOTP);
 router.get('/verify-otp', (req, res) => {
-  const email = req.query.email || 'yenvy27104@gmail.com';
+  const email = req.query.email || 'admin@example.com';
   const error = req.query.expired ? 'Mã OTP không hợp lệ hoặc đã hết hạn!' : (req.query.error || null);
   const expiresAt = req.query.expired ? Date.now() - 1000 : Date.now() + 5 * 60 * 1000;
   res.render('auth/verify-otp', { Email: email, error: error, expiresAt: expiresAt });
