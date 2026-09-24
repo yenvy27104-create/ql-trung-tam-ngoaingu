@@ -1,2 +1,26 @@
+# 1. Chặn thư viện nặng
 node_modules/
+
+# 2. Chặn file chứa mật khẩu, API key 
 .env
+.env.local
+.env.*
+
+# 3. Chặn các file ghi lỗi hệ thống
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 4. Chặn các file rác của hệ điều hành
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 5. Chặn thư mục chứa ảnh rác do người dùng tải lên lúc test
+public/images/uploads/

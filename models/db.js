@@ -23,7 +23,7 @@ if (process.env.DB_SSL === 'true') {
 // Tạo Connection Pool quản lý đồng thời nhiều kết nối CSDL
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
-  port: Number(process.env.DB_PORT) || 4000, // Nhận cổng DB từ .env (VD: 4000 cho TiDB, 3306 cho MySQL)
+  port: Number(process.env.DB_PORT) || 3306, // Nhận cổng DB từ .env (VD: 3306 cho MySQL, 4000 cho TiDB)
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'ql-trung-tam',
